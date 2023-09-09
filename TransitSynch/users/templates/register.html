@@ -1,0 +1,73 @@
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <!-- Add input fields for 'validID' and 'QR' here -->
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+        
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="/login">Sign In</a>
+            </small>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Initially hide the 'graduation' field
+    $('#id_graduation').hide();
+
+    // Initially hide the 'Graduation Date' label
+    $('label[for="id_graduation"]').hide();
+
+    // Listen for changes to the 'status' select field
+    $('#id_status').change(function() {
+        if ($(this).val() === 'Student') {
+            $('#id_graduation').show();
+            $('label[for="id_graduation"]').show();
+        } else {
+            $('#id_graduation').hide();
+            $('label[for="id_graduation"]').hide();
+        }
+    });
+});
+</script>
+<script>
+    $(document).ready(function() {
+        // Function to update the 'validID' field label
+        function updateValidIDLabel() {
+            var status = $('#id_status').val();
+            var statusLabels = {
+                'PWD': 'PWD ID',
+                'National Athlete': 'National Athlete ID',
+                'Student': 'Student ID',
+                'Senior': 'Senior Citizen ID',
+                'Ordinary': 'Valid ID'
+            };
+            var label = statusLabels[status] || 'Valid ID';
+            $('label[for="id_validID"]').text(label);
+        }
+    
+        // Initially update the 'validID' field label
+        updateValidIDLabel();
+    
+        // Listen for changes to the 'status' select field
+        $('#id_status').change(function() {
+            updateValidIDLabel();
+        });
+    });
+    </script>
+
+{% endblock content %}

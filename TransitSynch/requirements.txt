@@ -1,1 +1,6 @@
 django
+django-crispy-forms
+pillow
+bootstrap4
+qrcode[pil]
+django-phonenumber-field
