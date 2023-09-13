@@ -1,0 +1,79 @@
+{% extends "header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<head>
+    <title>User Profile</title>
+    <style>
+        /* Add your custom CSS styles here */
+        .profile-section {
+            margin: 20px;
+        }
+
+        .edit-profile-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .edit-profile-btn {
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style">
+        <legend class="border-bottom mb-4">Profile Information:</legend>
+        <div class="profile-section">
+            <h2 class="account-heading">
+                {{ form.instance.username }}
+                {% if form.instance.status != "Ordinary" %}
+                    <small class="text-muted">({{ form.instance.status }})</small>
+                {% endif %}
+            </h2>
+            <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
+            <p class="text-secondary">{{ form.instance.email }}</p>
+            <p class="text-secondary">{{ form.instance.description }}</p>
+            <p class="text-secondary">{{ form.instance.userSN }}</p>
+        </div>
+        
+        <button id="edit-profile-btn" class="btn btn-outline-info edit-profile-btn">Edit Profile</button>
+        
+        <div id="edit-profile-form" class="edit-profile-form">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Edit Profile Information</legend>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            {{ form.last_name|as_crispy_field }}
+                        </div>
+                    </div>
+                    {{ form.email|as_crispy_field }}
+                    <a href="{% url 'password_change' %}" class="password-change-link">Change password?</a>
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editProfileBtn = document.getElementById("edit-profile-btn");
+            const editProfileForm = document.getElementById("edit-profile-form");
+
+            editProfileBtn.addEventListener("click", function () {
+                if (editProfileForm.style.display === "none") {
+                    editProfileForm.style.display = "block";
+                } else {
+                    editProfileForm.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+{% endblock content %}

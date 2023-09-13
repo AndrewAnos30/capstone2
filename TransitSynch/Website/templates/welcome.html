@@ -1,0 +1,82 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransitSync - Commuting Made Easy</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .oval-button {
+            width: 150px;
+            height: 60px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .oval-button:hover {
+            background-color: #0056b3;
+        }
+
+        .oval-separator {
+            display: block;
+            margin: 10px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TransitSync</h1>
+        <p>Commuting Made Easy</p>
+        <button class="oval-button">Login</button>
+        <span class="oval-separator">-----or-----</span>
+        <button class="oval-button">Register</button>
+    </div>
+</body>
+<script>
+    // Function to redirect to the login page
+    function redirectToLogin() {
+        window.location.href = '/login'; // Update the URL if needed
+    }
+
+    // Function to redirect to the register page
+    function redirectToRegister() {
+        window.location.href = '/register'; // Update the URL if needed
+    }
+
+    // Attach click event handlers to the buttons
+    document.querySelector('.oval-button:first-of-type').addEventListener('click', redirectToLogin);
+    document.querySelector('.oval-button:last-of-type').addEventListener('click', redirectToRegister);
+</script>
+
+</html>

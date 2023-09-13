@@ -1,0 +1,49 @@
+{% extends "header.html" %}
+{% block content %}
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        /* Add your custom CSS styles here */
+        .dashboard-buttons {
+            margin-top: 20px;
+        }
+
+        .dashboard-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Change to your preferred color */
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .dashboard-button:last-child {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome, Admin!</h1>
+    <p>This is your dashboard.</p>
+
+    <div class="dashboard-buttons">
+        <h2>Manage Users:</h2>
+        <button class="dashboard-button">
+            <a href="{% url 'create_conductor' %}" style="text-decoration: none; color: white;">Create Conductor</a>
+        </button>
+        <button class="dashboard-button">
+            <a href="{% url 'create_cashier' %}" style="text-decoration: none; color: white;">Create Cashier</a>
+        </button>
+    </div>
+
+    <div class="dashboard-buttons">
+        <h2>Track Prices:</h2>
+        <button class="dashboard-button">
+            <a href="{% url 'track_prices' %}" style="text-decoration: none; color: white;">Track Prices</a>
+        </button>
+    </div>
+</body>
+{% endblock content %}

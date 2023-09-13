@@ -1,0 +1,24 @@
+/* Define custom styles for your website */
+
+/* Header styles */
+.site-header {
+    background-color: #333; /* Change to your desired header background color */
+    color: #fff; /* Change to your desired text color */
+}
+
+/* Navbar styles */
+.navbar-color {
+    background-color: #333; /* Change to your desired navbar background color */
+}
+
+.navbar-nav .nav-link {
+    color: #fff; /* Change to your desired navbar link color */
+}
+
+/* Main content styles */
+.container-xl {
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+
+
