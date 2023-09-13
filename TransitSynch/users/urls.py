@@ -6,9 +6,12 @@ urlpatterns = [
     path("register", views.registerCommuter, name="register"),
     path('login', views.custom_login, name='login'),
     path('logout', views.custom_logout, name='logout'),
+<<<<<<< HEAD
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
     path('profile/<username>', views.profile, name='profile'),
     path("password_change", views.password_change, name="password_change"),
     path("password_reset", views.password_reset_request, name="password_reset"),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='password_reset_confirm'),
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 ]

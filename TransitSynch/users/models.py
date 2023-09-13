@@ -36,8 +36,11 @@ class CustomUser(AbstractUser):
     graduation = models.DateField(null=True, blank=True)
     validID = models.ImageField(upload_to="valid_ids/", null=True, blank=True)
     QR = models.ImageField(upload_to="qrs/", null=True, blank=True)
+<<<<<<< HEAD
     verified = models.BooleanField(default=False, null=True, blank= True)
     UserGroup = models.CharField(max_length=100, null=True, blank=True)
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 
 
     def __str__(self):

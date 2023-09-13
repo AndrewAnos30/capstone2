@@ -1,6 +1,10 @@
 # django_project/users/views.py
 from django.shortcuts import render, redirect
+<<<<<<< HEAD
 from django.contrib.auth import  login, logout, authenticate, get_user_model
+=======
+from django.contrib.auth import  login, logout, authenticate
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 import secrets
 import string
 import qrcode
@@ -10,6 +14,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from. decorators import user_not_authenticated
 from .forms import UserRegistrationForm, UserLoginForm
+<<<<<<< HEAD
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -60,6 +65,10 @@ def activate(request, uidb64, token):
     return redirect('')
 
 
+=======
+
+# Create your views here.
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 @user_not_authenticated
 def registerCommuter(request):
 
@@ -73,15 +82,21 @@ def registerCommuter(request):
         if form.is_valid():
             user = form.save(commit=False)  # Create the user object without saving it
             user.email = form.cleaned_data['email']
+<<<<<<< HEAD
             user.is_active=False
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
             
             # Generate a unique userSN
             userSN = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(20))
             user.userSN = userSN
 
+<<<<<<< HEAD
             # Set UserGroup to "Commuter"
             user.UserGroup = "user"
 
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
             # Generate a QR code using userSN and save it to 'QR' field
             qr = qrcode.QRCode(
                 version=1,
@@ -97,8 +112,14 @@ def registerCommuter(request):
             user.QR.save(f'qr_{userSN}.png', ContentFile(buffer.getvalue()), save=False)
 
             user.save()
+<<<<<<< HEAD
             activateEmail(request, user, form.cleaned_data.get('email'))
             return redirect('welcome')
+=======
+            login(request, user)
+            messages.success(request, f"New Account created{user.username}")
+            return redirect('/')
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -117,10 +138,18 @@ def registerCommuter(request):
 def custom_logout(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
+<<<<<<< HEAD
     return redirect("welcome")
 
 @user_not_authenticated
 def custom_login(request):
+=======
+    return redirect("home")
+
+@user_not_authenticated
+def custom_login(request):
+
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
     if request.method == 'POST':
         form = UserLoginForm(request=request, data=request.POST)
         if form.is_valid():
@@ -131,6 +160,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
+<<<<<<< HEAD
                 
                 # Check the UserGroup and redirect accordingly
                 if user.UserGroup == "user":
@@ -144,6 +174,9 @@ def custom_login(request):
                 else:
                     # Default redirection in case UserGroup is not recognized
                     return redirect('home')
+=======
+                return redirect('home')
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 
         else:
             for error in list(form.errors.values()):
@@ -155,6 +188,7 @@ def custom_login(request):
         request=request,
         template_name="login.html", 
         context={'form': form}
+<<<<<<< HEAD
     )
 def profile(request, username):
     if request.method == 'POST':
@@ -267,3 +301,6 @@ def passwordResetConfirm(request, uidb64, token):
 
     messages.error(request, 'Something went wrong, redirecting back to Homepage')
     return redirect("home")
+=======
+        )
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b

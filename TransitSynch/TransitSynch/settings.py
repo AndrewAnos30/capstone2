@@ -45,7 +45,12 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'phonenumber_field',
+<<<<<<< HEAD
 
+=======
+    
+    
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 
 ]
 AUTH_USER_MODEL= 'users.CustomUser'
@@ -143,6 +148,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Define the media root and URL
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+<<<<<<< HEAD
 MEDIA_URL = '/media/'
 
 # Emailing settings
@@ -161,3 +167,6 @@ RECAPTCHA_PRIVATE_KEY = '6LfltRUoAAAAAPbXtDRp2_uE1v9QuGR9At3qGDWS'
 RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 
 RECAPTCHA_DOMAIN = 'www.recaptcha.net'
+=======
+MEDIA_URL = '/media/'
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b

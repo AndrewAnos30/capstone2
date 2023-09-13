@@ -4,12 +4,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from .models import CustomUser
 from django.contrib.auth.forms import AuthenticationForm
+<<<<<<< HEAD
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.forms import PasswordResetForm
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 
 
 class UserRegistrationForm(UserCreationForm):
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
     phone_regex = RegexValidator(
         regex=r'^09\d{8}$',  # Matches "09" followed by 8 digits
         message="Phone number must be 11 digits and start with '09********'",
@@ -39,8 +46,11 @@ class UserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 
 
 
@@ -53,6 +63,7 @@ class UserLoginForm(AuthenticationForm):
         label="Username or Email*")
 
     password = forms.CharField(widget=forms.PasswordInput(
+<<<<<<< HEAD
         attrs={'class': 'form-control', 'placeholder': 'Password'}))
     
 
@@ -74,3 +85,6 @@ class SetPasswordForm(SetPasswordForm):
 class PasswordResetForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
+=======
+        attrs={'class': 'form-control', 'placeholder': 'Password'}))
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b

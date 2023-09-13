@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # django_project/users/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import  login, logout, authenticate, get_user_model
@@ -36,10 +37,19 @@ def activateEmail(request, user, to_email):
         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
 
+=======
+# django_project/main/views.py
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import ArticleSeries, Article
+
+# Create your views here.
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 def homepage(request):
 
 
     return render(request=request, template_name='home.html')
+<<<<<<< HEAD
 
 def welcome(request):
     if request.user.is_authenticated:
@@ -163,3 +173,5 @@ def track_prices(request):
 
     return render(request, 'admin/track_prices.html')
 
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b

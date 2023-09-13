@@ -3,12 +3,18 @@
     <nav class="navbar navbar-expand-md navbar-color">
         <div class="container">
             <!-- Navbar Left Side -->
+<<<<<<< HEAD
             {% if user.is_authenticated %}
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="/">Home</a>
             </div>
             {% endif %}
 
+=======
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/">Home</a>
+            </div>
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
             <button aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation"
                     class="navbar-toggler ml-auto float-right btncolor" data-target="#navbarToggle" data-toggle="collapse" type="button">
                 <i class="fas fa-bars fa-2x"></i>
@@ -16,14 +22,21 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <!-- Navbar Left Side -->
                 <div class="navbar-nav mr-auto">
+<<<<<<< HEAD
 
+=======
+                    <a class="nav-item nav-link" href="/">About</a>
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
+<<<<<<< HEAD
                     <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
                         {{user.username}} <i class="fas fa-user"></i>
                     </a>
+=======
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
                     <a class="nav-item nav-link" href="{% url 'logout' %}">
                         Log out <i class="fas fa-sign-out-alt"></i>
                     </a>
@@ -31,6 +44,12 @@
                     <a class="nav-item nav-link" href="{% url 'login' %}">
                         Log in <i class="fas fa-sign-in-alt"></i>
                     </a>
+<<<<<<< HEAD
+=======
+                    <a class="nav-item nav-link" href="{% url 'register' %}">
+                        Sign up <i class="fas fa-user-plus"></i>
+                    </a>
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
                 {% endif %}
                 </div>
             </div>

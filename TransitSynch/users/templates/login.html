@@ -1,9 +1,15 @@
 <!-- django_project/users/templates/users/login.html -->
+<<<<<<< HEAD
 {% extends "header.html" %}
 {% load crispy_forms_tags %}
 
 {% block content %}
 
+=======
+
+{% load crispy_forms_tags %}
+{% block content %}
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
@@ -21,7 +27,11 @@
                 Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
             </small><br>
             <small class="text-muted">
+<<<<<<< HEAD
                 <a href="password_reset">Forgot password?</a>
+=======
+                <a href="/">Forgot password?</a>
+>>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
             </small>
         </div>
     </div>
