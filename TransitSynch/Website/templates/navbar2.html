@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* Styling for the bottom navigation bar */
+        .navbar2 {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+
+        /* Styling for the individual navigation items */
+        .navbar2 a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+        }
+
+        /* Styling for the active navigation item */
+        .navbar2 a.active {
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+
+        /* Styling for the popup container */
+        .popup-container {
+            display: none;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        /* Styling for circular buttons */
+        .popup-button {
+            display: block;
+            width: 50px;
+            height: 50px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 50%;
+            margin: 10px auto;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Styling for the horizontal alignment of buttons */
+        .popup-buttons-horizontal {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar2">
+    <a href="#">Home</a>
+    <a href="#">Fare</a>
+    <a href="#" class="qr-link">QR</a>
+    <a href="#">Transaction</a>
+    <a href="#">Oil Price</a>
+</div>
+
+<!-- Popup container for QR options -->
+<div class="popup-container" id="qr-popup">
+    <div class="popup-buttons-horizontal">
+        <a href="#" class="popup-button" id="scan-in-button">In</a>
+        <a href="#" class="popup-button" id="scan-out-button">Out</a>
+    </div>
+</div>
+
+<!-- Video element for webcam -->
+<video id="video" style="display: none;" autoplay></video>
+
+<script>
+    // JavaScript to show/hide the QR popup and buttons
+    const qrLink = document.querySelector('.qr-link');
+    const qrPopup = document.getElementById('qr-popup');
+    const video = document.getElementById('video');
+    const scanInButton = document.getElementById('scan-in-button');
+    const scanOutButton = document.getElementById('scan-out-button');
+    const otherNavLinks = document.querySelectorAll('.navbar2 a:not(.qr-link)');
+
+    qrLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        if (qrPopup.style.display === 'none' || qrPopup.style.display === '') {
+            qrPopup.style.display = 'block';
+            scanInButton.style.display = 'block';
+            scanOutButton.style.display = 'block';
+        } else {
+            qrPopup.style.display = 'none';
+            scanInButton.style.display = 'none';
+            scanOutButton.style.display = 'none';
+        }
+    });
+
+    // Add event listeners to other navigation buttons
+    otherNavLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Close the In and Out buttons when clicking other navigation buttons
+            qrPopup.style.display = 'none';
+            scanInButton.style.display = 'none';
+            scanOutButton.style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+
+</html>

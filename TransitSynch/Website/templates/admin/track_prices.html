@@ -1,1 +1,10 @@
 {% extends "header.html" %}
+{% block content %}
+<h1>Track Prices</h1>
+
+<!-- Display the date, PHP price, and USD price -->
+<p><strong>Date:</strong> {{ date }}</p>
+<p><strong>Price in PHP:</strong> {{ php_price }}</p>
+<p><strong>Price in USD:</strong> {{ usd_price }}</p>
+<p><strong>every time you reload it will save data</strong></p>
+{% endblock content %}

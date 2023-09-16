@@ -10,3 +10,5 @@ django-recaptcha
 captcha
 django-captcha
 django-recaptcha
+beautifulsoup4
+request

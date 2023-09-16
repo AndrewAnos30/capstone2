@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # django_project/users/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import  login, logout, authenticate, get_user_model
@@ -13,7 +12,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-
+import requests
+from bs4 import BeautifulSoup
+from django.shortcuts import render
 from .tokens import account_activation_token
 
 from django.db.models.query_utils import Q
@@ -37,19 +38,11 @@ def activateEmail(request, user, to_email):
         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
 
-=======
-# django_project/main/views.py
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import ArticleSeries, Article
-
 # Create your views here.
->>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
 def homepage(request):
 
 
     return render(request=request, template_name='home.html')
-<<<<<<< HEAD
 
 def welcome(request):
     if request.user.is_authenticated:
@@ -76,7 +69,6 @@ def cashier(request):
     return render(request=request, template_name='cashier/cashierHome.html')
 
 def conductor(request):
-
 
     return render(request=request, template_name='conductor/conductorHome.html')
 
@@ -170,8 +162,28 @@ def create_cashier(request):
 
 
 def track_prices(request):
+    url = "https://www.globalpetrolprices.com/Philippines/"
+    result = requests.get(url)
+    doc = BeautifulSoup(result.text,"html.parser")
 
-    return render(request, 'admin/track_prices.html')
+    tags= doc.find_all("tr")
+    parent = tags[2]
+    prices = parent.find_all("td")
+    
+    # Extract the text content inside each <td> element
+    extracted_data = [price.get_text(strip=True) for price in prices]
 
-=======
->>>>>>> 90b6c27b87d9b4586b9edce4faefb6a13180780b
+    # Organize the data into date, PHP price, and USD price
+    date = extracted_data[0]
+    php_price = extracted_data[1]
+    usd_price = extracted_data[2]
+
+    # Pass the organized data as context variables to the template
+    context = {
+        'date': date,
+        'php_price': php_price,
+        'usd_price': usd_price,
+    }
+
+    return render(request, 'admin/track_prices.html',context)
+
