@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -7,14 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Link to page favicon.ico to display in location Bar-->
+    <!-- Link to page favicon.ico to display in the location bar -->
     <link rel="icon" href="{% static 'images/logo.png' %}">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-    <!-- reference to your installed Font Awesome Free package's files here -->
+    <!-- Reference to your installed Font Awesome Free package's files here -->
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
@@ -26,7 +25,9 @@
 </head>
 <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js" integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js"
+        integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
     main {
@@ -34,19 +35,27 @@
         justify-content: center;
         align-items: center;
     }
+
     #reader {
         width: 600px;
     }
+
     #result {
         text-align: center;
         font-size: 1.5rem;
+    }
+
+    #map {
+        width: 100%;
+        height: 400px; /* Adjust the height as needed */
     }
 </style>
 {% include 'navbar.html' %}
 <main>
     <div id="reader"></div>
     <div id="result"></div>
-    <div id="ipLocation"></div> <!-- New div to display IP location -->
+    <div id="map"></div> <!-- Add a div for the Bing Maps iframe -->
+    <div id="location"></div> <!-- Add a div to display the location -->
 </main>
 
 <script>
@@ -67,15 +76,35 @@
         <p><a href="${result}">${result}</a></p>
         `;
 
-        // Fetch IP location using ipinfo.io API
-        $.get("https://ipinfo.io", function(response) {
-            // Display IP location data
-            document.getElementById('ipLocation').innerHTML = `
-            <h2>IP Location:</h2>
-            <p>${response.city}, ${response.region}, ${response.country}</p>
-            <p>IP: ${response.ip}</p>
-            `;
-        }, "jsonp");
+        // Fetch the user's IP location
+        fetch('https://ipinfo.io/json')
+            .then(response => response.json())
+            .then(data => {
+                // Display the user's location (latitude and longitude)
+                const locationElement = document.getElementById('location');
+                locationElement.innerHTML = `
+                <h2>Location</h2>
+                <p>Latitude: ${data.loc.split(',')[0]}</p>
+                <p>Longitude: ${data.loc.split(',')[1]}</p>
+                `;
+
+                // Embed the Bing Maps iframe with the user's location
+                const mapElement = document.getElementById('map');
+                mapElement.innerHTML = `
+                <iframe
+                    width="100%"
+                    height="400"
+                    frameborder="0"
+                    scrolling="no"
+                    marginheight="0"
+                    marginwidth="0"
+                    src="https://www.bing.com/maps/embed/viewer.aspx?v=3&cp=${data.loc}&lvl=15&dir=0&sty=r&cid=${data.loc}&src=SHELL&form=BMEMJS"
+                ></iframe>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching IP location:', error);
+            });
 
         scanner.clear();
         document.getElementById('reader').remove();
@@ -86,7 +115,5 @@
     }
 </script>
 
-
-  
 </body>
 </html>

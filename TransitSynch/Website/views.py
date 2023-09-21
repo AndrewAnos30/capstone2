@@ -69,9 +69,31 @@ def cashier(request):
     return render(request=request, template_name='cashier/cashierHome.html')
 
 def conductor(request):
-
-    return render(request=request, template_name='conductor/conductorHome.html')
-
+  # Get the user's IP location (latitude and longitude)
+    ip_info = requests.get('https://ipinfo.io/json').json()
+    loc = ip_info.get('loc', '').split(',')
+    
+    if len(loc) == 2:
+        latitude, longitude = loc
+        # Replace 'YOUR_BING_MAPS_API_KEY' with your actual Bing Maps API key
+        bing_maps_api_key = 'An6l1TNT7us7PHNaVpOf7lud9ocQHllSrqXWovAkwYhFBj691ZXgQw2YELwQennz'
+        
+        # Use Bing Maps API to reverse geocode the coordinates
+        bing_maps_url = f'https://dev.virtualearth.net/REST/v1/Locations/{latitude},{longitude}?o=json&key={bing_maps_api_key}'
+        
+        try:
+            response = requests.get(bing_maps_url)
+            if response.status_code == 200:
+                data = response.json()
+                location = data.get('resourceSets', [])[0].get('resources', [])[0].get('name', '')
+            else:
+                location = 'Location not found'
+        except Exception as e:
+            location = 'Error fetching location data'
+    else:
+        location = 'Location not available'
+    
+    return render(request, template_name='conductor/conductorHome.html', context={'location': location})
 
 #admin part
 def admin(request):

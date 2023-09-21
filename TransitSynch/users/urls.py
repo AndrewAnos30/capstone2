@@ -1,6 +1,7 @@
 from .import views
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path("register", views.registerCommuter, name="register"),
@@ -11,4 +12,6 @@ urlpatterns = [
     path("password_change", views.password_change, name="password_change"),
     path("password_reset", views.password_reset_request, name="password_reset"),
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='password_reset_confirm'),
-]
+] 
+
+urlpatterns += staticfiles_urlpatterns()
