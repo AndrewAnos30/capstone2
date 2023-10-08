@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Link to page favicon.ico to display in the location bar -->
+    <!-- Link to page favicon.ico to display in location Bar-->
     <link rel="icon" href="{% static 'images/logo.png' %}">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-    <!-- Reference to your installed Font Awesome Free package's files here -->
+    <!-- reference to your installed Font Awesome Free package's files here -->
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
@@ -25,9 +25,7 @@
 </head>
 <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js" 
-        integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ==" 
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js" integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
     main {
@@ -47,65 +45,53 @@
 <main>
     <div id="reader"></div>
     <div id="result"></div>
-    <p id="locationInfo"></p> <!-- New element to display location info -->
 </main>
 
 <script>
-    const scanner = new Html5QrcodeScanner('reader', {
-        qrbox: {
-            width: 250,
-            height: 250,
-        },  
-        fps: 20,
-    });
+    const apiKey = '22e758de7458429ab069e11ae3053199';
 
-    scanner.render(success, error);
+    // Function to fetch location information
+    async function fetchLocation() {
+        try {
+            const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`);
+            const data = await response.json();
 
-    function success(result) {
-        // Display the scanned QR code result
-        document.getElementById('result').innerHTML = `
-        <h2>Success!</h2>
-        <p><a href="${result}">${result}</a></p>
+            // Check if the API request was successful
+            if (response.status === 200) {
+                displayLocation(data);
+            } else {
+                displayError('Failed to fetch location information');
+            }
+        } catch (error) {
+            displayError('An error occurred while fetching location information');
+        }
+    }
+
+    // Function to display location information
+    function displayLocation(locationData) {
+        const resultElement = document.getElementById('result');
+
+        // Display the location data in the result element
+        resultElement.innerHTML = `
+            <h2>Location Information</h2>
+            <p>IP Address: ${locationData.ip}</p>
+            <p>City: ${locationData.city}</p>
+            <p>Region: ${locationData.region_name}</p>
+            <p>Country: ${locationData.country_name}</p>
         `;
-
-        // Fetch the user's IP location using ipinfo.io
-        fetch('https://ipinfo.io/json')
-            .then(response => response.json())
-            .then(ipInfo => {
-                // Extract the user's IP location coordinates
-                const loc = ipInfo.loc.split(',');
-                const latitude = loc[0];
-                const longitude = loc[1];
-
-                // Call Bing Maps Geocoding API to get a readable location
-                fetch(`https://dev.virtualearth.net/REST/v1/Locations/${latitude},${longitude}?key=An6l1TNT7us7PHNaVpOf7lud9ocQHllSrqXWovAkwYhFBj691ZXgQw2YELwQennz`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Display the user's location information
-                        const locationElement = document.getElementById('locationInfo');
-                        locationElement.innerHTML = `
-                        <h2>Location</h2>
-                        <p>Latitude: ${latitude}</p>
-                        <p>Longitude: ${longitude}</p>
-                        <p>Address: ${data.resourceSets[0].resources[0].address.formattedAddress}</p>
-                        `;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching Bing Maps location:', error);
-                    });
-            })
-            .catch(error => {
-                console.error('Error fetching IP location:', error);
-            });
-
-        scanner.clear();
-        document.getElementById('reader').remove();
     }
 
-    function error(err) {
-        console.error(err);
+    // Function to display an error message
+    function displayError(errorMessage) {
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML = `<p>Error: ${errorMessage}</p>`;
     }
+
+    // Trigger the fetchLocation function when the page loads
+    window.onload = function () {
+        fetchLocation();
+    };
 </script>
-  
+
 </body>
 </html>

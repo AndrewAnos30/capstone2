@@ -45,6 +45,7 @@ def activateEmail(request, user, to_email):
         messages.success(request, f'Dear <b>{user.username}</b>, please go to your email <b>{to_email}</b> inbox and click on the received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
     else:
         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
+        
 def activate(request, uidb64, token):
     User = get_user_model()
     try:
@@ -129,9 +130,7 @@ def custom_logout(request):
     messages.info(request, "Logged out successfully!")
     return redirect("welcome")
 
-@user_not_authenticated
-def custom_login(request):
-    return redirect("home")
+
 
 @user_not_authenticated
 def custom_login(request):
@@ -172,6 +171,7 @@ def custom_login(request):
         template_name="login.html", 
         context={'form': form}
     )
+
 def profile(request, username):
     if request.method == 'POST':
         user = request.user

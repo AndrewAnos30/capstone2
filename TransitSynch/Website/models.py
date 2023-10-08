@@ -14,3 +14,12 @@ class Location(models.Model):
 
     def __str__(self):
         return self.LocName  # This will display the LocName in the admin and other contexts
+    
+class DataCrawl (models.Model):
+    CrawlDate =models.CharField (max_length=200, null=True, blank=True)
+    CrawlPHP = models.FloatField (null=True, blank=True)
+    CrawlUSD = models.FloatField (null=True, blank=True)
+
+    def __str__(self):
+        return self.CrawlDate 
+    

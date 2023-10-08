@@ -6,5 +6,37 @@
 <p><strong>Date:</strong> {{ date }}</p>
 <p><strong>Price in PHP:</strong> {{ php_price }}</p>
 <p><strong>Price in USD:</strong> {{ usd_price }}</p>
+<p><strong>Date:</strong> {{ rate }}</p>
 <p><strong>every time you reload it will save data</strong></p>
+
+<form method="post" action="{% url 'save_data' %}">
+    {% csrf_token %}
+    <input type="hidden" name="date" value="{{ date }}">
+    <input type="hidden" name="php_price" value="{{ php_price }}">
+    <input type="hidden" name="usd_price" value="{{ usd_price }}">
+    <button type="submit">Save Data</button>
+  </form>
+
+  <script>
+    function clickSaveButton() {
+        document.getElementById('saveButton').click();
+    }
+    
+    // Schedule the button click for every Tuesday at 12:59 PM
+    function scheduleButton() {
+        const now = new Date();
+        const currentDay = now.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+    
+        if (currentDay === 2 && currentHour === 12 && currentMinute === 59) {
+            // It's Tuesday at 12:59 PM, click the button
+            clickSaveButton();
+        }
+    }
+    
+    // Check the schedule every minute
+    setInterval(scheduleButton, 60000); // 60000 milliseconds = 1 minute
+    </script>
+    
 {% endblock content %}
