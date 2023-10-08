@@ -1,10 +1,13 @@
 /* Define custom styles for your website */
 
 /* Header styles */
+
 .site-header {
     background-color: #333; /* Change to your desired header background color */
     color: #fff; /* Change to your desired text color */
 }
+
+
 
 /* Navbar styles */
 .navbar-color {

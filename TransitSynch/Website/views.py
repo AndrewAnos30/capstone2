@@ -39,6 +39,13 @@ def activateEmail(request, user, to_email):
 
 
 # Create your views here.
+
+def generate(request):
+   return render (request, 'conductor/generate.html')
+
+def  conductorHome(request):
+   return render (request, 'conductor/conductorHome.html')
+
 def homepage(request):
 
 
@@ -78,6 +85,7 @@ def admin(request):
 
 
     return render(request=request, template_name='admin/adminPage.html')
+
 
 
 

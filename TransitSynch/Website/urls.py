@@ -12,8 +12,8 @@ urlpatterns = [
     path('create_cashier/', views.create_cashier, name='create_cashier'),
     path('track_prices/', views.track_prices, name='track_prices'),
     path("", views.homepage, name="home"),
-    path('save_data/', views.save_data, name='save_data'),  # Add this line
-    path('inflation/', views.inflation, name='inflation'),  # Add this line
+    path("generate", views.generate, name="generate"),
+    path("conductorHome", views.conductorHome, name="conductorHome"),
 
 
 
