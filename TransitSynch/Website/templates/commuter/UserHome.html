@@ -1,21 +1,359 @@
 {% extends "header.html" %}
 {% block content %}
+{% load static %}
+
+<style>
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
 
+.mid{
+
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+
+}
+
+.mid video{
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mid .hero{
+
+    position: relative;
+
+}
+
+
+
+.mid .hero p{
+
+    width: 55%;
+    font-size: 1.1rem;
+    letter-spacing: 0.2rem; 
+    
+}
+
+.about{
+    background: #070821;
+}
+.about .text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin:auto;
+}
+
+.about .text h6{
+    color: #00B4D8;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 2px; 
+}
+
+.about .text h2{
+    color: #F7F5F4;
+    font-weight: 700;
+    font-size: 2.7rem;
+    padding-bottom: 10px;
+}
+
+.about .text p{
+    color: #F7F5F4;
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    padding-bottom: 10px;
+}
+
+
+
+.about .text a{
+    background-color: #003B4E;
+    font-weight: 600;
+    padding: 0.4rem 1.4rem;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.about .text a:hover{
+    background-color: #00B4D8;
+
+}
+
+.discover{
+    background: #F7F5F4;
+}
+.discover .text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin:auto;
+}
+
+.discover .text h6{
+    color: #00B4D8;
+    font-weight: 800;
+    font-size: 1rem;
+    padding-left: 90px;
+    letter-spacing: 2px;
+}
+
+.discover .text h2{
+    color: #003B4E;
+    font-weight: 700;
+    font-size: 2.7rem;
+    padding-left: 90px;
+    padding-bottom: 10px;
+}
+
+.discover .text p{
+    color: #003B4E;
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    padding-left: 90px;
+    padding-bottom: 10px;
+}
+
+
+
+.service{
+    background-color: #070821;
+}
+
+.service .one{
+
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 8px;
+}
+
+body > main > footer > section > div > div > div.col-md-3.col-lg-4.col-xl-3.mx-auto.mb-4 > h6 {
+    color: #003B4E;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+body > main > footer > section > div > div > div.col-md-3.col-lg-2.col-xl-2.mx-auto.mb-4 > h6 {
+    color: #003B4E;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+body > main > footer > section > div > div > div.col-md-4.col-lg-3.col-xl-3.mx-auto.mb-md-0.mb-4 > h6{
+    color: #003B4E;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+body > main > footer > section > div > div > div.col-md-3.col-lg-2.col-xl-2.mx-auto.mb-4 > p:nth-child(n) > a{
+     color: #313030;
+    text-decoration: none;
+    
+}
+body > main > footer > section > div > div > div.col-md-3.col-lg-2.col-xl-2.mx-auto.mb-4 > p:nth-child(n) > a:hover{
+     color: #004d67;
+}
+
+body > main > footer > section > div > div > div.col-md-3.col-lg-4.col-xl-3.mx-auto.mb-4 > p{
+    color: #313030;
+}
+
+
+body > main > footer > section > div > div > div.col-md-4.col-lg-3.col-xl-3.mx-auto.mb-md-0.mb-4 > p:nth-child(n){
+    color: #313030;
+}
+
+
+@media screen and (max-width: 988px) {
+
+.mid .hero h2{
+    font-size: 2.5rem;
+
+}
+
+.mid .hero p{
+    font-size: 1rem;
+
+}
+}
+
+</style>
+
+<body>
     <header>
-        <h1>Welcome, Commuter!</h1>
+        
+    <div class="mid">
+        <video autoplay muted loop>
+
+            <source class="embed-responsive" src="{% static 'images/homebg2.mp4' %}" type="video/mp4">
+
+        </video>
+       
+        <div class="hero text-center">
+            <h2 class="text-light display-4 font-weight-bold mx-auto"> Ease Your Journey with TransitSync </h2>
+            <p class="text-light mx-auto"> A Cashless Payment Application</p>
+        </div>
+    </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="#">View Schedule</a></li>
-            <li><a href="#">Purchase Ticket</a></li>
-            <li><a href="#">Check Balance</a></li>
-        </ul>
-    </nav>
-    <main>
-        <!-- Content for commuter dashboard goes here -->
-    </main>
-    <footer>
-        <p>&copy; 2023 Commuter Company</p>
-    </footer>
+
+    <section class="about py-5">
+        <div class="row align-items-center container my-5 mx-auto">
+            <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5"> 
+                <h6>PRICE FARE</h6>
+                <h2>Latest Price Fare Transportation</h2>
+                <p>Know the current price fare in modernized public transportations approved by the LTFRB. </p>
+                <a href="#"> Learn More</a>
+            </div>
+            <div class="img col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
+                <img class="img-fluid" src="{% static 'images/jingjing.png' %}">
+            
+            </div>
+        </div>
+    </section>
+
+    <section class="discover py-5">
+        <div class="row align-items-center container my-5 mx-auto">
+            <div class="img col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
+                <img class="img-fluid" src="{% static 'images/scanner4.png' %}">
+            
+            </div>
+            <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5"> 
+                <h6>SCANNING OF QR</h6>
+                <h2>Scan the generated QR code</h2>
+                <p>Let the conductor scan your generated QR code to pay the transaction. </p>
+            </div>
+          
+        </div>
+    </section>
+
+    <section class="service py-5">
+        <div class="col mx-auto align-items-center my-5">
+            <div class="heading text-center pt-5">
+
+                <h2 class="font-weight-bold pb-5 text-light"> Our Services</h2>
+
+            </div>
+
+            <div class="row mx-auto justify-content-center align-items-center text-center container">
+                <div class="one col-lg-3 col-md-3 col-12 w-25 m-2"> 
+                    <img class="img-fluid w-75" src = "{% static 'images/sys.png' %}">
+                    <h5 class="font-weight-bold pt-4">Latest Price Fare</h5>
+                    <p>Know the computation of the latest price fare. </p>
+                </div>
+                <div class="one col-lg-3 col-md-3 col-12 w-25 m-2"> 
+                    <img class="img-fluid w-75" src = "{% static 'images/code.png' %}">
+                    <h5 class="font-weight-bold pt-4">Cashless Payment</h5>
+                    <p>Hassle-free payment using the generated QR code. </p>
+                </div>
+                <div class="one col-lg-3 col-md-3 col-12 w-25 m-2"> 
+                    <img class="img-fluid w-75" src = "{% static 'images/his.png' %}">
+                    <h5 class="font-weight-bold pt-4">Transaction History</h5>
+                    <p>Keep track of scanned QR code in the history. </p>
+                </div>
+        
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+<footer class="text-center text-lg-start bg-light text-muted">
+ 
+  
+    <!-- Section: Links  -->
+    <section class="navbotom">
+      <div class="container text-center text-md-start mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <!-- Content -->
+            <h6 class="text text-uppercase fw-bold mb-4">
+                    TransitSync
+            </h6>
+            <p>
+             TransitSync is a company focused on creating a hassle-free transaction for everyone.
+            </p>
+          </div>
+          <!-- Grid column -->
+  
+
+  
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text text-uppercase fw-bold mb-3">
+              Links
+            </h6>
+            <p>
+              <a href="#!">Home</a>
+            </p>
+            <p>
+              <a href="#!">Fare</a>
+            </p>
+            <p>
+              <a href="#!">Transaction</a>
+            </p>
+            <p>
+              <a href="#!">Profile</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+  
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text text-uppercase fw-bold mb-4">Contact</h6>
+            <p><i class="fas fa-home me-3"></i> Manila, Philippines</p>
+            <p>
+              <i class="fas fa-envelope me-3"></i>
+                capstone2@gmail.com
+            </p>
+            <p><i class="fas fa-phone me-3"></i> +63 921 705 4236</p>
+
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+    </section>
+    <!-- Section: Links  -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+      © 2023 Copyright:
+      <a class="text-reset fw-bold">TransitSync.com</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+</body>
     {% endblock content %}

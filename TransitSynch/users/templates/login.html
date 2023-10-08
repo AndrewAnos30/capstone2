@@ -1,8 +1,8 @@
-<!-- django_project/users/templates/users/login.html -->
 {% extends "header.html" %}
 {% load crispy_forms_tags %}
 
 {% block content %}
+
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
@@ -21,7 +21,6 @@
             </small><br>
             <small class="text-muted">
                 <a href="password_reset">Forgot password?</a>
-                <a href="/">Forgot password?</a>
             </small>
         </div>
     </div>
