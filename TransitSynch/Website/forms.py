@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.forms import PasswordResetForm
 from users.models import CustomUser
+from .models import CurrentPrice
 
 
 class ConductorRegistrationForm(UserCreationForm):
@@ -60,4 +61,5 @@ class CashierRegistrationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
+
+

@@ -16,9 +16,10 @@ import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from .tokens import account_activation_token
-from .models import DataCrawl
+from .models import DataCrawl,CurrentPrice
 from django.db.models.query_utils import Q
 from users.models import CustomUser
+from datetime import date
 
 # Create your views here.
 def activateEmail(request, user, to_email):
@@ -172,12 +173,12 @@ def create_cashier(request):
 def track_prices(request):
     url = "https://www.globalpetrolprices.com/Philippines/"
     result = requests.get(url)
-    doc = BeautifulSoup(result.text,"html.parser")
+    doc = BeautifulSoup(result.text, "html.parser")
 
-    tags= doc.find_all("tr")
+    tags = doc.find_all("tr")
     parent = tags[2]
     prices = parent.find_all("td")
-    
+
     # Extract the text content inside each <td> element
     extracted_data = [price.get_text(strip=True) for price in prices]
 
@@ -186,14 +187,44 @@ def track_prices(request):
     php_price = extracted_data[1]
     usd_price = extracted_data[2]
 
-    # Pass the organized data as context variables to the template
+    # Query the database to get the latest CurrentPrice object
+    latest_price = CurrentPrice.objects.last()
+
+    # Convert the price values to floating-point numbers
+    php_price_float = float(php_price)
+    current_diesel_float = float(latest_price.CurrentDiesel)
+
+    # Calculate the result
+    if current_diesel_float != 0:
+        calculation_result = (current_diesel_float - php_price_float) / php_price_float
+    else:
+        # Handle the case where the denominator is zero
+        calculation_result = None  # You can customize this behavior
+
+    if calculation_result is not None:
+        second_calculation_result = calculation_result * 0.35 + 1
+    else:
+        second_calculation_result = None
+
+    if second_calculation_result is not None:
+        third_calculation_result = second_calculation_result * float(latest_price.CurrentFare)
+        fourth_calculation_result = second_calculation_result * float(latest_price.CurrentSucceeding)
+    else:
+        third_calculation_result = None
+        fourth_calculation_result = None
+
     context = {
         'date': date,
         'php_price': php_price,
         'usd_price': usd_price,
+        'latest_price': latest_price,
+        'calculation_result': calculation_result,
+        'second_calculation_result': second_calculation_result,
+        'third_calculation_result': third_calculation_result,
+        'fourth_calculation_result': fourth_calculation_result,
     }
 
-    return render(request, 'admin/track_prices.html',context)
+    return render(request, 'admin/track_prices.html', context)
 
 def save_data(request):
     if request.method == "POST":
@@ -212,23 +243,50 @@ def save_data(request):
         # Handle GET requests to this view as needed
         pass
 
-def inflation(request):
-    url = "https://www.rateinflation.com/inflation-rate/philippines-inflation-rate/"
-    result = requests.get(url)
-    doc = BeautifulSoup(result.text, "html.parser")
 
-    # Find the first div with class "css-in3yi3 e1x5eoea4"
-    first_div = doc.find("div", class_="css-in3yi3 e1x5eoea4")
+def update_prices(request):
+    if request.method == 'POST':
+        # Get the new values for CurrentFare, CurrentDiesel, and CurrentSucceeding from the form
+        new_fare = request.POST.get('new_fare')
+        new_diesel = request.POST.get('new_diesel')
+        new_succeeding = request.POST.get('new_succeeding')
 
-    # Find the first div with class "css-in3yi3 e1x5eoea5" after the first_div
-    second_div = first_div.find_next("div", class_="css-in3yi3 e1x5eoea5")
+        # Query the database to get the CurrentPrice object with Num = 1
+        current_price = CurrentPrice.objects.filter(Num=1).first()
 
-    context = {
-        'first_div': first_div.text if first_div else None,
-        'second_div': second_div.text if second_div else None,
-    }
+        if current_price:
+            # Update the CurrentFare, CurrentDiesel, and CurrentSucceeding fields
+            current_price.CurrentFare = new_fare
+            current_price.CurrentDiesel = new_diesel
+            current_price.CurrentSucceeding = new_succeeding
 
-    print("first_div:", first_div)  # Debug print
-    print("second_div:", second_div)  # Debug print
+            # Set the CurrentDate to the current date
+            current_price.CurrentDate = date.today()
 
-    return render(request, 'admin/inflation.html', context)
+            current_price.save()
+
+            # Redirect to the track_prices view or any other appropriate page
+            return redirect('track_prices')
+
+    return render(request, 'admin/track_price.html')
+
+def update_current_price(request):
+    if request.method == 'POST':
+        # Retrieve the third and fourth calculation results from the POST data
+        third_calculation_result = request.POST.get('third_calculation_result')
+        fourth_calculation_result = request.POST.get('fourth_calculation_result')
+
+        # Query the database to get the CurrentPrice object with Num=1
+        current_price = CurrentPrice.objects.filter(Num=1).first()
+
+        if current_price:
+            # Update the CurrentFare and CurrentSucceeding fields
+            if third_calculation_result:
+                current_price.CurrentFare = float(third_calculation_result)
+            if fourth_calculation_result:
+                current_price.CurrentSucceeding = float(fourth_calculation_result)
+            
+            # Save the updated object
+            current_price.save()
+
+    return redirect('track_prices')

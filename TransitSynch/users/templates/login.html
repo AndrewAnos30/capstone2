@@ -1,8 +1,79 @@
-{% extends "header.html" %}
+<!-- django_project/users/templates/users/login.html -->
+{% load static %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Document</title> -->
 
-    <div class="content-section">
+        <!-- CSS -->
+        <link rel="stylesheet" href="C:\Users\Jeric\Desktop\Clone\capstone2\TransitSynch\users\css\style.css">
+
+        <!-- Box icon css -->
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    {% block content %}
+
+
+    <section class="container forms">
+        <div class="form login">
+            <div class="form-content">
+                <header>Welcome Back!</header>
+
+          
+                 <span style="color: #003B4E; font-size: 20px; font-family: SF Pro Display; 
+                 font-weight: 500; word-wrap: break-word">Don't have an account yet? 
+                 <a href="{% url 'register' %}" class="link signup-link" style="color: #007EA7; font-size: 20px; font-family: 
+                 SF Pro Display; font-weight: 500; word-wrap: break-word">Register here</a></span>
+                </div>
+
+               <!-- <form action="#"> -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="field input-field">
+                        <label for="id_username" style="font-family: SF Pro Display;  font-size: 20px; color: #007EA7;">Username or Email*</label>
+                        <!-- <input style="margin-bottom: 40px;" type="email" class="input" placeholder="Username or Email"> -->
+                        <input style="margin-bottom: 40px;" type="text" name="username" class="input" id="id_username" placeholder="Username or Email" required>
+               
+                    </div>
+
+
+                 <div class="field input-field" style="margin-top: 40px;">
+                    <label for="id_password" style="font-family: SF Pro Display; font-size: 20px; color: #007EA7;">Password*</label>
+                        <!-- <input type="password" class="password" placeholder="Password"> -->
+                        <input type="password" name="password" class="password" id="id_password" placeholder="Password" required>
+              
+                        <i class='bx bx-hide eye-icon'></i>
+                    </div>
+
+                    <div class="form-link" style="margin-top: 40px;">
+                        <a href="password_reset" class="forgot-pass">Forgot Password?</a>
+           
+                    </div>
+
+                    <div class="field button-field">
+                        <button style="border-radius: 20px;
+                        background: #007EA7;" type="submit" >Sign In</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+            
+
+
+        </div>
+    </section>
+
+
+
+
+    <!-- <div class="content-section">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -26,7 +97,170 @@
             </small><br>
             <small class="text-muted">
                 <a href="password_reset">Forgot password?</a>
+                <a href="/">Forgot password?</a>
             </small>
         </div>
-    </div>
+    </div> -->
+
+
+    <!-- Javacsript -->
+
+    <script>
+        const forms = document.querySelector(".forms"),
+        pwShowHide = document.querySelectorAll(".eye-icon"),
+        links = document.querySelectorAll(".link");
+
+        pwShowHide.forEach(eyeIcon => {
+            eyeIcon.addEventListener("click", () => {
+                let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
+
+
+                pwFields.forEach(password =>{
+                    if(password.type === "password"){
+                        password.type = "text";
+                        eyeIcon.classList.replace("bx-hide", "bx-show");
+                        return;
+                    }
+                    password.type = "password";
+                    eyeIcon.classList.replace("bx-show", "bx-hide");
+                })
+            })
+        })
+
+    </script>
+
+
+
+</body>
+</html>
+
+
+
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    height: 100vh;
+    width: 100%;
+    background: url("{% get_media_prefix %}bg/home.jpg") center/cover no-repeat;
+
+}
+
+.container{
+   
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+   
+}
+
+
+.form{
+    position: relative;
+    max-width: 430px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 6px;
+    background: #fff;
+}
+
+header{
+    color: #003B4E;
+font-size: 36px;
+font-family: SF Pro Display;
+font-weight: 700;
+word-wrap: break-word;
+margin-bottom: 25px;
+
+}
+
+form{
+    margin-top: 30px;
+
+}
+
+form .field{
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+}
+
+.field input,
+.field button{
+    height: 100%;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 6px;
+}
+
+.field input{
+    outline: none;
+    padding: 0 15px;
+    border: 1px solid #cacaca;
+}
+
+.field input:focus{
+   border-bottom-width: 2px;
+}
+
+.eye-icon{
+    font-size: 18px;
+    color: #8b8b8b;
+    position: absolute;
+    top: 100%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 5px;
+}
+
+.form-link{
+    text-align: center;
+    margin-top: 10px;
+
+}
+
+.form-link span,
+.form-link a{
+
+    font-size: 14px;
+    font-weight: 400;
+    color: #232836;
+}
+
+.form a{
+    color: #0171d3;
+    text-decoration: none;
+}
+
+.form a:hover{
+    text-decoration: underline;
+}
+
+.field button{
+    color: #fff;
+    background-color: #007EA7;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.field button:hover{
+    background-color: #016dcb;
+}
+
+</style>
 {% endblock content %}
