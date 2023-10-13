@@ -107,9 +107,7 @@ def registerCommuter(request):
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
             return redirect('welcome')
-            login(request, user)
-            messages.success(request, f"New Account created{user.username}")
-            return redirect('/')
+
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
