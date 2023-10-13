@@ -12,7 +12,7 @@ from .models import CurrentPrice
 class ConductorRegistrationForm(UserCreationForm):
 
     phone_regex = RegexValidator(
-        regex=r'^09\d{8}$',  # Matches "09" followed by 8 digits
+        regex=r'^09\d{9}$',  # Matches "09" followed by 8 digits
         message="Phone number must be 11 digits and start with '09********'",
     )
     contactNumber = forms.CharField(validators=[phone_regex], max_length=11, required=False, widget=forms.TextInput(attrs={'placeholder': '09*********'}))
@@ -39,7 +39,7 @@ class ConductorRegistrationForm(UserCreationForm):
 class CashierRegistrationForm(UserCreationForm):
 
     phone_regex = RegexValidator(
-        regex=r'^09\d{8}$',  # Matches "09" followed by 8 digits
+        regex=r'^09\d{9}$',  # Matches "09" followed by 8 digits
         message="Phone number must be 11 digits and start with '09********'",
     )
     contactNumber = forms.CharField(validators=[phone_regex], max_length=11, required=False, widget=forms.TextInput(attrs={'placeholder': '09*********'}))
