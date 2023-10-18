@@ -27,11 +27,21 @@ class DataCrawl (models.Model):
     
 class CurrentPrice(models.Model):
     CurrentDate = models.DateField(null=True, blank=True)
-    CurrentFare = models.FloatField(null=True, blank=True, default=0)
+    CurrentFarePUJ = models.FloatField(null=True, blank=True, default=0)
+    CurrentSucceedingPUJ = models.FloatField(null=True, blank=True, default=0)
     CurrentDiesel = models.FloatField(null=True, blank=True, default=0)
-    CurrentSucceeding = models.FloatField(null=True, blank=True, default=0)
+    CurrentSucceedingBus = models.FloatField(null=True, blank=True, default=0)
+    CurrentFareBus = models.FloatField(null=True, blank=True, default=0)
     Num = models.IntegerField (null=True, blank=True, default=1)
     
     def __str__(self):
         return str(self.CurrentDate)
 
+class TranspoType(models.Model):
+
+    STATUS = (
+        ('Modernized PUJ', 'Modernized PUJ'),
+        ('AirConditioned PUJ', 'AirConditioned PUJ'),
+        ('Regular PUJ', 'Regular PUJ'),
+        ('Modernized Bus', 'Modernized Bus'),
+    )

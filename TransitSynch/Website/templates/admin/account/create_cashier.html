@@ -1,0 +1,167 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'path/to/your.css' %}">
+    <title>Join Today</title>
+
+    <style>
+        /* Style for the vertical side navbar */
+        .sidenav {
+            height: 100%;
+            width: 60px; /* Initial width (collapsed) */
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            transition: 0.5s;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+        
+        .sidenav.expanded {
+            width: 250px; /* Expanded width */
+        }
+        
+        .sidenav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        /* Content area */
+        .content {
+            margin-left: 60px; /* Initial margin (collapsed) */
+            transition: 0.5s;
+        }
+        
+        .content.expanded {
+            margin-left: 250px; /* Expanded margin */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Vertical side navbar -->
+<div class="sidenav" id="sidenav">
+    <a href="javascript:void(0);" onclick="toggleSidebar()">☰</a> <!-- Add a button to toggle the sidebar -->
+    <div id="sidebar-content" style="display: none;"> <!-- Initially hide the sidebar content -->
+        <a href="{% url 'admin' %}">Home</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+    </div>
+</div>
+
+<div class="content" id="content">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Join Today</legend>
+
+            {{ form.non_field_errors }}
+
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}">First Name:</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.middle_name.id_for_label }}">Middle Name:</label>
+                {{ form.middle_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}">Last Name:</label>
+                {{ form.last_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username:</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email:</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password:</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+                {{ form.password2 }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.gender.id_for_label }}">Gender:</label>
+                {{ form.gender }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.age.id_for_label }}">Age:</label>
+                {{ form.age }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.birthDate.id_for_label }}">Date of Birth:</label>
+                {{ form.birthDate }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.contactNumber.id_for_label }}">Contact Number:</label>
+                {{ form.contactNumber }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.emergencyContact.id_for_label }}">Emergency Contact:</label>
+                {{ form.emergencyContact }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.contactPerson.id_for_label }}">Contact Person:</label>
+                {{ form.contactPerson }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.status.id_for_label }}">Status:</label>
+                {{ form.status }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.validID.id_for_label }}">Valid ID:</label>
+                {{ form.validID }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.DPA.id_for_label }}">DPA:</label>
+                {{ form.DPA }}
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Create</button>
+            </div>
+        </fieldset>
+    </form> 
+</div>
+<script>
+    function toggleSidebar() {
+        const sidenav = document.getElementById("sidenav");
+        const content = document.getElementById("content");
+        const sidebarContent = document.getElementById("sidebar-content");
+        
+        sidenav.classList.toggle("expanded");
+        content.classList.toggle("expanded");
+        sidebarContent.style.display = sidebarContent.style.display === "none" ? "block" : "none";
+    }
+</script>
+</body>
+</html>

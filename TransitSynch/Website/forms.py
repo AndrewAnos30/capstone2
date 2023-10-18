@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.forms import PasswordResetForm
 from users.models import CustomUser
-from .models import CurrentPrice
+from .models import CurrentPrice, TranspoType
 
 
 class ConductorRegistrationForm(UserCreationForm):
@@ -62,4 +62,10 @@ class CashierRegistrationForm(UserCreationForm):
             user.save()
         return user
 
-
+class KilometerForm(forms.Form):
+    kilometers = forms.FloatField(label='Kilometers')
+    car_type = forms.ChoiceField(
+        label='Car Type',
+        choices=TranspoType.STATUS,  # Use the choices from the TranspoType model
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

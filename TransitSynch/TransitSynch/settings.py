@@ -87,11 +87,23 @@ WSGI_APPLICATION = 'TransitSynch.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+   }
 }
+
+
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'TransitSync',
+#        'USER': 'postgres',
+#        'PASSWORD': 'Global3001',
+#        'HOST': 'localhost',
+#        'PORT': '5433',
+#    }
+# }
 #postgres://transitsynch_user:nGjp9JgUerOHP5BijtOcXuMtlbT1Atj5@dpg-ck60m80s0i2c73bnto40-a/transitsynch
 
 # Password validation

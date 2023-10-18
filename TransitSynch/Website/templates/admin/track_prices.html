@@ -39,16 +39,24 @@
         <td>{{ latest_price.CurrentDate }}</td>
       </tr>
       <tr>
-        <td><strong>Current Fare:</strong></td>
-        <td>{{ latest_price.CurrentFare }}</td>
+        <td><strong>Current Fare PUJ:</strong></td>
+        <td>{{ latest_price.CurrentFarePUJ }}</td>
+      </tr>
+      <tr>
+        <td><strong>Current Succeeding PUJ:</strong></td>
+        <td>{{ latest_price.CurrentSucceedingPUJ }}</td>
+      </tr>
+      <tr>
+        <td><strong>Current Fare Bus:</strong></td>
+        <td>{{ latest_price.CurrentFareBus }}</td>
+      </tr>
+      <tr>
+        <td><strong>Current Succeeding Bus:</strong></td>
+        <td>{{ latest_price.CurrentSucceedingBus }}</td>
       </tr>
       <tr>
         <td><strong>Current Diesel:</strong></td>
         <td>{{ latest_price.CurrentDiesel }}</td>
-      </tr>
-      <tr>
-        <td><strong>Current Succeeding:</strong></td>
-        <td>{{ latest_price.CurrentSucceeding }}</td>
       </tr>
       <tr>
         <td><strong><button id="show-update-prices-button" onclick="toggleUpdatePricesForm()">Show Update Prices Form</button>
@@ -76,18 +84,32 @@
   
     {% if third_calculation_result is not None %}
       <tr>
-        <td><strong>Calculation Result 3 (Second x CurrentFare):</strong></td>
+        <td><strong>Calculation Result 3 (Second x CurrentFare PUJ):</strong></td>
         <td>{{ third_calculation_result|floatformat:2 }}</td>
       </tr>
     {% endif %}
-  
-    <!-- Display the fourth calculation result if it exists with 2 decimal points -->
+
     {% if fourth_calculation_result is not None %}
-      <tr>
-        <td><strong>Calculation Result 4 (Second x CurrentSucceeding):</strong></td>
-        <td>{{ fourth_calculation_result|default:"N/A"|floatformat:2 }}</td>
-      </tr>
+    <tr>
+      <td><strong>Calculation Result 4 (Second x CurrentSucceeding PUJ):</strong></td>
+      <td>{{ fourth_calculation_result|floatformat:2 }}</td>
+    </tr>
     {% endif %}
+
+    {% if fifth_calculation_result is not None %}
+  <tr>
+    <td><strong>Calculation Result 5 (Second x CurrentFare Bus):</strong></td>
+    <td>{{ fifth_calculation_result|floatformat:2 }}</td>
+  </tr>
+{% endif %}
+
+{% if sixth_calculation_result is not None %}
+  <tr>
+    <td><strong>Calculation Result 6 (Second x CurrentSucceeding Bus):</strong></td>
+    <td>{{ sixth_calculation_result|floatformat:2 }}</td>
+  </tr>
+{% endif %}
+
   </table>
 </div>
 
@@ -100,14 +122,20 @@
         <h1>Update Prices</h1>
         <form method="post" action="{% url 'update_prices' %}">
             {% csrf_token %}
-            <label for="new_fare">New Fare:</label>
-            <input type="number" name="new_fare" step="0.01" required>
+            <label for="new_fare">New Fare PUJ:</label>
+            <input type="number" name="new_farePUJ" step="0.01" >
             <br>
-            <label for="new_succeeding">New Succeeding:</label>
-            <input type="number" name="new_succeeding" step="0.01" required>
+            <label for="new_succeeding">New Succeeding PUJ:</label>
+            <input type="number" name="new_succeedingPUJ" step="0.01" >
+            <br>
+            <label for="new_fare">New Fare Bus:</label>
+            <input type="number" name="new_fareBus" step="0.01" >
+            <br>
+            <label for="new_succeeding">New Succeeding Bus:</label>
+            <input type="number" name="new_succeedingBus" step="0.01" >
             <br>
             <label for="new_diesel">Diesel Price:</label>
-            <input type="number" name="new_diesel" step="0.01" required>
+            <input type="number" name="new_diesel" step="0.01" >
             <br>
             <input type="submit" value="Update Prices">
             
@@ -116,6 +144,19 @@
         <button onclick="closeModal()" class="close-button">X</button>
     </div>
 </div>
+
+<form method="post">
+  {% csrf_token %}
+  {{ kilometer_form.kilometers.label_tag }} {{ kilometer_form.kilometers }}
+  <br>
+  {{ kilometer_form.car_type.label_tag }} {{ kilometer_form.car_type }}
+  <br>
+  <button type="submit">Calculate Fare</button>
+</form>
+
+{% if fare is not None %}
+  <p>Fare: {{ fare }}</p>
+{% endif %}
 
 <script>
     function toggleUpdatePricesForm() {

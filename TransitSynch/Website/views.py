@@ -20,6 +20,9 @@ from .models import DataCrawl,CurrentPrice
 from django.db.models.query_utils import Q
 from users.models import CustomUser
 from datetime import date
+from .forms import KilometerForm
+from math import ceil
+
 
 # Create your views here.
 def activateEmail(request, user, to_email):
@@ -44,8 +47,6 @@ def activateEmail(request, user, to_email):
 def generate(request):
    return render (request, 'conductor/generate.html')
 
-def  conductorHome(request):
-   return render (request, 'conductor/conductorHome.html')
 
 def homepage(request):
 
@@ -66,22 +67,25 @@ def welcome(request):
     # If the user is not authenticated or doesn't match any specific group, show the welcome page
     return render(request=request, template_name='welcome.html')
 
+@login_required
 def commuter(request):
 
 
     return render(request, 'commuter/userHome.html')
 
+@login_required
 def cashier(request):
 
 
     return render(request=request, template_name='cashier/cashierHome.html')
 
+@login_required
 def conductor(request):
 
     return render(request=request, template_name='conductor/conductorHome.html')
 
 
-#admin part
+@login_required
 def admin(request):
 
 
@@ -89,7 +93,7 @@ def admin(request):
 
 
 
-
+@login_required
 def create_conductor(request):
 
     placeholders = {
@@ -124,12 +128,12 @@ def create_conductor(request):
 
     return render(
         request=request,
-        template_name="admin/create_conductor.html",
+        template_name="admin/account/create_conductor.html",
         context={"form": form, "placeholders": placeholders}
     )
 
 
-
+@login_required
 def create_cashier(request):
 
     placeholders = {
@@ -149,12 +153,12 @@ def create_cashier(request):
             user.userSN = userSN
 
             # Set UserGroup to "Commuter"
-            user.UserGroup = "conductor"
+            user.UserGroup = "cashier"
 
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            return redirect('create_conductor')
+            return redirect('create_cashier')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -164,12 +168,12 @@ def create_cashier(request):
 
     return render(
         request=request,
-        template_name="admin/create_cashier.html",
+        template_name="admin/account/create_cashier.html",
         context={"form": form, "placeholders": placeholders}
     )
 
 
-
+@login_required
 def track_prices(request):
     url = "https://www.globalpetrolprices.com/Philippines/"
     result = requests.get(url)
@@ -196,7 +200,7 @@ def track_prices(request):
 
     # Calculate the result
     if current_diesel_float != 0:
-        calculation_result = (current_diesel_float - php_price_float) / php_price_float
+        calculation_result = (php_price_float - current_diesel_float) / current_diesel_float
     else:
         # Handle the case where the denominator is zero
         calculation_result = None  # You can customize this behavior
@@ -207,11 +211,61 @@ def track_prices(request):
         second_calculation_result = None
 
     if second_calculation_result is not None:
-        third_calculation_result = second_calculation_result * float(latest_price.CurrentFare)
-        fourth_calculation_result = second_calculation_result * float(latest_price.CurrentSucceeding)
+        third_calculation_result = second_calculation_result * float(latest_price.CurrentFarePUJ)
+        fourth_calculation_result = second_calculation_result * float(latest_price.CurrentSucceedingPUJ)
+        fifth_calculation_result = second_calculation_result * float(latest_price.CurrentFareBus)
+        sixth_calculation_result = second_calculation_result * float(latest_price.CurrentSucceedingBus)
     else:
         third_calculation_result = None
         fourth_calculation_result = None
+        fifth_calculation_result = None
+        sixth_calculation_result = None
+
+
+    # Handle the kilometer input form
+    fare = None
+
+    if request.method == 'POST':
+        kilometer_form = KilometerForm(request.POST)
+
+        if kilometer_form.is_valid():
+            kilometers = kilometer_form.cleaned_data['kilometers']
+            selected_car_type = kilometer_form.cleaned_data['car_type']
+
+            # Retrieve the current price information
+            current_price = CurrentPrice.objects.first()
+
+            if selected_car_type == 'Modernized Bus':
+                # Set the threshold to 5 kilometers for "Modernized Bus"
+                threshold_kilometers = 5
+            else:
+                threshold_kilometers = 4
+
+            # Check if kilometers are less than or equal to 4
+            if kilometers <= 4:
+                if selected_car_type == 'Modernized PUJ':
+                    fare = current_price.CurrentFarePUJ * 1.20 
+                elif selected_car_type == 'AirConditioned PUJ':
+                    fare = current_price.CurrentFarePUJ * 1.20
+                elif selected_car_type == 'Modernized Bus':
+                    fare = current_price.CurrentFareBus 
+                else:
+                    fare = current_price.CurrentFarePUJ
+            else:
+            # Calculate the fare for kilometers exceeding 4, adding cost for each 1 kilometer
+                excess_kilometers = ceil(kilometers - threshold_kilometers)
+                if selected_car_type == 'Modernized PUJ':
+                    fare = current_price.CurrentFarePUJ * 1.20 + (excess_kilometers * current_price.CurrentSucceedingPUJ)
+                elif selected_car_type == 'AirConditioned PUJ':
+                    fare = current_price.CurrentFarePUJ * 1.20 + (excess_kilometers * (1.20 * current_price.CurrentSucceedingPUJ))
+                elif selected_car_type == 'Modernized Bus':
+                    fare = current_price.CurrentFareBus + (excess_kilometers * current_price.CurrentSucceedingBus)
+                else:
+                    fare = current_price.CurrentFarePUJ + (excess_kilometers * current_price.CurrentSucceedingPUJ)
+        else:
+            fare = None  # Handle invalid input
+    else:
+        kilometer_form = KilometerForm()  # Create a new form instance
 
     context = {
         'date': date,
@@ -222,10 +276,15 @@ def track_prices(request):
         'second_calculation_result': second_calculation_result,
         'third_calculation_result': third_calculation_result,
         'fourth_calculation_result': fourth_calculation_result,
+        'fifth_calculation_result': fifth_calculation_result,
+        'sixth_calculation_result': sixth_calculation_result,
+        'kilometer_form': kilometer_form,
+        'fare': fare,
     }
 
     return render(request, 'admin/track_prices.html', context)
 
+@login_required
 def save_data(request):
     if request.method == "POST":
         # Get the data from the context
@@ -243,22 +302,32 @@ def save_data(request):
         # Handle GET requests to this view as needed
         pass
 
-
+@login_required
 def update_prices(request):
     if request.method == 'POST':
         # Get the new values for CurrentFare, CurrentDiesel, and CurrentSucceeding from the form
-        new_fare = request.POST.get('new_fare')
+        new_farePUJ = request.POST.get('new_farePUJ')
+        new_succeedingPUJ = request.POST.get('new_succeedingPUJ')
+        new_fareBus = request.POST.get('new_fareBus')
+        new_succeedingBus = request.POST.get('new_succeedingBus')        
         new_diesel = request.POST.get('new_diesel')
-        new_succeeding = request.POST.get('new_succeeding')
+        
 
         # Query the database to get the CurrentPrice object with Num = 1
         current_price = CurrentPrice.objects.filter(Num=1).first()
 
         if current_price:
-            # Update the CurrentFare, CurrentDiesel, and CurrentSucceeding fields
-            current_price.CurrentFare = new_fare
-            current_price.CurrentDiesel = new_diesel
-            current_price.CurrentSucceeding = new_succeeding
+            # Check if the input values are not empty
+            if new_farePUJ:
+                current_price.CurrentFarePUJ = new_farePUJ
+            if new_succeedingPUJ:
+                current_price.CurrentSucceedingPUJ = new_succeedingPUJ
+            if new_fareBus:
+                current_price.CurrentFareBus = new_fareBus
+            if new_succeedingBus:
+                current_price.CurrentSucceedingBus = new_succeedingBus
+            if new_diesel:
+                current_price.CurrentDiesel = new_diesel
 
             # Set the CurrentDate to the current date
             current_price.CurrentDate = date.today()
@@ -270,6 +339,7 @@ def update_prices(request):
 
     return render(request, 'admin/track_price.html')
 
+@login_required
 def update_current_price(request):
     if request.method == 'POST':
         # Retrieve the third and fourth calculation results from the POST data
