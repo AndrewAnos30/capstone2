@@ -38,7 +38,7 @@ class CustomUser(AbstractUser):
     QR = models.ImageField(upload_to="qrs/", null=True, blank=True)
     verified = models.BooleanField(default=False, null=True, blank= True)
     UserGroup = models.CharField(max_length=100, null=True, blank=True)
-    validation = models.BooleanField(null=True, blank=True, default=False)
+
 
 
     def __str__(self):

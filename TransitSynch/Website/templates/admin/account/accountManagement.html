@@ -1,0 +1,21 @@
+{% extends "header.html" %}
+{% block content %}
+
+<body>
+    <br>
+    <div class="dashboard-buttons">
+        <h2>Manage Users:</h2>
+        <button class="dashboard-button">
+            <a href="{% url 'create_conductor' %}" style="text-decoration: none; color: white;">Create Conductor</a>
+        </button>
+        <button class="dashboard-button">
+            <a href="{% url 'create_cashier' %}" style="text-decoration: none; color: white;">Create Cashier</a>
+        </button>
+        <button class="dashboard-button">
+            <a href="{% url 'validation' %}" style="text-decoration: none; color: white;">Validate</a>
+        </button>
+    </div>
+
+</body>
+
+{% endblock content %}

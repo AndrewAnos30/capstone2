@@ -16,6 +16,10 @@ urlpatterns = [
     path("generate", views.generate, name="generate"),
     path('update_prices/', views.update_prices, name='update_prices'),
     path('update_current_price/', views.update_current_price, name='update_current_price'),
+    path('computing_update/', views.computing_update, name='computing_update'),
+    path('account_management/', views.account_management, name='account_management'),
+    path('validation/', views.validation, name='validation'),
+    path('update_validation/<int:user_id>/', views.update_validation, name='update_validation'),
 
 
 

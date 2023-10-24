@@ -129,10 +129,8 @@ def custom_logout(request):
     return redirect("welcome")
 
 
-
-@user_not_authenticated
+@user_not_authenticated  # Assuming you have a custom decorator for unauthenticated users
 def custom_login(request):
-
     if request.method == 'POST':
         form = UserLoginForm(request=request, data=request.POST)
         if form.is_valid():
@@ -140,7 +138,7 @@ def custom_login(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password'],
             )
-            if user is not None:
+            if user is not None and user.verified:  # Check if the user is verified
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
                 
@@ -156,20 +154,21 @@ def custom_login(request):
                 else:
                     # Default redirection in case UserGroup is not recognized
                     return redirect('home')
-            
-
+            else:
+                messages.error(request, "Invalid credentials or unverified user.")
         else:
             for error in list(form.errors.values()):
-                messages.error(request, error) 
+                messages.error(request, error)
 
-    form = UserLoginForm() 
-    
+    form = UserLoginForm()
+
     return render(
         request=request,
-        template_name="login.html", 
+        template_name="login.html",
         context={'form': form}
     )
 
+@login_required
 def profile(request, username):
     if request.method == 'POST':
         user = request.user

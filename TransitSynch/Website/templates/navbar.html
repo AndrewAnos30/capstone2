@@ -99,11 +99,15 @@ padding: 0.8rem 0;
        
         {% if user.is_authenticated %}
         <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="{% url 'admin' %}">Home</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">Fare</a>
+            <a class="nav-link" href="{% url 'track_prices' %}">Fare</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'account_management' %}">Accounts</a>
           </li>
 
           <li class="nav-item">
@@ -119,15 +123,6 @@ padding: 0.8rem 0;
      
     
         <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out </a></button>
-        {% else %}
-
-        <li class="nav-item" visibility: hidden>
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-          </li>
-
-          <li class="nav-item" visibility: hidden>
-            <a class="nav-link" href="{% url 'register' %}">Sign up</a>
-          </li>
           {% endif %}
 
 

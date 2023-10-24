@@ -1,62 +1,7 @@
-{% load static %}
-{% load crispy_forms_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'path/to/your.css' %}">
-    <title>Join Today</title>
 
-    <style>
-        /* Style for the vertical side navbar */
-        .sidenav {
-            height: 100%;
-            width: 60px; /* Initial width (collapsed) */
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #333;
-            transition: 0.5s;
-            overflow-x: hidden;
-            padding-top: 20px;
-        }
-        
-        .sidenav.expanded {
-            width: 250px; /* Expanded width */
-        }
-        
-        .sidenav a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-        }
+{% extends "header.html" %}
+{% block content %}
 
-        /* Content area */
-        .content {
-            margin-left: 60px; /* Initial margin (collapsed) */
-            transition: 0.5s;
-        }
-        
-        .content.expanded {
-            margin-left: 250px; /* Expanded margin */
-        }
-    </style>
-</head>
-<body>
-
-<!-- Vertical side navbar -->
-<div class="sidenav" id="sidenav">
-    <a href="javascript:void(0);" onclick="toggleSidebar()">☰</a> <!-- Add a button to toggle the sidebar -->
-    <div id="sidebar-content" style="display: none;"> <!-- Initially hide the sidebar content -->
-        <a href="{% url 'admin' %}">Home</a>
-        <a href="#">Profile</a>
-        <a href="#">Settings</a>
-    </div>
-</div>
 
 <div class="content" id="content">
     <form method="POST" enctype="multipart/form-data">
@@ -152,16 +97,4 @@
         </fieldset>
     </form> 
 </div>
-<script>
-    function toggleSidebar() {
-        const sidenav = document.getElementById("sidenav");
-        const content = document.getElementById("content");
-        const sidebarContent = document.getElementById("sidebar-content");
-        
-        sidenav.classList.toggle("expanded");
-        content.classList.toggle("expanded");
-        sidebarContent.style.display = sidebarContent.style.display === "none" ? "block" : "none";
-    }
-</script>
-</body>
-</html>
+{% endblock content %}

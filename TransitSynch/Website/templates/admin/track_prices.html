@@ -110,6 +110,22 @@
   </tr>
 {% endif %}
 
+  <tr>
+    <td>
+      <form method="POST" action="{% url 'computing_update' %}">
+        {% csrf_token %}
+        <input type="hidden" name="third_calculation_result" value="{{ third_calculation_result }}">
+        <input type="hidden" name="fourth_calculation_result" value="{{ fourth_calculation_result }}">
+        <input type="hidden" name="fifth_calculation_result" value="{{ fifth_calculation_result }}">
+        <input type="hidden" name="sixth_calculation_result" value="{{ sixth_calculation_result }}">
+        <input type="hidden" name="php_price" value="{{ php_price }}">
+        <button type="submit">Save Calculations</button>
+    </form>
+    </td>
+    <td></td>
+
+  </tr>
+
   </table>
 </div>
 
@@ -157,6 +173,9 @@
 {% if fare is not None %}
   <p>Fare: {{ fare }}</p>
 {% endif %}
+
+
+
 
 <script>
     function toggleUpdatePricesForm() {

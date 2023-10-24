@@ -1,5 +1,5 @@
 # django_project/users/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import  login, logout, authenticate, get_user_model
 import secrets
 import string
@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from django.utils import timezone
 from django.core.mail import EmailMessage
 import requests
 from bs4 import BeautifulSoup
@@ -91,7 +92,25 @@ def admin(request):
 
     return render(request=request, template_name='admin/adminPage.html')
 
+@login_required
+def account_management(request):
 
+    return render(request,'admin/account/accountManagement.html' )
+
+@login_required
+def validation(request):
+    commuter_users = CustomUser.objects.filter(UserGroup='user')
+
+    return render(request,'admin/account/validate.html', {'commuter_users': commuter_users} )
+
+def update_validation(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    
+    # Update the validation status to True
+    user.verified = True
+    user.save()
+    
+    return redirect('validation')
 
 @login_required
 def create_conductor(request):
@@ -115,6 +134,7 @@ def create_conductor(request):
             # Set UserGroup to "Commuter"
             user.UserGroup = "conductor"
 
+            user.verified = True
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
@@ -155,6 +175,7 @@ def create_cashier(request):
             # Set UserGroup to "Commuter"
             user.UserGroup = "cashier"
 
+            user.verified = True
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
@@ -359,4 +380,47 @@ def update_current_price(request):
             # Save the updated object
             current_price.save()
 
+    return redirect('track_prices')
+
+
+def round_to_quarter(value):
+    return round(value * 4) / 4
+
+
+def computing_update (request):
+    # Check if the POST request contains the calculation values and save them
+    if request.method == 'POST':
+        third_calculation_result = request.POST.get('third_calculation_result')
+        fourth_calculation_result = request.POST.get('fourth_calculation_result')
+        fifth_calculation_result = request.POST.get('fifth_calculation_result')
+        sixth_calculation_result = request.POST.get('sixth_calculation_result')
+        php_price = request.POST.get('php_price')  # Retrieve php_price
+
+        latest_price = CurrentPrice.objects.last()
+
+        if third_calculation_result is not None:
+            third_calculation_result = round_to_quarter(float(third_calculation_result))
+            latest_price.CurrentFarePUJ = third_calculation_result
+
+        if fourth_calculation_result is not None:
+            fourth_calculation_result = round_to_quarter(float(fourth_calculation_result))
+            latest_price.CurrentSucceedingPUJ = fourth_calculation_result
+
+        if fifth_calculation_result is not None:
+            fifth_calculation_result = round_to_quarter(float(fifth_calculation_result))
+            latest_price.CurrentFareBus = fifth_calculation_result
+
+        if sixth_calculation_result is not None:
+            sixth_calculation_result = round_to_quarter(float(sixth_calculation_result))
+            latest_price.CurrentSucceedingBus = sixth_calculation_result
+
+        # Update the date to the current date and time
+        latest_price.CurrentDate = timezone.now()
+
+        # Update php_price if needed
+        if php_price is not None:
+            # Assuming php_price is a field in the CurrentPrice model
+            latest_price.php_price = float(php_price)
+
+        latest_price.save()
     return redirect('track_prices')
