@@ -1,21 +1,135 @@
 {% extends "header.html" %}
+{% load static %}
 {% block content %}
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        /* Add your custom CSS styles here */
+        .dashboard-buttons {
+            margin-top: 20px;
+        }
 
+        .dashboard-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #025773; /* Change to your preferred color */
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .dashboard-button:last-child {
+            margin-right: 0;
+        }
+ .about{
+    margin-top: 5%;
+
+   
+   
+ }
+
+
+ body{
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("{% get_media_prefix %}bg/bg232.jpg") center/cover no-repeat;
+
+}
+
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+.about .text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin:auto;
+}
+
+.about .text h6{
+    color: #00B4D8;
+    padding-top: 20px;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 2px; 
+}
+.about .text small{
+    color: #F7F5F4;
+    padding-top: 10px;
+    font-weight: 500;
+    font-size: 2.7rem;
+    padding-bottom: 10px;
+}
+
+.about .text h2{
+    color: #070821;
+    font-weight: 700;
+    font-size: 2.7rem;
+    padding-bottom: 10px;
+}
+
+.about .text h5{
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+}
+
+.about .text p{
+    color: #F7F5F4;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    padding-bottom: 10px;
+}
+
+    </style>
+</head>
 <body>
-    <br>
-    <div class="dashboard-buttons">
-        <h2>Manage Users:</h2>
-        <button class="dashboard-button">
-            <a href="{% url 'create_conductor' %}" style="text-decoration: none; color: white;">Create Conductor</a>
-        </button>
-        <button class="dashboard-button">
-            <a href="{% url 'create_cashier' %}" style="text-decoration: none; color: white;">Create Cashier</a>
-        </button>
-        <button class="dashboard-button">
-            <a href="{% url 'validation' %}" style="text-decoration: none; color: white;">Validate</a>
-        </button>
-    </div>
+
+    <section class="about py-4">
+        <div class="row align-items-center container my-5 mx-auto">
+            <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-3 pb-5"> 
+               
+                <h2>Validate Users: </h2>
+
+                <button class="dashboard-button">
+                    <a href="{% url 'validation' %}" style="text-decoration: none; color: white;">Validate</a>
+                </button>
+                
+                <div class="dashboard-buttons">
+                    <h2>Create Users: </h2>
+
+
+                <button class="dashboard-button">
+                    <a href="{% url 'create_conductor' %}" style="text-decoration: none; color: white;">Create Conductor</a>
+                </button>
+
+                <button class="dashboard-button">
+                    <a href="{% url 'create_cashier' %}" style="text-decoration: none; color: white;">Create Cashier</a>
+                </button>
+         
+                    
+                </div>
+          
+            </div>
+            <div class="img col-lg-6 col-md-6 col-12 w-50 pt-3 pb-5">
+                
+                <img class="img-fluid" src="{% static 'images/account.png'%}">
+ 
+            
+            </div>
+        </div>
+    </section>
+
 
 </body>
-
 {% endblock content %}

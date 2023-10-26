@@ -1,10 +1,10 @@
-
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,7 +14,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
     <!-- Reference to your installed Font Awesome Free package's files here -->
     <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
@@ -26,339 +26,342 @@
 
 
 
-    <title>User Profile</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-        /* Add your custom CSS styles here */
-        .profile-section {
-            margin: 20px;
+<title>User Profile</title>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    /* Add your custom CSS styles here */
+    .profile-section {
+        margin: 20px;
+    }
+
+    .edit-profile-form {
+        display: none;
+        margin-top: 20px;
+    }
+
+    .edit-profile-btn {
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+
+    .about {
+        background: #070821;
+
+    }
+
+    body::-webkit-scrollbar {
+        display: none;
+        /* for Chrome, Safari, and Opera */
+    }
+
+    .about .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin: auto;
+    }
+
+    .about .text h6 {
+        color: #00B4D8;
+        padding-top: 20px;
+        font-weight: 800;
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+
+    .about .text small {
+        color: #fafafa;
+        padding-top: 10px;
+        font-weight: 500;
+        font-size: 2.7rem;
+        padding-bottom: 10px;
+    }
+
+    .about .text h2 {
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 2.7rem;
+        padding-bottom: 10px;
+    }
+
+    .about .text h5 {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.3rem;
+        padding-bottom: 10px;
+    }
+
+    .about .text p {
+        color: #F7F5F4;
+        font-weight: 500;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+        padding-bottom: 10px;
+    }
+
+    .navbar {
+
+        padding: 0.7rem 4rem;
+        box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .2);
+        background-color: #fff;
+        z-index: 1000;
+
+    }
+
+    #navbarSupportedContent>ul>li:nth-child(n)>a {
+
+        color: #000000;
+        font-size: 1.1rem;
+        padding: 0 0.8rem;
+
+    }
+
+    #navbarSupportedContent>ul>li:nth-child(n)>a:hover,
+    #navbarSupportedContent>ul>li:nth-child(n)>a:active {
+        color: #025773;
+    }
+
+    #navbarSupportedContent>button {
+
+        background-color: #003B4E;
+        font-weight: 600;
+        padding: 0.4rem 1.4rem;
+    }
+
+    #navbarSupportedContent>button a {
+        color: #fff;
+    }
+
+    #navbarSupportedContent>button a:hover {
+
+        text-decoration: none;
+    }
+
+    @media screen and (max-width: 988px) {
+        .navbar {
+
+            padding: 0.7rem 2rem;
+
+
         }
 
-        .edit-profile-form {
-            display: none;
-            margin-top: 20px;
+        #navbarSupportedContent>ul {
+            padding-left: 0.8rem;
         }
 
-        .edit-profile-btn {
-            margin-top: 20px;
-            cursor: pointer;
+        #navbarSupportedContent>ul>li:nth-child(n)>a {
+
+            padding: 0.8rem 0;
+
         }
 
+    }
 
-        .about{
-    background: #070821;
+    .about .text button {
+        border: none;
+        color: #fff;
+        background-color: #005d7c;
+        font-weight: 600;
+        margin-top: 10px;
+        padding: 0.4rem 1.4rem;
+    }
 
-}
+    .about .text button:hover {
+        color: #070821;
 
-body::-webkit-scrollbar {
-    display: none; /* for Chrome, Safari, and Opera */
-}
+    }
 
-.about .text{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin:auto;
-}
+    form {
+        justify-content: center;
+    }
 
-.about .text h6{
-    color: #00B4D8;
-    padding-top: 20px;
-    font-weight: 800;
-    font-size: 1rem;
-    letter-spacing: 2px; 
-}
-.about .text small{
-    color: #fafafa;
-    padding-top: 10px;
-    font-weight: 500;
-    font-size: 2.7rem;
-    padding-bottom: 10px;
-}
+    form .text button {
+        border: none;
+        color: #fff;
+        background-color: #005d7c;
+        width: 50%;
+        font-weight: 600;
+        margin-left: 25%;
+    }
 
-.about .text h2{
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 2.7rem;
-    padding-bottom: 10px;
-}
+    form .password a {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
 
-.about .text h5{
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 1.3rem;
-    padding-bottom: 10px;
-}
+        color: #005d7c;
+    }
 
-.about .text p{
-    color: #F7F5F4;
-    font-weight: 500;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    padding-bottom: 10px;
-}
+    .modal-content {
+        margin-top: 100px;
+        border-radius: 0px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 0px;
+    }
 
-.navbar{
-   
-   padding: 0.7rem 4rem;
-   box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
-   background-color: #fff;
-   z-index: 1000;
-   
-}
-
-#navbarSupportedContent > ul > li:nth-child(n) > a {
-
-   color: #000000;
-   font-size: 1.1rem;
-   padding: 0 0.8rem;
-
-}
-
-#navbarSupportedContent > ul > li:nth-child(n) > a:hover,
-#navbarSupportedContent > ul > li:nth-child(n) > a:active
-{
-   color: #025773;
-}
- 
-#navbarSupportedContent > button {
-
-   background-color: #003B4E;
-   font-weight: 600;
-   padding: 0.4rem 1.4rem;
-}  
-  
-#navbarSupportedContent > button a {
-   color: #fff;
-}
-#navbarSupportedContent > button a:hover {
-
-   text-decoration: none;
-}
-
-@media screen and (max-width: 988px) {
- .navbar{
-  
-  padding: 0.7rem 2rem;
-  
-  
-}
-
-#navbarSupportedContent > ul{
- padding-left: 0.8rem;
-}
-
-#navbarSupportedContent > ul > li:nth-child(n) > a {
-
-padding: 0.8rem 0;
-
-}
-
-}
-
-.about .text button{
-    border: none;
-    color: #fff;
-    background-color: #005d7c;
-    font-weight: 600;
-    margin-top: 10px;
-    padding: 0.4rem 1.4rem;
-}
-.about .text button:hover{
-color: #070821;
-    
-}
-
-form{
-    justify-content: center;
-}
-
-form .text button{
-    border: none;
-    color: #fff;
-    background-color: #005d7c;
-    width: 50%;
-    font-weight: 600;
-    margin-left: 25%;
-}
-
-form .password a{
-    display: flex;
-    flex-direction: column;
-   text-align: right;
-   
-   color: #005d7c;
-}
-
-.modal-content { 
-    margin-top: 100px;
-    border-radius: 0px;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 0px;
-}
-
-.modal-dialog {
-    border: 0px !important;
-}
+    .modal-dialog {
+        border: 0px !important;
+    }
 
 
-@media screen and (max-width: 988px) {
+    @media screen and (max-width: 988px) {
 
-.about .text{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin:auto;
-}
+        .about .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+        }
 
-}
-
-    </style>
+    }
+</style>
 
 <body>
 
     <header>
-          <!--NAVBAR 1-->
-      <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <a class="navbar-brand mt-2 mt-lg-0">
-          <img
-            src="{% static 'images/homelogo.png' %}" 
-            height="30"
-      
-            loading="lazy"
-          />
-        </a>
-         
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto">
-             
-            <!-- User-specific navigation bar -->
-            {% if user.is_authenticated and user.UserGroup == 'user' %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_home' %}">User Home</a>
-                </li>
-                <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out </a></button>
+        <!--NAVBAR 1-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <a class="navbar-brand mt-2 mt-lg-0">
+                <img src="{% static 'images/homelogo.png' %}" height="30" loading="lazy" />
+            </a>
 
-                <!-- Add other user-specific navigation items here -->
-            {% endif %}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <!-- Conductor-specific navigation bar -->
-            {% if user.is_authenticated and user.UserGroup == 'conductor' %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'conductor' %}">Conductor Home</a>
-                </li>
-                <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out </a></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto">
 
-                <!-- Add other conductor-specific navigation items here -->
-            {% endif %}
+                    <!-- User-specific navigation bar -->
+                    {% if user.is_authenticated and user.UserGroup == 'user' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_home' %}">User Home</a>
+                    </li>
+                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+                        </a></button>
 
-            <!-- Cashier-specific navigation bar -->
-            {% if user.is_authenticated and user.UserGroup == 'cashier' %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cashier' %}">Cashier Home</a>
-                </li>
-                <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out </a></button>
+                    <!-- Add other user-specific navigation items here -->
+                    {% endif %}
 
-                <!-- Add other cashier-specific navigation items here -->
-            {% endif %}
+                    <!-- Conductor-specific navigation bar -->
+                    {% if user.is_authenticated and user.UserGroup == 'conductor' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'conductor' %}">Conductor Home</a>
+                    </li>
+                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+                        </a></button>
 
-            <!-- Admin-specific navigation bar -->
-            {% if user.is_authenticated and user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'admin' %}">Admin Home</a>
-                </li>
-                <!-- Add other admin-specific navigation items here -->
-              <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out </a></button>
+                    <!-- Add other conductor-specific navigation items here -->
+                    {% endif %}
 
-            {% endif %}
+                    <!-- Cashier-specific navigation bar -->
+                    {% if user.is_authenticated and user.UserGroup == 'cashier' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cashier' %}">Cashier Home</a>
+                    </li>
+                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+                        </a></button>
+
+                    <!-- Add other cashier-specific navigation items here -->
+                    {% endif %}
+
+                    <!-- Admin-specific navigation bar -->
+                    {% if user.is_authenticated and user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin' %}">Admin Home</a>
+                    </li>
+                    <!-- Add other admin-specific navigation items here -->
+                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+                        </a></button>
+
+                    {% endif %}
 
 
-          </div>
+            </div>
         </nav>
-      </header>
+    </header>
 
     <section class="about py-4">
         <div class="row align-items-center container my-5 mx-auto">
-            <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5"> 
-               
-                <h2>Hello,  {{ form.instance.username }} </h2>
-                    {% if form.instance.status != "Ordinary" %}
-                    <h5>({{ form.instance.status }})</h5>
-                    {% endif %}
-                    <h6>Full Name</h6>
-                    <p>{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
-                    <h6>Email</h6>
-                    <p>{{ form.instance.email }}</p>
-                    <!-- <h6>Full Name</h6>
+            <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
+
+                <h2>Hello, {{ form.instance.username }} </h2>
+                {% if form.instance.status != "Ordinary" %}
+                <h5>({{ form.instance.status }})</h5>
+                {% endif %}
+                <h6>Full Name</h6>
+                <p>{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
+                <h6>Email</h6>
+                <p>{{ form.instance.email }}</p>
+                <!-- <h6>Full Name</h6>
                     <p>{{ form.instance.description }}</p> -->
-                    <h6>Serial Number</h6>
-                    <p>{{ form.instance.userSN }}</p>
-                        
-                    <button id="edit-profile-btn" class="btn btn-outline-info" data-toggle="modal" data-target="#modalLoginForm">Edit Profile</button>
+                <h6>Serial Number</h6>
+                <p>{{ form.instance.userSN }}</p>
+
+                <button id="edit-profile-btn" class="btn btn-outline-info" data-toggle="modal"
+                    data-target="#modalLoginForm">Edit Profile</button>
             </div>
             <div class="img col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
                 <img class="img-fluid" src="{% static 'images/home-right.webp' %}">
-            
+
             </div>
         </div>
     </section>
-    
+
     <div class="modal fade  pt-5" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Edit Profile Information</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Edit Profile Information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
 
 
-      </div>
-
-      <div class="modal-body mx-3">
-  
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="password form-group">
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.first_name|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.last_name|as_crispy_field }}
-                    </div>
                 </div>
-                {{ form.email|as_crispy_field }}
-                <a href="{% url 'password_change' %}" class="password-change-link">Change password?</a>
-            </fieldset>
-            <div class="text">
-                <button class="btn btn-outline-info" type="submit">Update</button>
+
+                <div class="modal-body mx-3">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset class="password form-group">
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ form.first_name|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ form.last_name|as_crispy_field }}
+                                </div>
+                            </div>
+                            {{ form.email|as_crispy_field }}
+                            <a href="{% url 'password_change' %}" class="password-change-link">Change password?</a>
+                        </fieldset>
+                        <div class="text">
+                            <button class="btn btn-outline-info" type="submit">Update</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-        </form>
-    
-      </div>
+        </div>
     </div>
-  </div>
-</div>
 
 
 
     <script>
-
-        
         document.addEventListener("DOMContentLoaded", function () {
             const editProfileBtn = document.getElementById("edit-profile-btn");
             const editProfileForm = document.getElementById("edit-profile-form");
@@ -371,18 +374,17 @@ form .password a{
                 }
             });
         });
-
     </script>
 
     <!-- Prism JS -->
-  <script src="{% static 'prism.js' %}"></script>
+    <script src="{% static 'prism.js' %}"></script>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
-      integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
-      crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
+    </script>
 
-  <!-- Optional JavaScript -->
-  <script type="text/javascript" src="{% static 'main/custom.js' %}"></script>
+    <!-- Optional JavaScript -->
+    <script type="text/javascript" src="{% static 'main/custom.js' %}"></script>
 </body>
 {% endblock content %}

@@ -1,5 +1,7 @@
 {% extends "header.html" %}
+{% load static %}
 {% block content %}
+
 <head>
     <title>Admin Dashboard</title>
     <style>
@@ -11,7 +13,7 @@
         .dashboard-button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #007BFF; /* Change to your preferred color */
+            background-color: #025773; /* Change to your preferred color */
             color: white;
             text-decoration: none;
             border: none;
@@ -23,22 +25,107 @@
         .dashboard-button:last-child {
             margin-right: 0;
         }
+body{
+    background-color: #070821;
+}
+
+  
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+
+
+.waverow{
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    background: url("{% get_media_prefix %}bg/yuuu.jpg") center/cover no-repeat;
+}
+
+#img{
+    position: relative;
+    max-width: 100%;
+    z-index: 10;
+}
+#img:hover{
+    transform: scale(1.02);
+}
+
+.wave{
+    position: absolute;
+   
+    bottom: -66px;
+    left: 0px;
+}
+
+.row .text h2{
+    font-weight: 700;
+    font-size: 3.4rem;
+    margin-left: 20%;
+    padding-bottom: 10px;
+    margin-top: -5%;
+ 
+}
+
+.row .text p{
+    font-size: 1.3rem;
+    margin-left: 20%;
+ 
+ 
+}
+
+.btn{
+    height: 40px;
+    width: 140px;
+    background: #004d67;
+    border-radius: 5px;
+    margin-left: 20%;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+    border: 0px;
+    color: #fff;
+}
+
+.btn:hover{
+    -webkit-transform: scale(1.1);
+    background: #bfd6e3;
+}
+
     </style>
 </head>
 <body>
-    <h1>Welcome, Admin!</h1>
-    <p>This is your dashboard.</p>
 
-    <div class="dashboard-buttons">
-        <h2>Manage Users:</h2>
-        <button class="dashboard-button">
-            <a href="{% url 'create_conductor' %}" style="text-decoration: none; color: white;">Create Conductor</a>
-        </button>
-        <button class="dashboard-button">
-            <a href="{% url 'create_cashier' %}" style="text-decoration: none; color: white;">Create Cashier</a>
-        </button>
+
+    <div class="container-fluid p-0">
+        <div class="row justify-content-left align-items-center waverow mx-0">
+            <div class="col-lg-5">
+                <div class="text text-light">
+
+                    <h2>Hello, Admin! </h2>
+                    <p> Create and validate account now! </p>
+                    
+                    
+                        <a href="{% url 'account_management' %}" > 
+                            
+                            <button class="btn">Learn more  </button>
+                        </a>
+                     
+        
+                    
+                </div>
+            </div>
+
+      
+
+    background: #31708f;
+    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#bfd6e3" fill-opacity="1" d="M0,32L21.8,74.7C43.6,117,87,203,131,229.3C174.5,256,218,224,262,197.3C305.5,171,349,149,393,170.7C436.4,192,480,256,524,250.7C567.3,245,611,171,655,144C698.2,117,742,139,785,149.3C829.1,160,873,160,916,133.3C960,107,1004,53,1047,42.7C1090.9,32,1135,64,1178,112C1221.8,160,1265,224,1309,250.7C1352.7,277,1396,267,1418,261.3L1440,256L1440,320L1418.2,320C1396.4,320,1353,320,1309,320C1265.5,320,1222,320,1178,320C1134.5,320,1091,320,1047,320C1003.6,320,960,320,916,320C872.7,320,829,320,785,320C741.8,320,698,320,655,320C610.9,320,567,320,524,320C480,320,436,320,393,320C349.1,320,305,320,262,320C218.2,320,175,320,131,320C87.3,320,44,320,22,320L0,320Z"></path></svg>
+
+        </div>
     </div>
 
-    </div>
+    
+
+
 </body>
 {% endblock content %}

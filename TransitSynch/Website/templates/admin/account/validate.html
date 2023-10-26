@@ -1,11 +1,23 @@
 {% extends "header.html" %}
 
 {% block content %}
-    <div class="container">
-        <h1 class="mt-4 mb-4">Commuter Users</h1>
 
-        <table class="table table-bordered table-striped">
-            <thead>
+<style>
+
+.container table{
+    margin-top: 10%;
+}
+
+
+</style>
+<body>
+    <header style="margin: 5%; font-weight: 700; font-size: 50px;"> Validated Accounts </header>
+    
+    <div class="container">
+       
+
+        <table class="table table-bordered table-striped" style="margin-left: -15%; margin-top: -5%;">
+           
                 <tr>
                     <th>Username</th>
                     <th>Email</th>
@@ -25,7 +37,7 @@
                     <th>User Group</th>
                     <th>Validate</th>
                 </tr>
-            </thead>
+         
             <tbody>
                 {% for user in commuter_users %}
                     <tr>
@@ -108,4 +120,5 @@
             </tbody>
         </table>
     </div>
+</body>
 {% endblock %}

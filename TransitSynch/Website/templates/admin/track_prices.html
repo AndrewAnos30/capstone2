@@ -1,192 +1,261 @@
 {% extends "header.html" %}
 {% block content %}
-<h1>Track Prices</h1>
 
-<div class="table-container">
-  <div class="table">
-    <h2>Diesl Price</h2>
-    <table>
-      <tr>
-        <td><strong>Date:</strong></td>
-        <td>{{ date }}</td>
-      </tr>
-      <tr>
-        <td><strong>Price in PHP:</strong></td>
-        <td>{{ php_price }}</td>
-      </tr>
-      <tr>
-        <td><strong>Price in USD:</strong></td>
-        <td>{{ usd_price }}</td>
-      </tr>
-      <tr>
-        <td><form method="post" action="{% url 'save_data' %}">
-            {% csrf_token %}
-            <input type="hidden" name="date" value="{{ date }}">
-            <input type="hidden" name="php_price" value="{{ php_price }}">
-            <input type="hidden" name="usd_price" value="{{ usd_price }}">
-            <button type="submit">Save Data</button>
-        </form></td>
-        <td></td>
-      </tr>
-    </table>
+<section class="service py-5">
+  <div class="col mx-auto align-items-center my-5">
+    <div class="heading text-center pt-3">
+      <h1>Track Prices</h1>
+
+      <div class="table-container row mx-auto justify-content-center align-items-center text-center container">
+
+        <div class="table one col-lg-3">
+          <h2>Diesl Price</h2>
+          <table>
+
+            <tr>
+              <td><strong>Date:</strong></td>
+              <td>{{ date }}</td>
+            </tr>
+
+            <tr>
+              <td><strong>Price in PHP:</strong></td>
+              <td>{{ php_price }}</td>
+            </tr>
+            <tr>
+
+              <td><strong>Price in USD:</strong></td>
+              <td>{{ usd_price }}</td>
+            </tr>
+
+            <tr>
+              <td>
+                <form method="post" action="{% url 'save_data' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="date" value="{{ date }}">
+                  <input type="hidden" name="php_price" value="{{ php_price }}">
+                  <input type="hidden" name="usd_price" value="{{ usd_price }}">
+                  <button type="submit" class="btn-change">Save Data</button>
+                </form>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="table one col-lg-3 col-md-3  col-12">
+          <h2>Current Prices</h2>
+          <table>
+            <tr>
+              <td><strong>Current Date:</strong></td>
+              <td>{{ latest_price.CurrentDate }}</td>
+            </tr>
+            <tr>
+              <td><strong>Current Fare PUJ:</strong></td>
+              <td>{{ latest_price.CurrentFarePUJ }}</td>
+            </tr>
+            <tr>
+              <td><strong>Current Succeeding PUJ:</strong></td>
+              <td>{{ latest_price.CurrentSucceedingPUJ }}</td>
+            </tr>
+            <tr>
+              <td><strong>Current Fare Bus:</strong></td>
+              <td>{{ latest_price.CurrentFareBus }}</td>
+            </tr>
+            <tr>
+              <td><strong>Current Succeeding Bus:</strong></td>
+              <td>{{ latest_price.CurrentSucceedingBus }}</td>
+            </tr>
+            <tr>
+              <td><strong>Current Diesel:</strong></td>
+              <td>{{ latest_price.CurrentDiesel }}</td>
+            </tr>
+            <tr>
+              <td><strong><button id="show-update-prices-button" onclick="toggleUpdatePricesForm()"
+                    class="btn-change2">Show Form</button>
+                </strong></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div class="table one col-lg-7 col-md-6 col-12">
+          <h2>Calculation</h2>
+          <table>
+            {% if calculation_result is not None %}
+            <tr>
+              <td><strong>Calculation Result:</strong></td>
+              <td>{{ calculation_result }}</td>
+            </tr>
+            {% endif %}
+
+            {% if second_calculation_result is not None %}
+            <tr>
+              <td><strong>Calculation Result 2:</strong></td>
+              <td>{{ second_calculation_result }}</td>
+            </tr>
+            {% endif %}
+
+            {% if third_calculation_result is not None %}
+            <tr>
+              <td><strong>Calculation Result 3 (Second x CurrentFare PUJ):</strong></td>
+              <td>{{ third_calculation_result|floatformat:2 }}</td>
+            </tr>
+            {% endif %}
+
+            {% if fourth_calculation_result is not None %}
+            <tr>
+              <td><strong>Calculation Result 4 (Second x CurrentSucceeding PUJ):</strong></td>
+              <td>{{ fourth_calculation_result|floatformat:2 }}</td>
+            </tr>
+            {% endif %}
+
+            {% if fifth_calculation_result is not None %}
+            <tr>
+              <td><strong>Calculation Result 5 (Second x CurrentFare Bus):</strong></td>
+              <td>{{ fifth_calculation_result|floatformat:2 }}</td>
+            </tr>
+            {% endif %}
+
+            {% if sixth_calculation_result is not None %}
+            <tr>
+              <td><strong>Calculation Result 6 (Second x CurrentSucceeding Bus):</strong></td>
+              <td>{{ sixth_calculation_result|floatformat:2 }}</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+              <td>
+                <form method="POST" action="{% url 'computing_update' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="third_calculation_result" value="{{ third_calculation_result }}">
+                  <input type="hidden" name="fourth_calculation_result" value="{{ fourth_calculation_result }}">
+                  <input type="hidden" name="fifth_calculation_result" value="{{ fifth_calculation_result }}">
+                  <input type="hidden" name="sixth_calculation_result" value="{{ sixth_calculation_result }}">
+                  <input type="hidden" name="php_price" value="{{ php_price }}">
+                  <button type="submit" class="btn-change3">Save</button>
+                </form>
+              </td>
+              <td></td>
+
+            </tr>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
   </div>
-
-  <div class="table">
-    <h2>Current Prices</h2>
-    <table>
-      <tr>
-        <td><strong>Current Date:</strong></td>
-        <td>{{ latest_price.CurrentDate }}</td>
-      </tr>
-      <tr>
-        <td><strong>Current Fare PUJ:</strong></td>
-        <td>{{ latest_price.CurrentFarePUJ }}</td>
-      </tr>
-      <tr>
-        <td><strong>Current Succeeding PUJ:</strong></td>
-        <td>{{ latest_price.CurrentSucceedingPUJ }}</td>
-      </tr>
-      <tr>
-        <td><strong>Current Fare Bus:</strong></td>
-        <td>{{ latest_price.CurrentFareBus }}</td>
-      </tr>
-      <tr>
-        <td><strong>Current Succeeding Bus:</strong></td>
-        <td>{{ latest_price.CurrentSucceedingBus }}</td>
-      </tr>
-      <tr>
-        <td><strong>Current Diesel:</strong></td>
-        <td>{{ latest_price.CurrentDiesel }}</td>
-      </tr>
-      <tr>
-        <td><strong><button id="show-update-prices-button" onclick="toggleUpdatePricesForm()">Show Update Prices Form</button>
-        </strong></td>
-        <td></td>
-      </tr>
-    </table>
-  </div>
-<div class="table">
-  <h2>Calculation</h2>
-  <table>
-    {% if calculation_result is not None %}
-      <tr>
-        <td><strong>Calculation Result:</strong></td>
-        <td>{{ calculation_result }}</td>
-      </tr>
-    {% endif %}
-  
-    {% if second_calculation_result is not None %}
-      <tr>
-        <td><strong>Calculation Result 2:</strong></td>
-        <td>{{ second_calculation_result }}</td>
-      </tr>
-    {% endif %}
-  
-    {% if third_calculation_result is not None %}
-      <tr>
-        <td><strong>Calculation Result 3 (Second x CurrentFare PUJ):</strong></td>
-        <td>{{ third_calculation_result|floatformat:2 }}</td>
-      </tr>
-    {% endif %}
-
-    {% if fourth_calculation_result is not None %}
-    <tr>
-      <td><strong>Calculation Result 4 (Second x CurrentSucceeding PUJ):</strong></td>
-      <td>{{ fourth_calculation_result|floatformat:2 }}</td>
-    </tr>
-    {% endif %}
-
-    {% if fifth_calculation_result is not None %}
-  <tr>
-    <td><strong>Calculation Result 5 (Second x CurrentFare Bus):</strong></td>
-    <td>{{ fifth_calculation_result|floatformat:2 }}</td>
-  </tr>
-{% endif %}
-
-{% if sixth_calculation_result is not None %}
-  <tr>
-    <td><strong>Calculation Result 6 (Second x CurrentSucceeding Bus):</strong></td>
-    <td>{{ sixth_calculation_result|floatformat:2 }}</td>
-  </tr>
-{% endif %}
-
-  <tr>
-    <td>
-      <form method="POST" action="{% url 'computing_update' %}">
-        {% csrf_token %}
-        <input type="hidden" name="third_calculation_result" value="{{ third_calculation_result }}">
-        <input type="hidden" name="fourth_calculation_result" value="{{ fourth_calculation_result }}">
-        <input type="hidden" name="fifth_calculation_result" value="{{ fifth_calculation_result }}">
-        <input type="hidden" name="sixth_calculation_result" value="{{ sixth_calculation_result }}">
-        <input type="hidden" name="php_price" value="{{ php_price }}">
-        <button type="submit">Save Calculations</button>
-    </form>
-    </td>
-    <td></td>
-
-  </tr>
-
-  </table>
-</div>
-
-</div>
-
+</section>
 
 <!-- Modal container initially hidden -->
 <div id="modal-container" class="modal-container">
-    <div class="modal-content">
-        <h1>Update Prices</h1>
-        <form method="post" action="{% url 'update_prices' %}">
-            {% csrf_token %}
-            <label for="new_fare">New Fare PUJ:</label>
-            <input type="number" name="new_farePUJ" step="0.01" >
-            <br>
-            <label for="new_succeeding">New Succeeding PUJ:</label>
-            <input type="number" name="new_succeedingPUJ" step="0.01" >
-            <br>
-            <label for="new_fare">New Fare Bus:</label>
-            <input type="number" name="new_fareBus" step="0.01" >
-            <br>
-            <label for="new_succeeding">New Succeeding Bus:</label>
-            <input type="number" name="new_succeedingBus" step="0.01" >
-            <br>
-            <label for="new_diesel">Diesel Price:</label>
-            <input type="number" name="new_diesel" step="0.01" >
-            <br>
-            <input type="submit" value="Update Prices">
-            
-            
-        </form>
-        <button onclick="closeModal()" class="close-button">X</button>
+  <div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold"> Update Prices</h4>
+      </button>
+
+
     </div>
+    <div class="modal-body">
+      <form method="post" action="{% url 'update_prices' %}">
+        {% csrf_token %}
+        <div class="fields">
+        <div class="input-field1">
+          <label for="new_fare">New Fare PUJ:</label>
+
+          <input type="number" name="new_farePUJ" step="0.01">
+
+        </div>
+
+        <div class="input-field1">
+          <label for="new_succeeding">New Succeeding PUJ:</label>
+          <input type="number" name="new_succeedingPUJ" step="0.01">
+        </div>
+
+        <div class="input-field1">
+          <label for="new_fare">New Fare Bus:</label>
+          <input type="number" name="new_fareBus" step="0.01">
+        </div>
+
+        <div class="input-field1">
+          <label for="new_succeeding">New Succeeding Bus:</label>
+          <input type="number" name="new_succeedingBus" step="0.01">
+        </div>
+
+        <div class="input-field1">
+          <label for="new_diesel">Diesel Price:</label>
+          <input type="number" name="new_diesel" step="0.01">
+        </div>
+
+
+
 </div>
 
-<form method="post">
-  {% csrf_token %}
-  {{ kilometer_form.kilometers.label_tag }} {{ kilometer_form.kilometers }}
-  <br>
-  {{ kilometer_form.car_type.label_tag }} {{ kilometer_form.car_type }}
-  <br>
-  <button type="submit">Calculate Fare</button>
-</form>
 
-{% if fare is not None %}
-  <p>Fare: {{ fare }}</p>
-{% endif %}
+    <input type="submit" class="btn-change3" value="Update Prices">
+    </div>
+    </form>
+    <button onclick="closeModal()" class="close-button"> <i class="fa fa-close"></i></button>
+  </div>
+</div>
 
 
+<section class="discover">
+  <div class="container">
+    <form method="post">
+
+      {% csrf_token %}
+
+      <div class="form first">
+        <div class="details personal">
+          <span class="title">Know your fare</span>
+
+          <div class="fields1">
+            <div class="input-field1">
+
+              <label for="id_kilometers">Kilometers</label>
+              <input type="number" class="form-control1" id="id_kilometers" name="kilometers" required>
+
+            </div>
+
+            <div class="input-field1">
+              <label for="id_car_type">Car Type</label>
+              <select class="form-control1" id="id_car_type" name="car_type" required>
+                <option value="Modernized PUJ">Modernized PUJ</option>
+                <option value="AirConditioned PUJ">AirConditioned PUJ</option>
+                <option value="Regular PUJ">Regular PUJ</option>
+                <option value="Modernized Bus">Modernized Bus</option>
+              </select>
+            </div>
+
+            <p> Total Fare: </p>
+            {% if fare is not None %}
+            <p>{{ fare }}</p>
+            {% endif %}
+
+
+
+          </div>
+        </div>
+
+
+      </div>
+    </form>
+
+
+    <button type="submit" class="btn-change4">Calculate Fare</button>
+</section>
 
 
 <script>
-    function toggleUpdatePricesForm() {
-        var modalContainer = document.getElementById("modal-container");
-        modalContainer.style.display = "block";
-    }
+  function toggleUpdatePricesForm() {
+    var modalContainer = document.getElementById("modal-container");
+    modalContainer.style.display = "block";
+  }
 
-    function closeModal() {
-        var modalContainer = document.getElementById("modal-container");
-        modalContainer.style.display = "none";
-    }
+  function closeModal() {
+    var modalContainer = document.getElementById("modal-container");
+    modalContainer.style.display = "none";
+  }
 </script>
 
 
@@ -194,10 +263,10 @@
   /* ... Your existing styles ... */
   .close-button {
     position: absolute;
-    top: 10px;
     right: 10px;
     background: none;
     border: none;
+    padding: 10px;
     font-size: 20px;
     cursor: pointer;
     color: #555;
@@ -206,26 +275,64 @@
 
 
 <style>
+  .container form .title {
+    display: block;
+    margin-top: -6%;
+    font-size: 30px;
+    font-weight: 900;
+    color: #333;
+  }
 
-.modal-container {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
+  .modal-container {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    margin-top: -6%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 190%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 
-    .modal-content {
-        background-color: #fff;
-        width: 50%;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-    }
+  .modal-body form .fields{
+    display: flex;
+    margin-left: 50px;
+    align-items: center;
     
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+  .modal-body {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .modal-body label {
+    margin-top: 10px;
+    display: inline-block;
+    width: 100%;
+
+  }
+
+  .modal-body input {
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 4px;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    width: 50%;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
   .table-container {
     display: flex;
     justify-content: space-between;
@@ -241,7 +348,229 @@
   table {
     width: 100%;
   }
+
+  .form-control1 {
+    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    border-radius: 4px;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  @media (max-width: 750px) {
+
+    form .fields1 .input-field1 {
+      width: calc(100% / 2 - 15px);
+      align-items: center;
+    }
+
+
+  }
+
+  @media (max-width: 550px) {
+    form .fields1 .input-field1 {
+      width: 100%;
+      align-items: center;
+    }
+  }
+
+
+
+  form .fields1 .input-field1 {
+    display: flex;
+    width: calc(100% / 3 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+  }
+
+  .input-field1 label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #2e2e2e;
+  }
+
+  .input-field1 input,
+  select {
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 10px;
+    height: 42px;
+    margin: 8px 0;
+  }
+
+  .input-field1 input :focus,
+  .input-field1 select:focus {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+  }
+
+  .service .one {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    border-radius: 8px;
+  }
+
+
+
+  .btn-change {
+    height: 40px;
+    width: 140px;
+    background: #004d67;
+    border-radius: 5px;
+    margin-left: 40%;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+    border: 0px;
+    color: #fff;
+  }
+
+  .btn-change:hover {
+    -webkit-transform: scale(1.1);
+    background: #31708f;
+  }
+
+  .btn-change2 {
+    height: 40px;
+    width: 140px;
+    background: #004d67;
+    border-radius: 5px;
+    margin-left: 35%;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+    border: 0px;
+    color: #fff;
+  }
+
+  .btn-change2:hover {
+    -webkit-transform: scale(1.1);
+    background: #31708f;
+  }
+
+  .btn-change3 {
+    height: 40px;
+    width: 140px;
+    background: #004d67;
+    border-radius: 5px;
+    margin-left: 25%;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+    border: 0px;
+    color: #fff;
+  }
+
+  .btn-change3:hover {
+    -webkit-transform: scale(1.1);
+    background: #31708f;
+  }
+
+  .btn-change4 {
+    height: 40px;
+    width: 140px;
+    background: #004d67;
+    border-radius: 5px;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0px;
+    color: #fff;
+  }
+
+  .btn-change4:hover {
+    -webkit-transform: scale(1.1);
+    background: #31708f;
+  }
+
+  .btn-change5 {
+    height: 40px;
+    width: 140px;
+    background: #004d67;
+    border-radius: 5px;
+    margin-left: 65%;
+    box-shadow: 0 0 1px #ccc;
+    -webkit-transition: all 0.5s ease-in-out;
+    border: 0px;
+    color: #fff;
+  }
+
+  .btn-change3:hover {
+    -webkit-transform: scale(1.1);
+    background: #31708f;
+  }
+
+
+  @media screen and (max-width: 988px) {
+    .btn-change {
+
+
+      margin-left: 60%;
+
+    }
+    .btn-change2 {
+
+
+margin-left: 50%;
+
+}
+
+
+  }
+
+
+  
+
+
+  .discover .text h6 {
+    color: #00B4D8;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  .discover .text h2 {
+    color: #003B4E;
+    font-weight: 700;
+    font-size: 2.7rem;
+    padding-bottom: 10px;
+  }
+
+  .discover .text p {
+    color: #003B4E;
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    padding-left: 90px;
+    padding-bottom: 10px;
+  }
+
+  .discover .text .field {
+    font-weight: 400;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    padding: 2px;
+  }
+
+  input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
 </style>
-</div>
 
 {% endblock content %}

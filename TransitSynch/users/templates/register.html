@@ -14,7 +14,7 @@
         <!----===== Iconscout CSS ===== -->
         <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     
-        <title>Responsive Regisration Form </title> 
+        <title>User Regisration</title> 
     </head>
     <body>
 
@@ -125,29 +125,30 @@
 
         <div class="form second">
             <div class="details address">
-                <span class="title" style="color: #007EA7;">
+                <span class="title" style="color: #007EA7; padding-bottom: 5px;">
                     For your safety, please fill in your emergency contact person’s information.
                 </span>
 
                 <div class="fields1">
                     <div class="input-field1">
-                        <label for="id_contactPerson">Contact Person's Name</label><br>
+                        <label for="id_contactPerson" style=" padding-bottom: 10px;">Contact Person's Name</label><br>
                         <input type="text" class="form-control1" id="id_contactPerson" name="contactPerson"  required>
                     </div>
 
-                    <div class="input-field1"  >
-                        <label for="id_emergencyContact">Emergency Contact Number</label><br>
+                    <div class="input-field1" style="padding-top: 10px;">
+                        <label for="id_emergencyContact" style=" padding-bottom: 10px;">Emergency Contact Number</label><br>
                         <input type="tel" class="form-control1" id="id_emergencyContact" name="emergencyContact" placeholder="09*********" required>
                     </div>
 
-                    <span class="title" style="color: #007EA7; text-align: center; margin-top: 20px;">
+                    <span class="title" style="color: #007EA7; text-align: center; margin-top: 40px; padding-bottom: 5px;">
                         To validate your personal information, kindly upload your corresponding valid ID.
                     </span>
 
                     <label for="id_validID">Valid ID</label><br>
                     <input style= "margin-right: 20px;
                     border: none;
-                    background: #084cdf;
+                    background: #003B4E;
+                    margin-top: 10px;
                     padding: 10px 20px;
                     border-radius: 10px;
                     color: #fff;
@@ -160,7 +161,7 @@
                      -->
                     <div class="tacbox">
                         <input class = "tachbox1"id="checkbox" type="checkbox" />
-                        <label for="checkbox">By signing up, <a href="#">I agree with the Terms & Conditions of the platform.</a>.</label>
+                        <label for="checkbox">By signing up, <a href="#">I agree with the Terms & Conditions of the platform.</a></label>
                       </div>
                 </div>
             </div>
@@ -268,6 +269,9 @@ body{
     pointer-events: none;
     transform: translateX(100%);
 }
+
+
+
 form.secActive .form.second{
     opacity: 1;
     pointer-events: auto;
@@ -337,7 +341,7 @@ form .fields .input-field{
     color: #fff;
     border-radius: 5px;
     margin: 25px 0;
-    background-color: #4070f4;
+    background-color: #003B4E;
     transition: all 0.3s linear;
     cursor: pointer;
 }
@@ -346,7 +350,7 @@ form .fields .input-field{
     font-weight: 400;
 }
 form button:hover{
-    background-color: #265df2;
+    background-color: #012d3c;
 }
 form button i,
 form .backBtn i{
@@ -383,8 +387,7 @@ form .buttons button , .backBtn{
 
 .tacbox {
   display:block;
-  padding: 1em;
-  margin: 2em;
+  margin: 2rem;
   max-width: 800px;
 }
 .tachbox1 {
