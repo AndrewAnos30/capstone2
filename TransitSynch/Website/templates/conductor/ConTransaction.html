@@ -1,0 +1,72 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+<style>
+  /* styles.css */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+</style>
+
+<br>
+<br>
+<br>
+<br>
+<table class="styled-table">
+    <tr>
+        <th>TranspoSN</th>
+        <th>Scan Date</th>
+        <th>Price</th>
+        <th>Kilometers</th>
+        <th>Latitude IN</th>
+        <th>Longitude IN</th>
+        <th>Latitude OUT</th>
+        <th>Longitude OUT</th>
+        <th>Commuter SN</th>
+        <th>STATUS</th>
+    </tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.TranspoSN }}</td>
+        <td>{{ record.scan_date }}</td>
+        <td>{{ record.price }}</td>
+        <td>{{ record.km }}</td>
+        <td>{{ record.latitudeIN }}</td>
+        <td>{{ record.longitudeIN }}</td>
+
+        <td>
+            {% if record.latitudeOUT is not None %}
+                {{ record.latitudeOUT }}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        <td>
+            {% if record.longitudeOUT is not None %}
+                {{ record.longitudeOUT }}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        <td>{{ record.extracted_data }}</td>
+        <td>{{ record.commuterStatus }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

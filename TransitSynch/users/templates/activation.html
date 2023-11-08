@@ -4,5 +4,7 @@ Please click on the link below to confirm your registration:
 
 http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
+Your QR Code has been generated and is available in your TransitSync account wallet. Please keep in mind that your QR Code contains sensitive information, and it should not be shared with anyone.
+
 QR Code: <img src="{{ user.QR.url }}" alt="QR Code">
 Serial Number: {{ user.userSN }}

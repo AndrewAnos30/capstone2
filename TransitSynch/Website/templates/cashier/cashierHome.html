@@ -4,22 +4,162 @@
     <title>Cashier Dashboard</title>
 </head>
 <body>
+    <style>
+/* Style for the modal container */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Style for the modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+}
+
+/* Style for the close button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+        /* Apply some basic styling to the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style the header section */
+header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* Style the search bar */
+.search-bar {
+    text-align: center;
+    margin: 20px;
+}
+
+.search-bar input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style the main content area */
+main {
+    padding: 20px;
+}
+
+/* Style the footer */
+footer {
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+    </style>
     <header>
         <h1>Welcome, Cashier!</h1>
     </header>
-    <nav>
-        <ul>
-            <li><a href="#">Process Payments</a></li>
-            <li><a href="#">View Transactions</a></li>
-            <li><a href="#">Generate Reports</a></li>
-        </ul>
-    </nav>
     <main>
-        <!-- Content for cashier dashboard goes here -->
+        <div class="search-bar">
+            <form action="" method="get">
+                <input type="text" name="q" placeholder="Search...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <!-- Display search results -->
+        <ul>
+            {% for result in results %}
+                <li>
+                    UserSN: {{ result.userSN }}<br>
+                    Name: <a class="show-modal" data-user-id="{{ result.id }}">
+                        {{ result.first_name }} {{ result.middle_name|slice:":1" }}. {{ result.last_name }}
+                      </a>
+                     </a>
+                     <br>
+                    Username: {{ result.username }}
+                </li>
+                <hr>
+            {% empty %}
+                <li>No results found.</li>
+            {% endfor %}
+        </ul>
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <!-- Your form content goes here -->
+                <span class="close">&times;</span>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <!-- Form fields go here -->
+                    <!-- Example: -->
+                    <input type="number" name="balance" placeholder="New Balance" step="0.01" required>
+                    <input type="number" name="amount" placeholder="New Balance" step="0.01" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
     </main>
     <footer>
         <p>&copy; 2023 Commuter Company</p>
     </footer>
 
-
+    <script>
+        var modal = document.getElementById("myModal");
+        var closeBtn = document.getElementsByClassName("close")[0];
+        var showButtons = document.getElementsByClassName("show-modal");
+    
+        // Add event listeners for the modal show and close actions
+        for (var i = 0; i < showButtons.length; i++) {
+            showButtons[i].addEventListener("click", function(e) {
+                e.preventDefault();  // Prevent the default link behavior
+                var userId = this.getAttribute("data-user-id");
+                var form = modal.querySelector("form");
+                form.action = "/update_balance/" + userId + "/";  // Adjust the URL as needed
+                modal.style.display = "block";
+            });
+        }
+    
+        closeBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+    
+        // Close the modal when clicking outside the modal content
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+    
 {% endblock content %}

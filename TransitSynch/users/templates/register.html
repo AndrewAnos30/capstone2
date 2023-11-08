@@ -4,6 +4,7 @@
 <!--=== Coding by CodingLab | www.codinglabweb.com === -->
 <html lang="en">
     <head>
+
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,14 +18,14 @@
         <title>User Regisration</title> 
     </head>
     <body>
-
+  
         {% block content %}
         <div class="container">
             <header style="margin-bottom: 10px;">Registration</header>
 
             <span style="color: #003B4E; font-size: 20px; font-family: SF Pro Display; 
             font-weight: 500; word-wrap: break-word">If you already have an account, 
-            <a href="{% url 'login' %}" class="link signup-link" style="color: #007EA7; font-size: 20px; font-family: 
+            <a href="{% url 'welcome' %}" class="link signup-link" style="color: #007EA7; font-size: 20px; font-family: 
             SF Pro Display; font-weight: 500; word-wrap: break-word"> Login here!</a></span>
     
     <form method="POST" enctype="multipart/form-data">
@@ -46,7 +47,7 @@
 
                     <div class="input-field">
                         <label for="id_middle_name">Middle Name</label>
-                        <input type="text" class="form-control" id="id_middle_name" name="middle_name" required>
+                        <input type="text" class="form-control" id="id_middle_name" name="middle_name" >
                     </div>
 
                     <div class="input-field">
@@ -61,7 +62,7 @@
 
                     <div class="input-field">
                         <label for="id_contactNumber">Contact Number</label>
-                        <input type="tel" class="form-control" id="id_contactNumber" name="contactNumber" placeholder="09*********" required>
+                        <input type="tel" class="form-control" id="id_contactNumber" name="contactNumber" placeholder="09*********"  maxlength="11" required>
                     </div>
                 </div>
             </div>
@@ -202,6 +203,8 @@ backBtn.addEventListener("click", () => form.classList.remove('secActive'));
 
 
         </script>
+        
+        
     </body>
     </html>
 

@@ -51,23 +51,23 @@
             </tr>
             <tr>
               <td><strong>Current Fare PUJ:</strong></td>
-              <td>{{ latest_price.CurrentFarePUJ }}</td>
+              <td>{{ latest_price.CurrentFarePUJ|floatformat:2 }}</td>
             </tr>
             <tr>
               <td><strong>Current Succeeding PUJ:</strong></td>
-              <td>{{ latest_price.CurrentSucceedingPUJ }}</td>
+              <td>{{ latest_price.CurrentSucceedingPUJ|floatformat:2 }}</td>
             </tr>
             <tr>
               <td><strong>Current Fare Bus:</strong></td>
-              <td>{{ latest_price.CurrentFareBus }}</td>
+              <td>{{ latest_price.CurrentFareBus|floatformat:2 }}</td>
             </tr>
             <tr>
               <td><strong>Current Succeeding Bus:</strong></td>
-              <td>{{ latest_price.CurrentSucceedingBus }}</td>
+              <td>{{ latest_price.CurrentSucceedingBus|floatformat:2 }}</td>
             </tr>
             <tr>
               <td><strong>Current Diesel:</strong></td>
-              <td>{{ latest_price.CurrentDiesel }}</td>
+              <td>₱{{ latest_price.CurrentDiesel|floatformat:2 }}</td>
             </tr>
             <tr>
               <td><strong><button id="show-update-prices-button" onclick="toggleUpdatePricesForm()"
@@ -202,47 +202,26 @@
 <section class="discover">
   <div class="container">
     <form method="post">
-
       {% csrf_token %}
+      {{ kilometer_form.kilometers.label_tag }} {{ kilometer_form.kilometers }}
+      <br>
+      {{ kilometer_form.car_type.label_tag }} {{ kilometer_form.car_type }}
+      <br>
 
-      <div class="form first">
-        <div class="details personal">
-          <span class="title">Know your fare</span>
+      {% if fare is not None %}
+      <p>Fare: <strong>₱{{ fare|floatformat:2 }}</strong></p>
+    {% else %}
+      <p>Fare: <strong>₱0.00</strong></p>
+    {% endif %}
+    
+    <button type="submit" class="btn-change4" type="submit">Calculate Fare</button>
 
-          <div class="fields1">
-            <div class="input-field1">
+    </form>
+    
 
-              <label for="id_kilometers">Kilometers</label>
-              <input type="number" class="form-control1" id="id_kilometers" name="kilometers" required>
-
-            </div>
-
-            <div class="input-field1">
-              <label for="id_car_type">Car Type</label>
-              <select class="form-control1" id="id_car_type" name="car_type" required>
-                <option value="Modernized PUJ">Modernized PUJ</option>
-                <option value="AirConditioned PUJ">AirConditioned PUJ</option>
-                <option value="Regular PUJ">Regular PUJ</option>
-                <option value="Modernized Bus">Modernized Bus</option>
-              </select>
-            </div>
-
-            <p> Total Fare: </p>
-            {% if fare is not None %}
-            <p>{{ fare }}</p>
-            {% endif %}
-
-
-
-          </div>
-        </div>
 
 
       </div>
-    </form>
-
-
-    <button type="submit" class="btn-change4">Calculate Fare</button>
 </section>
 
 
@@ -260,317 +239,198 @@
 
 
 <style>
-  /* ... Your existing styles ... */
-  .close-button {
-    position: absolute;
-    right: 10px;
-    background: none;
-    border: none;
-    padding: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #555;
-  }
-</style>
+/* Styles for your track_prices.html page */
 
-
-<style>
-  .container form .title {
-    display: block;
-    margin-top: -6%;
-    font-size: 30px;
-    font-weight: 900;
-    color: #333;
-  }
-
-  .modal-container {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    margin-top: -6%;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 190%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .modal-body form .fields{
-    display: flex;
-    margin-left: 50px;
-    align-items: center;
-    
-    justify-content: space-between;
-    flex-wrap: wrap;
+/* Common styles for buttons */
+.btn-change, .btn-change2, .btn-change3, .btn-change4, .btn-change5 {
+  height: 40px;
+  width: 140px;
+  background: #004d67;
+  border-radius: 5px;
+  box-shadow: 0 0 1px #ccc;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  border: 0;
+  color: #fff;
+  text-align: center;
 }
 
-  .modal-body {
-    display: flex;
+/* Hover styles for buttons */
+.btn-change:hover, .btn-change2:hover, .btn-change3:hover, .btn-change4:hover, .btn-change5:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  background: #31708f;
+}
 
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+/* Modal styles */
+.modal-container {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  margin-top: -6%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 190%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  width: 50%;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+/* Close button style */
+.close-button {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+}
+
+/* Container form styles */
+.container {
+  form {
+    .title {
+      display: block;
+      margin-top: -6%;
+      font-size: 30px;
+      font-weight: 900;
+      color: #333;
+    }
+
+    /* Fields layout */
+    .fields1 {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .input-field1 {
+      display: flex;
+      width: calc(100% / 3 - 15px);
+      flex-direction: column;
+      margin: 4px 0;
+
+      label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #2e2e2e;
+      }
+
+      input,
+      select {
+        outline: none;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333;
+        border-radius: 5px;
+        border: 1px solid #aaa;
+        padding: 0 10px;
+        height: 42px;
+        margin: 8px 0;
+
+        &:focus {
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+        }
+      }
+    }
   }
 
-  .modal-body label {
-    margin-top: 10px;
-    display: inline-block;
-    width: 100%;
-
+  /* Responsive styles */
+  @media (max-width: 750px) {
+    form {
+      .fields1 .input-field1 {
+        width: calc(100% / 2 - 15px);
+      }
+    }
   }
 
-  .modal-body input {
-    margin-top: 20px;
-    margin-left: 10px;
-    padding: 4px;
+  @media (max-width: 550px) {
+    form {
+      .fields1 .input-field1 {
+        width: 100%;
+      }
+    }
   }
+}
 
-  .modal-content {
-    background-color: #fff;
-    width: 50%;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-  }
+/* Table container styles */
+.table-container {
+  display: flex;
+  justify-content: space-between;
+}
 
-  .table-container {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .table {
-    flex: 1;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
+.table {
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
 
   table {
     width: 100%;
   }
+}
 
-  .form-control1 {
-    padding: 6px 12px;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    appearance: none;
-    border-radius: 4px;
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  }
-
-  @media (max-width: 750px) {
-
-    form .fields1 .input-field1 {
-      width: calc(100% / 2 - 15px);
-      align-items: center;
-    }
-
-
-  }
-
-  @media (max-width: 550px) {
-    form .fields1 .input-field1 {
-      width: 100%;
-      align-items: center;
-    }
-  }
-
-
-
-  form .fields1 .input-field1 {
-    display: flex;
-    width: calc(100% / 3 - 15px);
-    flex-direction: column;
-    margin: 4px 0;
-  }
-
-  .input-field1 label {
-    font-size: 12px;
-    font-weight: 500;
-    color: #2e2e2e;
-  }
-
-  .input-field1 input,
-  select {
-    outline: none;
-    font-size: 14px;
-    font-weight: 400;
-    color: #333;
-    border-radius: 5px;
-    border: 1px solid #aaa;
-    padding: 0 10px;
-    height: 42px;
-    margin: 8px 0;
-  }
-
-  .input-field1 input :focus,
-  .input-field1 select:focus {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
-  }
-
-  .service .one {
-
+/* Service section styles */
+.service {
+  .one {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-
     border-radius: 8px;
   }
-
-
-
-  .btn-change {
-    height: 40px;
-    width: 140px;
-    background: #004d67;
-    border-radius: 5px;
-    margin-left: 40%;
-    box-shadow: 0 0 1px #ccc;
-    -webkit-transition: all 0.5s ease-in-out;
-    border: 0px;
-    color: #fff;
-  }
-
-  .btn-change:hover {
-    -webkit-transform: scale(1.1);
-    background: #31708f;
-  }
-
-  .btn-change2 {
-    height: 40px;
-    width: 140px;
-    background: #004d67;
-    border-radius: 5px;
-    margin-left: 35%;
-    box-shadow: 0 0 1px #ccc;
-    -webkit-transition: all 0.5s ease-in-out;
-    border: 0px;
-    color: #fff;
-  }
-
-  .btn-change2:hover {
-    -webkit-transform: scale(1.1);
-    background: #31708f;
-  }
-
-  .btn-change3 {
-    height: 40px;
-    width: 140px;
-    background: #004d67;
-    border-radius: 5px;
-    margin-left: 25%;
-    box-shadow: 0 0 1px #ccc;
-    -webkit-transition: all 0.5s ease-in-out;
-    border: 0px;
-    color: #fff;
-  }
-
-  .btn-change3:hover {
-    -webkit-transform: scale(1.1);
-    background: #31708f;
-  }
-
-  .btn-change4 {
-    height: 40px;
-    width: 140px;
-    background: #004d67;
-    border-radius: 5px;
-    box-shadow: 0 0 1px #ccc;
-    -webkit-transition: all 0.5s ease-in-out;
-
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0px;
-    color: #fff;
-  }
-
-  .btn-change4:hover {
-    -webkit-transform: scale(1.1);
-    background: #31708f;
-  }
-
-  .btn-change5 {
-    height: 40px;
-    width: 140px;
-    background: #004d67;
-    border-radius: 5px;
-    margin-left: 65%;
-    box-shadow: 0 0 1px #ccc;
-    -webkit-transition: all 0.5s ease-in-out;
-    border: 0px;
-    color: #fff;
-  }
-
-  .btn-change3:hover {
-    -webkit-transform: scale(1.1);
-    background: #31708f;
-  }
-
-
-  @media screen and (max-width: 988px) {
-    .btn-change {
-
-
-      margin-left: 60%;
-
-    }
-    .btn-change2 {
-
-
-margin-left: 50%;
-
 }
 
+/* Discover section styles */
+.discover {
+  .text {
+    h6 {
+      color: #00B4D8;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 2px;
+    }
 
+    h2 {
+      color: #003B4E;
+      font-weight: 700;
+      font-size: 2.7rem;
+      padding-bottom: 10px;
+    }
+
+    p {
+      color: #003B4E;
+      font-weight: 400;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      padding-left: 90px;
+      padding-bottom: 10px;
+    }
+
+    .field {
+      font-weight: 400;
+      font-size: 1.3rem;
+      letter-spacing: 0.5px;
+      padding: 2px;
+    }
   }
 
-
-  
-
-
-  .discover .text h6 {
-    color: #00B4D8;
-    font-weight: 800;
-    font-size: 1rem;
-    letter-spacing: 2px;
+  .img-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
+}
 
-  .discover .text h2 {
-    color: #003B4E;
-    font-weight: 700;
-    font-size: 2.7rem;
-    padding-bottom: 10px;
-  }
-
-  .discover .text p {
-    color: #003B4E;
-    font-weight: 400;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    padding-left: 90px;
-    padding-bottom: 10px;
-  }
-
-  .discover .text .field {
-    font-weight: 400;
-    font-size: 1.3rem;
-    letter-spacing: 0.5px;
-    padding: 2px;
-  }
-
-  input[type=text] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-  }
 </style>
 
 {% endblock content %}

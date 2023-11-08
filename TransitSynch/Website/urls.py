@@ -13,17 +13,19 @@ urlpatterns = [
     path('track_prices/', views.track_prices, name='track_prices'),
     path("", views.homepage, name="home"),
     path('save_data/', views.save_data, name='save_data'),
-    path("generate", views.generate, name="generate"),
+    path("conductorScanner", views.conductorScanner, name="conductorScanner"),
     path('update_prices/', views.update_prices, name='update_prices'),
     path('update_current_price/', views.update_current_price, name='update_current_price'),
     path('computing_update/', views.computing_update, name='computing_update'),
     path('account_management/', views.account_management, name='account_management'),
     path('validation/', views.validation, name='validation'),
     path('update_validation/<int:user_id>/', views.update_validation, name='update_validation'),
-
-
-
-
+    path('UTransaction/', views.UTransaction, name='UTransaction'),
+    path('UWallet/', views.UWallet, name='UWallet'),
+    path('update_balance/<int:user_id>/', views.update_balance, name='update_balance'),
+    path('CashierScan/', views.CashierScan, name='CashierScan'),
+    path('ConTransaction/', views.ConTransaction, name='ConTransaction'),
+    path('scan_qr_code/', views.scan_qr_code, name='scan_qr_code'),
 
 
 ]

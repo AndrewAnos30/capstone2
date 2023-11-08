@@ -17,13 +17,22 @@ import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from .tokens import account_activation_token
-from .models import DataCrawl,CurrentPrice
+from .models import DataCrawl,CurrentPrice, CashierTransaction
 from django.db.models.query_utils import Q
 from users.models import CustomUser
-from datetime import date
+from datetime import date, datetime
 from .forms import KilometerForm
 from math import ceil
-
+import qrcode
+from django.core.files.base import ContentFile
+from io import BytesIO
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from .models import TransportationRecord
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import TransportationRecord
+import googlemaps
 
 # Create your views here.
 def activateEmail(request, user, to_email):
@@ -43,15 +52,101 @@ def activateEmail(request, user, to_email):
         messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
 
-# Create your views here.
+def conductorScanner(request):
+    
+    return render(request, 'conductor/conductorScanner.html')
 
-def generate(request):
-   return render (request, 'conductor/generate.html')
 
+def generate_random_transpo_sn(length=25):
+    characters = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(characters) for _ in range(length))
+
+@csrf_exempt
+@login_required  # Requires the user to be logged in
+def scan_qr_code(request):
+    if request.method == 'POST':
+        scan_type = request.POST.get('scan_type')
+        extracted_data = request.POST.get('extracted_data')
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+
+        # Get the currently logged-in user's userSN
+        user = request.user  # Assuming you have set up user authentication
+        userSN = user.userSN
+
+        if scan_type == 'out':
+            # Update existing records with the same extracted data and scan type "in"
+            updated_records = TransportationRecord.objects.filter(extracted_data=extracted_data, scan_type='in')
+            if updated_records.exists():
+                updated_records.update(
+                    latitudeOUT=latitude,
+                    longitudeOUT=longitude,
+                    scan_type='out'
+                )
+            else:
+                return JsonResponse({'error': 'Not yet scanned in'})
+
+        elif scan_type == 'in':
+            # Generate a unique 25-character TranspoSN
+            transpo_sn = generate_random_transpo_sn()
+
+            # Create a new TransportationRecord instance and save it to the database
+            record = TransportationRecord(
+                scan_type=scan_type,
+                extracted_data=extracted_data,
+                latitudeIN=latitude,
+                longitudeIN=longitude,
+                latitudeOUT=None,
+                longitudeOUT=None,
+                TranspoSN=transpo_sn,
+                user=userSN  # Assign the userSN of the currently logged-in user
+            )
+
+            record.save()
+
+        return JsonResponse({'message': 'Data saved successfully'})
+
+    return JsonResponse({'message': 'Invalid request method'}, status=400)
+
+
+@login_required
+def ConTransaction(request):
+    gmaps = googlemaps.Client(key='AIzaSyCQbrn9uYAhVxweNwKpYb5yBYaVURtC6oM')
+    records = TransportationRecord.objects.all()
+
+    for record in records:
+        if record.latitudeIN is not None and record.longitudeIN is not None and record.latitudeOUT is not None and record.longitudeOUT is not None:
+            origin = (record.latitudeIN, record.longitudeIN)
+            destination = (record.latitudeOUT, record.longitudeOUT)
+
+            # Use the Google Maps Distance Matrix API to calculate driving distance
+            result = gmaps.distance_matrix(origin, destination, mode="driving")
+
+            # Extract and store the distance in the record
+            if 'rows' in result and result['rows'][0]['elements'][0]['status'] == 'OK':
+                distance = result['rows'][0]['elements'][0]['distance']['value'] / 1000.0  # Convert meters to kilometers
+                record.km = distance
+                record.save()
+
+                # Find a CustomUser with the matching userSN
+                try:
+                    user = CustomUser.objects.get(userSN=record.extracted_data)
+                    record.commuterStatus = user.status  # Set the commuterStatus to the user's status
+                except CustomUser.DoesNotExist:
+                    # Handle the case when no matching user is found (e.g., set a default status)
+                    record.commuterStatus = "Unknown"
+
+                try:
+                    user = CustomUser.objects.get(userSN=record.user)
+                    record.TranspoType = user.TransportationType  # Set the commuterStatus to the user's status
+                except CustomUser.DoesNotExist:
+                    # Handle the case when no matching user is found (e.g., set a default status)
+                    record.commuterStatus = "Unknown"
+                record.save()
+
+    return render(request, 'conductor/ConTransaction.html', {'records': records})
 
 def homepage(request):
-
-
     return render(request=request, template_name='home.html')
 
 def welcome(request):
@@ -75,10 +170,91 @@ def commuter(request):
     return render(request, 'commuter/userHome.html')
 
 @login_required
+def UWallet(request):
+
+    fare = CurrentPrice.objects.filter(Num='1')
+    user = request.user
+
+
+
+    context ={
+    'fare' : fare,
+    'user': user,
+    }
+
+    return render(request, 'commuter/UWallet.html',context)
+
+@login_required
+def UTransaction(request):
+
+
+    return render(request, 'commuter/UTransaction.html')
+
+@login_required
 def cashier(request):
+    query = request.GET.get('q')
+
+    if query:
+        # Use Q objects to build a complex query for searching
+        results = CustomUser.objects.filter(
+            Q(userSN__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(middle_name__icontains=query) |
+            Q(first_name__icontains=query) |
+            Q(email__icontains=query) |
+            Q(username__icontains=query)
+        )
+    else:
+        # If no query is provided, return all users
+        results = CustomUser.objects.filter(UserGroup='user')
+
+    return render(request, 'cashier/cashierHome.html', {'results': results, 'query': query})
+
+@login_required
+def update_balance(request, user_id):
+    commuter = get_object_or_404(CustomUser, id=user_id)  # Get the user being updated
+
+    if request.method == 'POST':
+        # Update the user's balance here
+        new_balance = request.POST.get('balance')
+        commuter.balance = new_balance
+
+        # Generate a unique TransactionID
+        transaction_id = generate_transaction_id()
+
+        # Get the UserSN of the user being updated
+        commuterSN = commuter.userSN  # Assuming UserSN is the field in CustomUser model
+
+        # Get the UserSN of the logged-in cashier
+        cashierSN = request.user.userSN  # Assuming UserSN is the field in CustomUser model
+
+        # Create a new CashierTransaction entry
+        paid_amount = request.POST.get('amount')
+        if paid_amount:
+            transaction = CashierTransaction(
+                TransactionID=transaction_id,
+                CashierSN=cashierSN,
+                CommuterSN=commuterSN,
+                CashIn=new_balance,
+                paidAmount=paid_amount,
+                DateIn=datetime.now()
+            )
+            transaction.save()
+
+        commuter.save()  # Save the commuter's updated balance
+
+        return HttpResponseRedirect('/cashier/')  # Redirect to the cashier page
+
+    return render(request, 'cashierHome.html', {'user': commuter})
 
 
-    return render(request=request, template_name='cashier/cashierHome.html')
+def generate_transaction_id():
+    return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(25))
+
+@login_required
+def CashierScan(request):
+
+    return render(request, 'cashier/scanning.html')
 
 @login_required
 def conductor(request):
@@ -131,10 +307,28 @@ def create_conductor(request):
             userSN = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(20))
             user.userSN = userSN
 
+            # Combine "TransitSynch: " with userSN
+            qr_data = f"TransitSynch:{userSN}"
             # Set UserGroup to "Commuter"
             user.UserGroup = "conductor"
 
             user.verified = True
+
+                # Generate a QR code using userSN and save it to 'QR' field
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(qr_data)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
+            buffer = BytesIO()
+            img.save(buffer, format="PNG")
+            user.QR.save(f'qr_{userSN}.png', ContentFile(buffer.getvalue()), save=False)
+
+
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
@@ -167,7 +361,8 @@ def create_cashier(request):
             user = form.save(commit=False)  # Create the user object without saving it
             user.email = form.cleaned_data['email']
             user.is_active=False
-            
+
+            qr_data = f"TransitSynch:{userSN}"
             # Generate a unique userSN
             userSN = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(20))
             user.userSN = userSN
@@ -176,6 +371,22 @@ def create_cashier(request):
             user.UserGroup = "cashier"
 
             user.verified = True
+
+                # Generate a QR code using userSN and save it to 'QR' field
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(qr_data)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
+            buffer = BytesIO()
+            img.save(buffer, format="PNG")
+            user.QR.save(f'qr_{userSN}.png', ContentFile(buffer.getvalue()), save=False)
+
+
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))

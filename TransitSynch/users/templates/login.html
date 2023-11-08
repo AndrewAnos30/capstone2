@@ -10,13 +10,28 @@
     <!-- <title>Document</title> -->
 
         <!-- CSS -->
-        <link rel="stylesheet" href="C:\Users\Jeric\Desktop\Clone\capstone2\TransitSynch\users\css\style.css">
+        <link rel="stylesheet" href="C:\Users\Andrew Anos\Desktop\Clone\capstone2\TransitSynch\main\m.css">
 
         <!-- Box icon css -->
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+  <!-- reference to your installed Font Awesome Free package's files here -->
+  <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
+  <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'main/main.css' %}">
+
+  <!-- Jquery JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
+    {% include 'messaging.html' %}
     {% block content %}
+
 
 
     <section class="container forms">
@@ -71,39 +86,16 @@
     </section>
 
 
+   <!-- Prism JS -->
+   <script src="{% static 'prism.js' %}"></script>
 
+   <!-- Bootstrap JS -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+       integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+       crossorigin="anonymous"></script>
 
-    <!-- <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                <div class="form-group">
-                    <label for="id_username">Username or Email*</label>
-                    <input type="text" name="username" class="form-control" id="id_username" placeholder="Username or Email" required>
-                </div>
-                <div class="form-group">
-                    <label for="id_password">Password</label>
-                    <input type="password" name="password" class="form-control" id="id_password" placeholder="Password" required>
-                </div>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
-            </small><br>
-            <small class="text-muted">
-                <a href="password_reset">Forgot password?</a>
-                <a href="/">Forgot password?</a>
-            </small>
-        </div>
-    </div> -->
-
-
-    <!-- Javacsript -->
+   <!-- Optional JavaScript -->
+   <script type="text/javascript" src="{% static 'main/custom.js' %}"></script>
 
     <script>
         const forms = document.querySelector(".forms"),

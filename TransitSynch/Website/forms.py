@@ -25,7 +25,7 @@ class ConductorRegistrationForm(UserCreationForm):
         model = get_user_model()
         fields = ['first_name', 'middle_name', 'last_name', 'username', 'email', 'password1', 'password2',
                         'gender', 'age', 'birthDate', 'contactNumber', 'emergencyContact', 'contactPerson',
-                        'status', 'validID', 'DPA']
+                         'validID', 'DPA']
         
         
     def save(self, commit=True):
@@ -52,7 +52,7 @@ class CashierRegistrationForm(UserCreationForm):
         model = get_user_model()
         fields = ['first_name', 'middle_name', 'last_name', 'username', 'email', 'password1', 'password2',
                         'gender', 'age', 'birthDate', 'contactNumber', 'emergencyContact', 'contactPerson',
-                        'status', 'validID', 'DPA']
+                         'validID', 'DPA']
         
         
     def save(self, commit=True):
@@ -69,3 +69,4 @@ class KilometerForm(forms.Form):
         choices=TranspoType.STATUS,  # Use the choices from the TranspoType model
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+

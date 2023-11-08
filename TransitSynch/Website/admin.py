@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Location, Route, DataCrawl,CurrentPrice
+from .models import  DataCrawl,CurrentPrice, CashierTransaction, TransportationRecord
 
-admin.site.register(Location)
-admin.site.register(Route)
 admin.site.register(DataCrawl)
 admin.site.register(CurrentPrice)
+admin.site.register(CashierTransaction)
+admin.site.register(TransportationRecord)

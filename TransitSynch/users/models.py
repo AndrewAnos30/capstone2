@@ -19,6 +19,13 @@ class CustomUser(AbstractUser):
         ('LGBTQ+', 'Others')
     )
 
+    carType =(
+        ('PUJ', 'PUJ'),
+        ('Modernized PUJ', 'Modernized PUJ'),
+        ('AirConditioned PUJ', 'AirConditioned PUJ'),
+        ('Regular PUJ', 'Regular PUJ'),
+        ('Modernized Bus', 'Modernized Bus'),
+    )
 
 
     email = models.EmailField(unique=True)
@@ -31,13 +38,14 @@ class CustomUser(AbstractUser):
     emergencyContact= models.CharField(max_length=11,null=True, blank=True)
     contactPerson= models.CharField(max_length=100, null=True, blank=True)
     userSN= models.CharField(max_length=100, null=True, blank=True)
-    balance= models.IntegerField(null=True, blank=True)
+    balance= models.FloatField(null=True, blank=True)
     DPA= models.BooleanField(default=False)
     graduation = models.DateField(null=True, blank=True)
     validID = models.ImageField(upload_to="valid_ids/", null=True, blank=True)
     QR = models.ImageField(upload_to="qrs/", null=True, blank=True)
     verified = models.BooleanField(default=False, null=True, blank= True)
     UserGroup = models.CharField(max_length=100, null=True, blank=True)
+    TransportationType = models.CharField(max_length=100,choices= carType, null=True, blank=True, default='PUJ')
 
 
 

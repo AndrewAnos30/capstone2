@@ -11,4 +11,8 @@ captcha
 django-captcha
 django-recaptcha
 beautifulsoup4
-request
+requests
+nominatim
+geopy
+bingmaps
+-U googlemaps

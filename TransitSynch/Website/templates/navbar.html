@@ -81,11 +81,10 @@ padding: 0.8rem 0;
 
   <!--NAVBAR 1-->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-  <a class="navbar-brand mt-2 mt-lg-0">
+  <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'welcome' %}">
     <img
       src="{% static 'images/homelogo.png' %}" 
       height="30"
-
       loading="lazy"
     />
   </a>
@@ -97,7 +96,61 @@ padding: 0.8rem 0;
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto">
        
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.UserGroup == 'user' %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'commuter' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'UWallet' %}">Wallet</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
+        </li>
+        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+            </a></button>
+
+        <!-- Add other user-specific navigation items here -->
+        {% endif %}
+
+        <!-- Conductor-specific navigation bar -->
+        {% if user.is_authenticated and user.UserGroup == 'conductor' %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'conductor' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'conductorScanner' %}">Scanner</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'ConTransaction' %}">Transaction</a>
+    </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
+        </li>
+        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+            </a></button>
+
+        <!-- Add other conductor-specific navigation items here -->
+        {% endif %}
+
+        <!-- Cashier-specific navigation bar -->
+        {% if user.is_authenticated and user.UserGroup == 'cashier' %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'cashier' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'CashierScan' %}">Scan</a>
+      </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
+        </li>
+        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
+            </a></button>
+
+        <!-- Add other cashier-specific navigation items here -->
+        {% endif %}
+
+        <!-- Admin-specific navigation bar -->
+        {% if user.is_authenticated and user.is_superuser %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'admin' %}">Home</a>
           </li>

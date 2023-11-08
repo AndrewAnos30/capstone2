@@ -1,5 +1,28 @@
-<!-- django_project/main/templates/main/home.html-->
-{% extends "header.html" %}
-{% block content %}
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Google Map</title>
+    <style>
+        /* Set the map's height and width here */
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        function initMap() {
+            // Create a map object and specify the DOM element for display.
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 37.7749, lng: -122.4194}, // San Francisco coordinates
+                zoom: 10,
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQbrn9uYAhVxweNwKpYb5yBYaVURtC6oM&callback=initMap" async defer></script>
+</body>
+</html>
 
-{% endblock content %}

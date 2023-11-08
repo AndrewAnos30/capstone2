@@ -1,0 +1,166 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+
+<head>
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            padding: 20px;
+            max-width: 400px;
+        }
+        .popup-content {
+            text-align: center;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+        .close-btn:hover {
+            color: #ff0000;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #wallet {
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .navbar2 {
+            background: white;
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .navbar2 a {
+                display: inline-block;
+                color: #333;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+                cursor: pointer; /* Add this property to set the cursor to pointer */
+            }
+
+        .navbar2 a:hover {
+            background: none;
+        }
+        .navbar2 a.active {
+            color: #333;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="wallet">
+            <h2>Wallet Balance</h2>
+            <p>Your balance: ${{ user.balance|floatformat:2|default:0.00 }}</p>
+            <p>{{ user.userSN }}</p>
+        </div>
+    </div>
+
+    <div id="qrModal" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" id="closeQRModal">&times;</span>
+            <h2>QR Code</h2>
+            <img src="{{ user.QR.url }}" alt="QR Code" />
+        </div>
+    </div>
+    
+</body>
+
+<div class="navbar2">
+    <a class="active" id="infoLink">Info</a>
+    <a id="qrLink">QR</a>
+    <a href="{% url 'UTransaction' %}">Transaction</a>
+</div>
+
+<div id="infoPopup" class="popup">
+    <div class="popup-content">
+        <span class="close-btn" id="closeInfoPopup">&times;</span>
+        <h2>Prices</h2>
+        {% for price in fare %}
+        <p>{{ price.CurrentFarePUJ }}</p>
+        <p>{{ price.CurrentSucceedingPUJ }}</p>
+        <p>{{ price.CurrentFareBus }}</p>
+        <p>{{ price.CurrentSucceedingBus }}</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+<!-- Add this within the script tag in your HTML template -->
+document.addEventListener("DOMContentLoaded", function() {
+    const infoLink = document.getElementById("infoLink");
+    const infoPopup = document.getElementById("infoPopup");
+    const closeInfoPopup = document.getElementById("closeInfoPopup");
+
+    infoLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        infoPopup.style.display = "block";
+
+        closeInfoPopup.addEventListener("click", function() {
+            infoPopup.style.display = "none";
+        });
+
+        window.addEventListener("click", function(event) {
+            if (event.target == infoPopup) {
+                infoPopup.style.display = "none";
+            }
+        });
+    });
+
+    // Add the following code for the QR modal
+    const qrLink = document.getElementById("qrLink");
+    const qrModal = document.getElementById("qrModal");
+    const closeQRModal = document.getElementById("closeQRModal");
+
+    qrLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        qrModal.style.display = "block";
+
+        closeQRModal.addEventListener("click", function() {
+            qrModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function(event) {
+            if (event.target == qrModal) {
+                qrModal.style.display = "none";
+            }
+        });
+    });
+});
+</script>
+
+{% endblock content %}

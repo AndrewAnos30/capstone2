@@ -83,26 +83,30 @@ def registerCommuter(request):
             user.email = form.cleaned_data['email']
             user.is_active=False
             
+
+
+
             # Generate a unique userSN
             userSN = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(20))
-            user.userSN = userSN
+
 
             # Set UserGroup to "Commuter"
             user.UserGroup = "user"
-
-            # Generate a QR code using userSN and save it to 'QR' field
+            user.userSN = userSN
+            qr_data = f"TransitSynch:{userSN}"
             qr = qrcode.QRCode(
                 version=1,
                 error_correction=qrcode.constants.ERROR_CORRECT_L,
                 box_size=10,
                 border=4,
             )
-            qr.add_data(userSN)
+            qr.add_data(qr_data)
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
             buffer = BytesIO()
             img.save(buffer, format="PNG")
             user.QR.save(f'qr_{userSN}.png', ContentFile(buffer.getvalue()), save=False)
+
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
