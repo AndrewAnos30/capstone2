@@ -111,7 +111,7 @@ def scan_qr_code(request):
 
 @login_required
 def ConTransaction(request):
-    gmaps = googlemaps.Client(key='AIzaSyCQbrn9uYAhVxweNwKpYb5yBYaVURtC6oM')
+    gmaps = googlemaps.Client(key='Change the API key')
     records = TransportationRecord.objects.all()
 
     for record in records:
