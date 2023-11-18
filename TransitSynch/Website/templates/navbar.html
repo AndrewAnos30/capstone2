@@ -16,41 +16,57 @@
   font-family: "Poppins", sans-serif;
 }
 .navbar{
+
+  padding: 0.7rem 4rem;
+   box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+   background-color: #fff;
+   z-index: 1000;
    
-    padding: 0.7rem 4rem;
-    box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
-    background-color: #fff;
-    z-index: 1000;
-    
+}
+
+
+.navbar .navbar-nav .nav-link {
+   color: #fff;
+   font-size: 1.1em;
+}
+.navbar .navbar-nav .nav-link:hover {
+ background-color: #b6b6b6;
+ padding: 0.5em;
+ color: #fff;
+}
+
+.active, .navbar .navbar-nav .nav-link:hover {
+  background-color: #c7c7c7;
+  color: white;
+}
+
+.navbar .navbar-nav .nav-link {
+ padding: 0.6em;
+ font-size: 1.2em;
+ transition: all 0.5s;
+}
+
+.navbar .navbar-brand {
+ padding: 0 0.6em;
+ font-size: 1.5em;
+ font-weight: bold;
 }
 
 #navbarSupportedContent > ul > li:nth-child(n) > a {
 
-    color: #000000;
-    font-size: 1.1rem;
-    padding: 0 0.8rem;
+   color: #000000;
+   font-size: 1.1rem;
 
 }
 
-#navbarSupportedContent > ul > li:nth-child(n) > a:hover,
-#navbarSupportedContent > ul > li:nth-child(n) > a:active
-{
-    color: #025773;
-}
-  
-#navbarSupportedContent > button {
-
-    background-color: #003B4E;
-    font-weight: 600;
-    padding: 0.4rem 1.4rem;
-}  
    
 #navbarSupportedContent > button a {
+
     color: #fff;
 }
-#navbarSupportedContent > button a:hover {
+#navbarSupportedContent > .navbar-nav > .nav-item:hover {
 
-    text-decoration: none;
+  color: #025773;
 }
 
 @media screen and (max-width: 988px) {
@@ -61,15 +77,15 @@
    
 }
 
-#navbarSupportedContent > ul{
-  padding-left: 0.8rem;
-}
+.navbar .navbar-nav .nav-link {
+    padding: 1em 0.7em;
+  }
+  .navbar .navbar-brand {
+    padding: 0 0.8em;
+  }
 
-#navbarSupportedContent > ul > li:nth-child(n) > a {
 
-padding: 0.8rem 0;
 
-}
 
 }
 
@@ -80,7 +96,7 @@ padding: 0.8rem 0;
 
 
   <!--NAVBAR 1-->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+<nav class="navbar navbar-inverse navbar-expand-lg navbar-light fixed-top">
   <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'welcome' %}">
     <img
       src="{% static 'images/homelogo.png' %}" 
@@ -97,7 +113,7 @@ padding: 0.8rem 0;
       <ul class="navbar-nav mx-auto">
        
         {% if user.is_authenticated and user.UserGroup == 'user' %}
-        <li class="nav-item">
+        <li class="nav-item" >
             <a class="nav-link" href="{% url 'commuter' %}">Home</a>
         </li>
         <li class="nav-item">
@@ -106,8 +122,9 @@ padding: 0.8rem 0;
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
         </li>
-        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-            </a></button>
+      
+      
+        <a href="{% url 'logout' %}"> <button class="btn btn-success text-light mx-5 my-1" type="submit">Log out</button>  </a>
 
         <!-- Add other user-specific navigation items here -->
         {% endif %}
@@ -126,8 +143,7 @@ padding: 0.8rem 0;
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
         </li>
-        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-            </a></button>
+        <a href="{% url 'logout' %}"> <button class="btn btn-success text-light mx-5 my-1" type="submit">Log out</button>  </a>
 
         <!-- Add other conductor-specific navigation items here -->
         {% endif %}
@@ -143,8 +159,11 @@ padding: 0.8rem 0;
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
         </li>
-        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-            </a></button>
+
+    
+        <a href="{% url 'logout' %}"> <button class="btn btn-success text-light mx-5 my-1" type="submit">Log out</button>  </a>
+
+
 
         <!-- Add other cashier-specific navigation items here -->
         {% endif %}
@@ -175,7 +194,7 @@ padding: 0.8rem 0;
       </ul>
      
     
-        <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out </a></button>
+      <a href="{% url 'logout' %}"> <button class="btn btn-success text-light  my-1" type="submit">Log out</button>  </a>
           {% endif %}
 
 
@@ -185,6 +204,18 @@ padding: 0.8rem 0;
 
 
 </header>
-
+<script>
+  // Add active class to the current button (highlight it)
+  var header = document.getElementById("navbarSupportedContent");
+  var btns = header.getElementsByClassName("nav-link");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function() {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+    });
+  }
+  </script>
+  
 </body>
 </html>

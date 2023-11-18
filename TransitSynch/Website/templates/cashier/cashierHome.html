@@ -1,165 +1,517 @@
 {% extends "header.html" %}
+{% load static %}
 {% block content %}
-<head>
-    <title>Cashier Dashboard</title>
-</head>
+
+
+
+<style>
+    /* Style for the modal container */
+    /* .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+    } */
+
+    /* Style for the modal content */
+    /* .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 70%;
+    } */
+
+    /* Style for the close button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+
+    body {
+        font-family: 'Raleway', sans-serif;
+        min-height: 100vh;
+        background: url("{% get_media_prefix %}bg/cashier.jpg") center/cover no-repeat;
+
+    }
+
+    .p-30 {
+        padding: 30px;
+        margin-top: 3%;
+    }
+
+    .p-30 p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: large;
+        font-weight: bold;
+        margin-top: 5%;
+    }
+
+    .main-datatable {
+        padding: 0px;
+        border: 1px solid #f3f2f2;
+        border-bottom: 0;
+        box-shadow: 0px 2px 10px #003B4E;
+    }
+
+    .d-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .card_body {
+        background-color: white;
+        border: 1px solid transparent;
+        padding: 5px;
+        border-radius: 2px;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .main-datatable .row {
+        margin: 0;
+    }
+
+    .searchInput {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: flex-end;
+        margin: 20px 0px;
+        padding: 0px 4px;
+    }
+
+    .searchInput input {
+        border: 1px solid #333232;
+        border-radius: 50px;
+        justify-content: center;
+        margin-left: 19px;
+        height: 34px;
+        width: 100%;
+        padding: 0px 25px 0px 10px;
+        transition: all .6s ease;
+    }
+
+    .searchInput label {
+        color: #767676;
+        font-weight: normal;
+    }
+
+    .searchInput:after {
+        font-family: 'FontAwesome';
+        color: #d4d4d4;
+        position: relative;
+        content: "\f002";
+        right: 15px;
+    }
+
+    .dim_button {
+        display: inline-block;
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-align: center;
+        padding-top: 6px;
+        background: rgb(57, 85, 136);
+        margin-right: 10px;
+        position: relative;
+        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .createSegment a {
+        margin-bottom: 0px;
+        border-radius: 50px;
+        background: #ffffff;
+        border: 1px solid #007bff;
+        color: #007bff;
+        transition: all .4s ease;
+    }
+
+    .createSegment a:hover,
+    .createSegment a:focus {
+        transition: all .4s ease;
+        background: #007bff;
+        color: #fff;
+    }
+
+    .add_flex {
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 0px;
+    }
+
+    .main-datatable .dataTable.no-footer {
+        border-bottom: 1px solid #eee;
+    }
+
+    .main-datatable .cust-datatable thead {
+        background-color: #f9f9f9;
+    }
+
+    .main-datatable .cust-datatable>thead>tr>th {
+        border-bottom-width: 0;
+        color: #443f3f;
+        font-weight: 600;
+        padding: 16px 15px;
+        vertical-align: middle;
+        padding-left: 18px;
+        text-align: center;
+    }
+
+    .main-datatable .cust-datatable>tbody td {
+        padding: 10px 15px 10px 18px;
+        color: #333232;
+        font-size: 13px;
+        font-weight: 500;
+        word-break: break-word;
+        border-color: #eee;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .main-datatable .cust-datatable>tbody tr {
+        border-top: none;
+    }
+
+    .main-datatable .table>tbody>tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    .btn-group i {
+        color: #8e8e8e;
+        margin: 2px;
+    }
+
+    .main-datatable .actionCust a {
+        display: inline-block;
+        color: #8a8a8a;
+        font-size: 15px;
+        border: 1px solid #d4d4d4;
+        padding: 10px 14px;
+        margin: -8px 3px;
+        margin: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .main-datatable .actionCust a i:hover {
+        color: #8e8e8e;
+
+    }
+
+    .main-datatable .actionCust a:hover {
+        color: #000000;
+        background: #007bff
+    }
+
+    .main-datatable .dataTables_wrapper .dataTables_paginate .paginate_button {
+        color: #999999 !important;
+        background-color: #f6f6f6 !important;
+        border-color: #d4d4d4 !important;
+        border-radius: 40px;
+        margin: 5px 3px;
+    }
+
+    .main-datatable .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        color: #fff !important;
+        border: 1px solid #3d96f5 !important;
+        background: #4da3ff !important;
+        box-shadow: none;
+    }
+
+    .main-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .main-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        color: #fff !important;
+        border-color: transparent !important;
+        background: #007bff !important;
+    }
+
+    .main-datatable .dataTables_paginate {
+        padding-top: 0 !important;
+        margin: 15px 10px;
+        float: right !important;
+    }
+
+    .mode {
+        padding: 4px 10px;
+        line-height: 13px;
+        color: #fff;
+        font-weight: 400;
+        border-radius: 1rem;
+        -webkit-border-radius: 1rem;
+        -moz-border-radius: 1rem;
+        -ms-border-radius: 1rem;
+        -o-border-radius: 1rem;
+        font-size: 11px;
+        letter-spacing: 0.4px;
+    }
+
+    .mode_on {
+        background-color: #09922d;
+    }
+
+    .mode_off {
+        background-color: #8b9096;
+    }
+
+    .mode_process {
+        background-color: #ff8000;
+    }
+
+    .mode_done {
+        background-color: #03a9f3;
+    }
+
+    @media only screen and (max-width:1200px) {
+        .overflow-x {
+            overflow-x: scroll;
+        }
+
+        .overflow-x::-webkit-scrollbar {
+            width: 5px;
+            height: 6px;
+        }
+
+        .overflow-x::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+
+        .overflow-x::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+    }
+
+    body>main>footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-body .form-group {
+        display: flex;
+        margin-top: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .modal-body .form-group input {
+        
+       
+        border-radius: 10px;
+        margin-left: 10px;
+        padding: 5px;
+    }
+
+</style>
+
 <body>
-    <style>
-/* Style for the modal container */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-}
 
-/* Style for the modal content */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 70%;
-}
+    <div class="mid">
 
-/* Style for the close button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-        /* Apply some basic styling to the body */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-/* Style the header section */
-header {
-    background-color: #3498db;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-
-/* Style the search bar */
-.search-bar {
-    text-align: center;
-    margin: 20px;
-}
-
-.search-bar input[type="text"] {
-    padding: 10px;
-    width: 300px;
-    border: 2px solid #3498db;
-    border-radius: 5px;
-}
-
-.search-bar button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* Style the main content area */
-main {
-    padding: 20px;
-}
-
-/* Style the footer */
-footer {
-    background-color: #3498db;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-}
-
-    </style>
-    <header>
-        <h1>Welcome, Cashier!</h1>
-    </header>
-    <main>
-        <div class="search-bar">
-            <form action="" method="get">
-                <input type="text" name="q" placeholder="Search...">
-                <button type="submit">Search</button>
-            </form>
+        <div class="hero text-center">
+            <h3 class="text-dark mx-auto"> Handle user's balance </h3>
         </div>
-        <!-- Display search results -->
-        <ul>
-            {% for result in results %}
-                <li>
-                    UserSN: {{ result.userSN }}<br>
-                    Name: <a class="show-modal" data-user-id="{{ result.id }}">
-                        {{ result.first_name }} {{ result.middle_name|slice:":1" }}. {{ result.last_name }}
-                      </a>
-                     </a>
-                     <br>
-                    Username: {{ result.username }}
-                </li>
-                <hr>
-            {% empty %}
-                <li>No results found.</li>
-            {% endfor %}
-        </ul>
 
-        <div id="myModal" class="modal">
+    </div>
+
+    <div class="container p-30">
+        <p class="text-dark mx-auto"> Handle user's balance </p>
+        <div class="row">
+            <div class="col-md-12 main-datatable">
+                <div class="card_body">
+
+
+                    <div class="col-sm-8 add_flex">
+                        <div class="form-group searchInput">
+
+                            <form action="" method="get">
+
+                                <input type="text" name="q" class="form-control" id="filterbox" placeholder="Search">
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x">
+                        <table style="width:100%;" id="filtertable" class="table cust-datatable dataTable no-footer">
+                            <thead>
+                                <tr>
+                                    <th style="min-width:50px;">ID</th>
+                                    <th style="min-width:150px;">Name</th>
+                                    <th style="min-width:150px;">Status</th>
+                                    <th style="min-width:100px;">Username</th>
+                                    <th style="min-width:100px;">Serial</th>
+
+                                    <th style="min-width:150px;">Action</th>
+                                </tr>
+                            </thead>
+                            {% for result in results %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ result.id }}</td>
+                                    <td>{{ result.first_name }} {{ result.middle_name|slice:":1" }}.
+                                        {{ result.last_name }}</td>
+                                    <td><span class="mode mode_on">{{ result.status }}</span></td>
+                                    <td>{{ result.username }}</td>
+                                    <td>{{ result.userSN }}</td>
+
+                                    <td>
+
+                                        <span class="actionCust">
+                                            <a class="show-modal" data-user-id="{{ result.id }}"><i
+                                                    class="fa fa-credit-card"></i></a>
+                                        </span>
+
+                                    </td>
+                                    <td>
+                                    {% empty %}
+                                    No results found.</td>
+                                </tr>
+        
+
+
+
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <!-- Your form content goes here -->
-                <span class="close">&times;</span>
+                <div class="modal-header border-bottom-1">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Balance</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <form method="post" action="">
-                    {% csrf_token %}
-                    <!-- Form fields go here -->
-                    <!-- Example: -->
-                    <input type="number" name="balance" placeholder="New Balance" step="0.01" required>
-                    <input type="number" name="amount" placeholder="New Balance" step="0.01" required>
-                    <button type="submit">Submit</button>
+                    <div class="modal-body">
+
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email1">Balance</label>
+                            <input type="number" name="balance" placeholder="New Balance" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password1">Amount</label>
+                            <input type="number" name="amount" placeholder="New Balance" step="0.01" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
                 </form>
             </div>
         </div>
-    </main>
-    <footer>
-        <p>&copy; 2023 Commuter Company</p>
+    </div>
+
+
+    <footer class="text-center text-lg-start bg-light text-muted">
+
+        <!-- Section: Links  -->
+
+        <!-- Copyright -->
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2023 Copyright:
+            <a class="text-reset fw-bold">TransitSync.com</a>
+        </div>
+        <!-- Copyright -->
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.14/js/jquery.dataTables.min.js"></script>
+    <script src="js/main.js"></script>
+
+
 
     <script>
         var modal = document.getElementById("myModal");
         var closeBtn = document.getElementsByClassName("close")[0];
         var showButtons = document.getElementsByClassName("show-modal");
-    
+
         // Add event listeners for the modal show and close actions
         for (var i = 0; i < showButtons.length; i++) {
-            showButtons[i].addEventListener("click", function(e) {
-                e.preventDefault();  // Prevent the default link behavior
+            showButtons[i].addEventListener("click", function (e) {
+                e.preventDefault(); // Prevent the default link behavior
                 var userId = this.getAttribute("data-user-id");
                 var form = modal.querySelector("form");
-                form.action = "/update_balance/" + userId + "/";  // Adjust the URL as needed
+                form.action = "/update_balance/" + userId + "/"; // Adjust the URL as needed
                 modal.style.display = "block";
             });
         }
-    
-        closeBtn.addEventListener("click", function() {
+
+        closeBtn.addEventListener("click", function () {
             modal.style.display = "none";
         });
-    
+
         // Close the modal when clicking outside the modal content
-        window.addEventListener("click", function(event) {
+        window.addEventListener("click", function (event) {
             if (event.target === modal) {
                 modal.style.display = "none";
             }
         });
+
+
+        $(document).ready(function () {
+            var dataTable = $('#filtertable').DataTable({
+                "pageLength": 5,
+                'aoColumnDefs': [{
+                    'bSortable': false,
+                    'aTargets': ['nosort'],
+                }],
+                columnDefs: [{
+                    type: 'date-dd-mm-yyyy',
+                    aTargets: [5]
+                }],
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ],
+                "order": false,
+                "bLengthChange": false,
+                "dom": '<"top">ct<"top"p><"clear">'
+            });
+            $("#filterbox").keyup(function () {
+                dataTable.search(this.value).draw();
+            });
+        });
     </script>
-    
+
+
+
+
+</body>
+
+</html>
+
 {% endblock content %}

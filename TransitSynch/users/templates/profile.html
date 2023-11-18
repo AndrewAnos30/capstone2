@@ -1,3 +1,4 @@
+{% extends "header.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
@@ -109,63 +110,7 @@
         padding-bottom: 10px;
     }
 
-    .navbar {
-
-        padding: 0.7rem 4rem;
-        box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .2);
-        background-color: #fff;
-        z-index: 1000;
-
-    }
-
-    #navbarSupportedContent>ul>li:nth-child(n)>a {
-
-        color: #000000;
-        font-size: 1.1rem;
-        padding: 0 0.8rem;
-
-    }
-
-    #navbarSupportedContent>ul>li:nth-child(n)>a:hover,
-    #navbarSupportedContent>ul>li:nth-child(n)>a:active {
-        color: #025773;
-    }
-
-    #navbarSupportedContent>button {
-
-        background-color: #003B4E;
-        font-weight: 600;
-        padding: 0.4rem 1.4rem;
-    }
-
-    #navbarSupportedContent>button a {
-        color: #fff;
-    }
-
-    #navbarSupportedContent>button a:hover {
-
-        text-decoration: none;
-    }
-
-    @media screen and (max-width: 988px) {
-        .navbar {
-
-            padding: 0.7rem 2rem;
-
-
-        }
-
-        #navbarSupportedContent>ul {
-            padding-left: 0.8rem;
-        }
-
-        #navbarSupportedContent>ul>li:nth-child(n)>a {
-
-            padding: 0.8rem 0;
-
-        }
-
-    }
+  
 
     .about .text button {
         border: none;
@@ -229,69 +174,7 @@
 
 <body>
 
-    <header>
-        <!--NAVBAR 1-->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-            <a class="navbar-brand mt-2 mt-lg-0">
-                <img src="{% static 'images/homelogo.png' %}" height="30" loading="lazy" />
-            </a>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto">
-
-                    <!-- User-specific navigation bar -->
-                    {% if user.is_authenticated and user.UserGroup == 'user' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'commuter' %}">User Home</a>
-                    </li>
-                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-                        </a></button>
-
-                    <!-- Add other user-specific navigation items here -->
-                    {% endif %}
-
-                    <!-- Conductor-specific navigation bar -->
-                    {% if user.is_authenticated and user.UserGroup == 'conductor' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'conductor' %}">Conductor Home</a>
-                    </li>
-                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-                        </a></button>
-
-                    <!-- Add other conductor-specific navigation items here -->
-                    {% endif %}
-
-                    <!-- Cashier-specific navigation bar -->
-                    {% if user.is_authenticated and user.UserGroup == 'cashier' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cashier' %}">Cashier Home</a>
-                    </li>
-                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-                        </a></button>
-
-                    <!-- Add other cashier-specific navigation items here -->
-                    {% endif %}
-
-                    <!-- Admin-specific navigation bar -->
-                    {% if user.is_authenticated and user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admin' %}">Admin Home</a>
-                    </li>
-                    <!-- Add other admin-specific navigation items here -->
-                    <button class="btn btn-success text-light" type="submit"><a href="{% url 'logout' %}">Log out
-                        </a></button>
-
-                    {% endif %}
-
-
-            </div>
-        </nav>
-    </header>
+   
 
     <section class="about py-4">
         <div class="row align-items-center container my-5 mx-auto">
@@ -300,17 +183,22 @@
                 
                 <h2>Hello, {{ form.instance.username }}</h2>
                 {% if form.instance.UserGroup == "user" %}
-                    (commuter)
+                    <p>(commuter)</p>
                 {% else %}
+
                     {% if user.is_staff %} <!-- Check if the user is an admin -->
                         <em>(admin)</em>
                     {% else %}
                         ({{ form.instance.UserGroup }})
                     {% endif %}
+
                 {% endif %}
+
                 {% if form.instance.status != "Ordinary" %}
                     <h5>({{ form.instance.status }})</h5>
+
                 {% endif %}
+
                 <h6>Full Name</h6>
                 <p>{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
                 <h6>Email</h6>
@@ -363,7 +251,7 @@
                             </div>
                             <a href="{% url 'password_change' %}" class="password-change-link">Change password?</a>
                         </fieldset>
-                        <div class="text">
+                        <div class="modal-footer d-flex justify-content-center">
                             <button class="btn btn-outline-info" type="submit">Update</button>
                         </div>
                     </form>
@@ -372,8 +260,7 @@
             </div>
         </div>
     </div>
-
-
+ 
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

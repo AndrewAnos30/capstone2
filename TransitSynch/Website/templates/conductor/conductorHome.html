@@ -9,6 +9,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
+ 
+    overflow-x: hidden;
   }
 
   .mid {
@@ -30,11 +32,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
+    
     transform: translate(-50%, -50%);
   }
 
   .mid .hero {
     position: relative;
+
   }
 
   .mid .hero p {
@@ -185,7 +189,7 @@
         <source class="embed-responsive" src="{% static 'images/homebg2.mp4' %}" type="video/mp4">
       </video>
       <div class="hero text-center">
-        <h2 class="text-light display-4 font-weight-bold mx-auto">Ease Your Journey with TransitSync</h2>
+        <h2 class="text-light display-4 font-weight-bold mx-auto overflow-hidden">Ease Your Journey with TransitSync</h2>
         <p class="text-light mx-auto">A Cashless Payment Application</p>
       </div>
     </div>
@@ -194,7 +198,7 @@
   <section class="about py-5">
     <div class="row align-items-center container my-5 mx-auto">
       <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
-        <h6>PRICE FARE</h6>
+        <h6 class="overflow-hidden">PRICE FARE</h6>
         <h2>Latest Price Fare Transportation</h2>
         <p>Know the current price fare in modernized public transportations approved by the LTFRB.</p>
         <a href="#">Learn More</a>
@@ -211,7 +215,7 @@
         <img class="img-fluid" src="{% static 'images/scanner4.png' %}">
       </div>
       <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
-        <h6>SCANNING OF QR</h6>
+        <h6 class="overflow-hidden">SCANNING OF QR</h6>
         <h2>Scan the generated QR code</h2>
         <p>Let the conductor scan your generated QR code to pay the transaction.</p>
       </div>
@@ -226,17 +230,17 @@
       <div class="row mx-auto justify-content-center align-items-center text-center container">
         <div class="one col-lg-3 col-md-3 col-12 w-25 m-2">
           <img class="img-fluid w-75" src="{% static 'images/sys.png' %}">
-          <h5 class="font-weight-bold pt-4">Latest Price Fare</h5>
+          <h5 class="font-weight-bold pt-4 overflow-hidden">Latest Price Fare</h5>
           <p>Know the computation of the latest price fare.</p>
         </div>
         <div class="one col-lg-3 col-md-3 col-12 w-25 m-2">
           <img class="img-fluid w-75" src="{% static 'images/code.png' %}">
-          <h5 class="font-weight-bold pt-4">Cashless Payment</h5>
+          <h5 class="font-weight-bold pt-4 overflow-hidden">Cashless Payment</h5>
           <p>Hassle-free payment using the generated QR code.</p>
         </div>
         <div class="one col-lg-3 col-md-3 col-12 w-25 m-2">
           <img class="img-fluid w-75" src="{% static 'images/his.png' %}">
-          <h5 class="font-weight-bold pt-4">Transaction History</h5>
+          <h5 class="font-weight-bold pt-4 overflow-hidden">Transaction History</h5>
           <p>Keep track of scanned QR code in the history.</p>
         </div>
       </div>
@@ -253,7 +257,7 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
             <!-- Content -->
-            <h6 class="text text-uppercase fw-bold mb-4">
+            <h6 class="text text-uppercase fw-bold mb-4 overflow-hidden">
               TransitSync
             </h6>
             <p>
@@ -265,7 +269,7 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
             <!-- Links -->
-            <h6 class="text text-uppercase fw-bold mb-3">
+            <h6 class="text text-uppercase fw-bold mb-3 overflow-hidden">
               Links
             </h6>
             <p>
@@ -286,7 +290,7 @@
           <!-- Grid column -->
           <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
             <!-- Links -->
-            <h6 class="text text-uppercase fw-bold mb-4">Contact</h6>
+            <h6 class="text text-uppercase fw-bold mb-4 overflow-hidden">Contact</h6>
             <p><i class="fas fa-home me-3"></i> Manila, Philippines</p>
             <p>
               <i class="fas fa-envelope me-3"></i>

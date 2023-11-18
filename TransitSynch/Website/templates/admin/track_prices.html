@@ -1,244 +1,122 @@
 {% extends "header.html" %}
 {% block content %}
+{% load static %}
 
-<section class="service py-5">
-  <div class="col mx-auto align-items-center my-5">
-    <div class="heading text-center pt-3">
-      <h1>Track Prices</h1>
+<!DOCTYPE html>
+<html>
 
-      <div class="table-container row mx-auto justify-content-center align-items-center text-center container">
+<head>
+  <style>
+    * {
+      box-sizing: border-box;
+ 
+    }
 
-        <div class="table one col-lg-3">
-          <h2>Diesl Price</h2>
-          <table>
-
-            <tr>
-              <td><strong>Date:</strong></td>
-              <td>{{ date }}</td>
-            </tr>
-
-            <tr>
-              <td><strong>Price in PHP:</strong></td>
-              <td>{{ php_price }}</td>
-            </tr>
-            <tr>
-
-              <td><strong>Price in USD:</strong></td>
-              <td>{{ usd_price }}</td>
-            </tr>
-
-            <tr>
-              <td>
-                <form method="post" action="{% url 'save_data' %}">
-                  {% csrf_token %}
-                  <input type="hidden" name="date" value="{{ date }}">
-                  <input type="hidden" name="php_price" value="{{ php_price }}">
-                  <input type="hidden" name="usd_price" value="{{ usd_price }}">
-                  <button type="submit" class="btn-change">Save Data</button>
-                </form>
-              </td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="table one col-lg-3 col-md-3  col-12">
-          <h2>Current Prices</h2>
-          <table>
-            <tr>
-              <td><strong>Current Date:</strong></td>
-              <td>{{ latest_price.CurrentDate }}</td>
-            </tr>
-            <tr>
-              <td><strong>Current Fare PUJ:</strong></td>
-              <td>{{ latest_price.CurrentFarePUJ|floatformat:2 }}</td>
-            </tr>
-            <tr>
-              <td><strong>Current Succeeding PUJ:</strong></td>
-              <td>{{ latest_price.CurrentSucceedingPUJ|floatformat:2 }}</td>
-            </tr>
-            <tr>
-              <td><strong>Current Fare Bus:</strong></td>
-              <td>{{ latest_price.CurrentFareBus|floatformat:2 }}</td>
-            </tr>
-            <tr>
-              <td><strong>Current Succeeding Bus:</strong></td>
-              <td>{{ latest_price.CurrentSucceedingBus|floatformat:2 }}</td>
-            </tr>
-            <tr>
-              <td><strong>Current Diesel:</strong></td>
-              <td>₱{{ latest_price.CurrentDiesel|floatformat:2 }}</td>
-            </tr>
-            <tr>
-              <td><strong><button id="show-update-prices-button" onclick="toggleUpdatePricesForm()"
-                    class="btn-change2">Show Form</button>
-                </strong></td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-        <div class="table one col-lg-7 col-md-6 col-12">
-          <h2>Calculation</h2>
-          <table>
-            {% if calculation_result is not None %}
-            <tr>
-              <td><strong>Calculation Result:</strong></td>
-              <td>{{ calculation_result }}</td>
-            </tr>
-            {% endif %}
-
-            {% if second_calculation_result is not None %}
-            <tr>
-              <td><strong>Calculation Result 2:</strong></td>
-              <td>{{ second_calculation_result }}</td>
-            </tr>
-            {% endif %}
-
-            {% if third_calculation_result is not None %}
-            <tr>
-              <td><strong>Calculation Result 3 (Second x CurrentFare PUJ):</strong></td>
-              <td>{{ third_calculation_result|floatformat:2 }}</td>
-            </tr>
-            {% endif %}
-
-            {% if fourth_calculation_result is not None %}
-            <tr>
-              <td><strong>Calculation Result 4 (Second x CurrentSucceeding PUJ):</strong></td>
-              <td>{{ fourth_calculation_result|floatformat:2 }}</td>
-            </tr>
-            {% endif %}
-
-            {% if fifth_calculation_result is not None %}
-            <tr>
-              <td><strong>Calculation Result 5 (Second x CurrentFare Bus):</strong></td>
-              <td>{{ fifth_calculation_result|floatformat:2 }}</td>
-            </tr>
-            {% endif %}
-
-            {% if sixth_calculation_result is not None %}
-            <tr>
-              <td><strong>Calculation Result 6 (Second x CurrentSucceeding Bus):</strong></td>
-              <td>{{ sixth_calculation_result|floatformat:2 }}</td>
-            </tr>
-            {% endif %}
-
-            <tr>
-              <td>
-                <form method="POST" action="{% url 'computing_update' %}">
-                  {% csrf_token %}
-                  <input type="hidden" name="third_calculation_result" value="{{ third_calculation_result }}">
-                  <input type="hidden" name="fourth_calculation_result" value="{{ fourth_calculation_result }}">
-                  <input type="hidden" name="fifth_calculation_result" value="{{ fifth_calculation_result }}">
-                  <input type="hidden" name="sixth_calculation_result" value="{{ sixth_calculation_result }}">
-                  <input type="hidden" name="php_price" value="{{ php_price }}">
-                  <button type="submit" class="btn-change3">Save</button>
-                </form>
-              </td>
-              <td></td>
-
-            </tr>
-
-          </table>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Modal container initially hidden -->
-<div id="modal-container" class="modal-container">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold"> Update Prices</h4>
-      </button>
-
-
-    </div>
-    <div class="modal-body">
-      <form method="post" action="{% url 'update_prices' %}">
-        {% csrf_token %}
-        <div class="fields">
-        <div class="input-field1">
-          <label for="new_fare">New Fare PUJ:</label>
-
-          <input type="number" name="new_farePUJ" step="0.01">
-
-        </div>
-
-        <div class="input-field1">
-          <label for="new_succeeding">New Succeeding PUJ:</label>
-          <input type="number" name="new_succeedingPUJ" step="0.01">
-        </div>
-
-        <div class="input-field1">
-          <label for="new_fare">New Fare Bus:</label>
-          <input type="number" name="new_fareBus" step="0.01">
-        </div>
-
-        <div class="input-field1">
-          <label for="new_succeeding">New Succeeding Bus:</label>
-          <input type="number" name="new_succeedingBus" step="0.01">
-        </div>
-
-        <div class="input-field1">
-          <label for="new_diesel">Diesel Price:</label>
-          <input type="number" name="new_diesel" step="0.01">
-        </div>
-
-
-
-</div>
-
-
-    <input type="submit" class="btn-change3" value="Update Prices">
-    </div>
-    </form>
-    <button onclick="closeModal()" class="close-button"> <i class="fa fa-close"></i></button>
-  </div>
-</div>
-
-
-<section class="discover">
-  <div class="container">
-    <form method="post">
-      {% csrf_token %}
-      {{ kilometer_form.kilometers.label_tag }} {{ kilometer_form.kilometers }}
-      <br>
-      {{ kilometer_form.car_type.label_tag }} {{ kilometer_form.car_type }}
-      <br>
-
-      {% if fare is not None %}
-      <p>Fare: <strong>₱{{ fare|floatformat:2 }}</strong></p>
-    {% else %}
-      <p>Fare: <strong>₱0.00</strong></p>
-    {% endif %}
     
-    <button type="submit" class="btn-change4" type="submit">Calculate Fare</button>
+    body {
+        font-family: 'Raleway', sans-serif;
+        min-height: 100vh;
+        background: url("{% get_media_prefix %}bg/scan2.jpg") center/cover no-repeat;
 
-    </form>
-    
+    }
+
+    .row {
+      padding: 20px;
+      margin-left: -5px;
+      margin-right: -5px;
+      margin-top: 7px;
+      overflow: hidden;
+      
+    }
+
+    .column {
+      float: left;
+      width: 50%;
+      padding: 5px;
+      
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    table {
+      border-collapse: collapse;
+      box-shadow: 0px 2px 10px #003B4E;
+      border-radius: 10px;
+      border-spacing: 0;
+      width: 100%;
+      border: 1px solid #ddd;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 16px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other on screens that are smaller than 600 px */
+    @media screen and (max-width: 600px) {
+      .column {
+        width: 100%;
+      }
+    }
+
+    .center {
+
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 100px;
+    }
+
+    .container {
+      max-width: 100%;
+      margin-top: 10%;
+    }
+/* Styles for your track_prices.html page */
+
+/* Common styles for buttons */
+.btn-change, .btn-change2, .btn-change3, .btn-change4, .btn-change5 {
+  height: 40px;
+  
+  width: 140px;
+  background: #004d67;
+  border-radius: 5px;
+  box-shadow: 0 0 1px #ccc;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  border: 0;
+  color: #fff;
+  float: right;
+  text-align: center;
+
+}
+
+/* Hover styles for buttons */
+.btn-change:hover, .btn-change2:hover, .btn-change3:hover, .btn-change4:hover, .btn-change5:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  background: #31708f;
+}
+
+.heading h1{
+  margin-top: 40px;
+}
+
+th{
+  font-size: 30px;
+  font-weight: bold;
+ 
+}
 
 
-
-      </div>
-</section>
-
-
-<script>
-  function toggleUpdatePricesForm() {
-    var modalContainer = document.getElementById("modal-container");
-    modalContainer.style.display = "block";
-  }
-
-  function closeModal() {
-    var modalContainer = document.getElementById("modal-container");
-    modalContainer.style.display = "none";
-  }
-</script>
-
-
-<style>
 /* Styles for your track_prices.html page */
 
 /* Common styles for buttons */
@@ -273,6 +151,26 @@
   width: 100%;
   height: 190%;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.current-fare {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  margin-top: -6%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 190%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.farecalcu {
+  background-color: #fff;
+  width: 50%;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
 }
 
 .modal-content {
@@ -342,95 +240,321 @@
       }
     }
   }
-
-  /* Responsive styles */
-  @media (max-width: 750px) {
-    form {
-      .fields1 .input-field1 {
-        width: calc(100% / 2 - 15px);
-      }
-    }
-  }
-
-  @media (max-width: 550px) {
-    form {
-      .fields1 .input-field1 {
-        width: 100%;
-      }
-    }
-  }
 }
 
-/* Table container styles */
-.table-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.table {
-  flex: 1;
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-
-  table {
-    width: 100%;
-  }
-}
-
-/* Service section styles */
-.service {
-  .one {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border-radius: 8px;
-  }
-}
-
-/* Discover section styles */
-.discover {
-  .text {
-    h6 {
-      color: #00B4D8;
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: 2px;
+.modal-body .form-group {
+      
+        margin-top: 6px;
+        justify-content: flex-start;
+        display: inline-block;
+        align-items: center;
+        text-align: justify;
+  
+    }
+    
+    .modal-body .form-group label {
+   
+        margin-left: 10px;
+    
     }
 
-    h2 {
-      color: #003B4E;
-      font-weight: 700;
-      font-size: 2.7rem;
-      padding-bottom: 10px;
+    .modal-body .form-group input {
+      display: flex;
+    
+        justify-content: flex-start;
+        align-items: center;
+        text-align: justify;
+       
+        border-radius: 5px;
+        margin-left: 10px;
+        padding: 5px;
     }
 
-    p {
-      color: #003B4E;
-      font-weight: 400;
-      font-size: 1.1rem;
-      letter-spacing: 0.5px;
-      padding-left: 90px;
-      padding-bottom: 10px;
+  </style>
+</head>
+
+<body>
+
+  <div class="heading text-center pt-5 text-dark">
+    <h1>Track Prices</h1> 
+
+    <div id="current-fare" class="current-fare">
+      <div class="farecalcu">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold"> Calculate Fare</h4>
+  
+
+          <button onclick="closeModal2()"  type="button" class="close"  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-3">
+
+          <form method="post">
+            {% csrf_token %}
+        
+        
+            <div class="form-group"> 
+
+          {{ kilometer_form.kilometers.label_tag }} {{ kilometer_form.kilometers }}
+        </div>
+
+        <div class="form-group" style="margin-left: 20px;"> 
+          {{ kilometer_form.car_type.label_tag }} {{ kilometer_form.car_type }}
+        </div>
+  
+          {% if fare is not None %}
+          <p style="font-size: 20px;">Total Fare: <strong>₱{{ fare|floatformat:2 }}</strong></p>
+          {% else %}
+          <p>Total Fare: <strong>₱0.00</strong></p>
+          {% endif %}
+  
+
+  
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="submit" class="btn-change4" >Calculate Fare</button>
+
+        </div>
+
+
+      </form>
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center">
+    <button class="btn btn-primary btn-rounded mb-2" style="background-color: #004d67;" onclick="toggleCurrentpricefare()" > Know your fare </button>
+  </div>
+
+ 
+
+  </div>
+  <div class="row">
+
+    <div class="column">
+      <table class="table table-light " >
+        <tr>
+          <th>Current Prices</th>
+        </tr>
+        <tr>
+          <td><strong>Current Date:</strong></td>
+          <td>{{ latest_price.CurrentDate }}</td>
+        </tr>
+        <tr>
+          <td><strong>Current Fare PUJ:</strong></td>
+          <td>₱{{ latest_price.CurrentFarePUJ|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <td><strong>Current Succeeding PUJ:</strong></td>
+          <td>₱{{ latest_price.CurrentSucceedingPUJ|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <td><strong>Current Fare Bus:</strong></td>
+          <td>₱{{ latest_price.CurrentFareBus|floatformat:2 }}</td>
+        </tr>
+        <tr >
+          <td><strong>Current Succeeding Bus:</strong></td>
+          <td>₱{{ latest_price.CurrentSucceedingBus|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <td><strong>Current Diesel:</strong></td>
+          <td>₱{{ latest_price.CurrentDiesel|floatformat:2 }}</td>
+        </tr>
+        <tr>
+          <td><strong><button id="show-update-prices-button" onclick="toggleUpdatePricesForm()" class="btn-change2" style="margin-right: 50px;">Show
+                Form</button>
+            </strong></td>
+          <td></td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div class="column">
+      <table class="table table-light"  >
+        <tr >
+          <th>Calculation</th>
+        </tr>
+        {% if calculation_result is not None %}
+        <tr>
+          <td><strong>Calculation Result:</strong></td>
+          <td>₱{{ calculation_result }}</td>
+        </tr>
+        {% endif %}
+
+        {% if second_calculation_result is not None %}
+        <tr>
+          <td><strong>Calculation Result 2:</strong></td>
+          <td>₱{{ second_calculation_result }}</td>
+        </tr>
+        {% endif %}
+
+        {% if third_calculation_result is not None %}
+        <tr >
+          <td><strong>Calculation Result 3 (Second x CurrentFare PUJ):</strong></td>
+          <td>₱{{ third_calculation_result|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+
+        {% if fourth_calculation_result is not None %}
+        <tr>
+          <td><strong>Calculation Result 4 (Second x CurrentSucceeding PUJ):</strong></td>
+          <td>₱{{ fourth_calculation_result|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+
+        {% if fifth_calculation_result is not None %}
+        <tr >
+          <td><strong>Calculation Result 5 (Second x CurrentFare Bus):</strong></td>
+          <td>₱{{ fifth_calculation_result|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+
+        {% if sixth_calculation_result is not None %}
+        <tr>
+          <td><strong>Calculation Result 6 (Second x CurrentSucceeding Bus):</strong></td>
+          <td>₱{{ sixth_calculation_result|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+
+        <tr>
+          <td>
+            <form method="POST" action="{% url 'computing_update' %}">
+              {% csrf_token %}
+              <input type="hidden" name="third_calculation_result" value="{{ third_calculation_result }}">
+              <input type="hidden" name="fourth_calculation_result" value="{{ fourth_calculation_result }}">
+              <input type="hidden" name="fifth_calculation_result" value="{{ fifth_calculation_result }}">
+              <input type="hidden" name="sixth_calculation_result" value="{{ sixth_calculation_result }}">
+              <input type="hidden" name="php_price" value="{{ php_price }}">
+              <button type="submit" class="btn-change3" style="margin-right: 50px;">Save</button>
+            </form>
+          </td>
+          <td></td>
+
+        </tr>
+      </table>
+    </div>
+
+
+
+    <div class="column" style="margin-left: auto; margin-right:auto;">
+      <table class="table table-light"  >
+        <tr>
+          <th>Diesel Price</th>
+
+        </tr>
+        <tr >
+          <td><strong>Date:</strong></td>
+          <td>{{ date }}</td>
+        </tr>
+
+        <tr>
+          <td><strong>Price in PHP:</strong></td>
+          <td>₱{{ php_price }}</td>
+        </tr>
+
+        <tr >
+          <td><strong>Price in USD:</strong></td>
+          <td>${{ usd_price }}</td>
+        </tr>
+
+        <tr>
+          <td>
+            <form method="post" action="{% url 'save_data' %}">
+              {% csrf_token %}
+              <input type="hidden" name="date" value="{{ date }}">
+              <input type="hidden" name="php_price" value="{{ php_price }}">
+              <input type="hidden" name="usd_price" value="{{ usd_price }}">
+              <button type="submit" class="btn-change" style="margin-right: 50px;">Save Data</button>
+            </form>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+
+  <!-- Modal container initially hidden -->
+  <div id="modal-container" class="modal-container">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold"> Update Prices</h4>
+        </button>
+
+
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'update_prices' %}">
+          {% csrf_token %}
+         
+            <div class="form-group">
+              <label for="new_fare">New Fare PUJ:</label>
+
+              <input type="number" name="new_farePUJ" step="0.01">
+
+            </div>
+
+            <div class="form-group">
+              <label for="new_succeeding">New Succeeding PUJ:</label>
+              <input type="number" name="new_succeedingPUJ" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="new_fare">New Fare Bus:</label>
+              <input type="number" name="new_fareBus" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="new_succeeding">New Succeeding Bus:</label>
+              <input type="number" name="new_succeedingBus" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="new_diesel">Diesel Price:</label>
+              <input type="number" name="new_diesel" step="0.01">
+            </div>
+
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <input type="submit" class="btn-change3" value="Update Prices">
+    </div>
+      </form>
+      <button onclick="closeModal()" class="close-button"> <i class="fa fa-close"></i></button>
+    </div>
+  </div>
+
+
+
+
+
+  <script>
+    function toggleUpdatePricesForm() {
+      var modalContainer = document.getElementById("modal-container");
+      modalContainer.style.display = "block";
     }
 
-    .field {
-      font-weight: 400;
-      font-size: 1.3rem;
-      letter-spacing: 0.5px;
-      padding: 2px;
+    function closeModal() {
+      var modalContainer = document.getElementById("modal-container");
+      modalContainer.style.display = "none";
     }
-  }
 
-  .img-box {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-}
+    function toggleCurrentpricefare() {
+      var currentFare = document.getElementById("current-fare");
+      currentFare.style.display = "block";
+    }
 
-</style>
+    function closeModal2() {
+      var currentFare = document.getElementById("current-fare");
+      currentFare.style.display = "none";
+    }
+    
+  </script>
 
+</body>
+
+</html>
 {% endblock content %}

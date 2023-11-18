@@ -141,19 +141,23 @@
 }
 
 body{
-    height: 100vh;
-    width: 100%;
-    background: url("{% get_media_prefix %}bg/home.jpg") center/cover no-repeat;
-
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("{% get_media_prefix %}bg/home.jpg") center/cover no-repeat; 
 }
 
 .container{
    
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    height: 100vh;
+    position: relative;
+    max-width: 520px;
     width: 100%;
+    border-radius: 6px;
+    
+    padding: 20px;
+    margin: 0 2px;
+    background-color: #e2faff;
    
 }
 
@@ -164,7 +168,7 @@ body{
     width: 100%;
     padding: 30px;
     border-radius: 6px;
-    background: #fff;
+    background: #ffffff;
 }
 
 header{
@@ -213,7 +217,7 @@ form .field{
     font-size: 18px;
     color: #8b8b8b;
     position: absolute;
-    top: 100%;
+    top: 120%;
     right: 10px;
     transform: translateY(-50%);
     cursor: pointer;

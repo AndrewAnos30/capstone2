@@ -17,10 +17,13 @@
     
         <title>User Regisration</title> 
     </head>
+
     <body>
-  
+      {% include 'messaging.html' %}
         {% block content %}
-        <div class="container">
+
+  
+       
             <header style="margin-bottom: 10px;">Registration</header>
 
             <span style="color: #003B4E; font-size: 20px; font-family: SF Pro Display; 
@@ -180,7 +183,7 @@
             </div>
         </div>
     </form>
-        </div>
+        
     
         <script>
             const form = document.querySelector("form"),
@@ -336,7 +339,7 @@ form .fields .input-field{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 45px;
+    height: 40px;
     max-width: 200px;
     width: 100%;
     border: none;
@@ -365,9 +368,13 @@ form .backBtn i{
 form .buttons{
     display: flex;
     align-items: center;
+
 }
 form .buttons button , .backBtn{
     margin-right: 14px;
+    height: 40px;
+    max-width: 200px;
+    width: 100%;
 }
 
 @media (max-width: 750px) {
@@ -390,7 +397,7 @@ form .buttons button , .backBtn{
 
 .tacbox {
   display:block;
-  margin: 2rem;
+  margin:   1.5rem;
   max-width: 800px;
 }
 .tachbox1 {

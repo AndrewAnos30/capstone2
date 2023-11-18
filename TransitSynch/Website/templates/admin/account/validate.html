@@ -1,45 +1,265 @@
 {% extends "header.html" %}
-
 {% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" title="Coding design">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Validate </title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
 
-.container table{
-    margin-top: 10%;
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: 'Raleway', sans-serif;
+
+        background: url("{% get_media_prefix %}bg/transac.jpg") center/cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    main.table {
+        width: 82vw;
+        height: 80vh;
+        background-color: #ffffff;
+        margin-top: 90px;
+        backdrop-filter: blur(7px);
+        box-shadow: 0 .4rem .8rem #0005;
+        border-radius: .8rem;
+
+        overflow: hidden;
+    }
+
+    .table__header {
+        width: 100%;
+        height: 10%;
+        background-color: #fff4;
+
+        display: flex;
+        font-size: 30px;
+        margin-top: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .table__header h1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: x-large;
+        font-weight: bold;
+
+    }
+
+
+
+    .table__header .input-group input {
+        width: 100%;
+        padding: 0 .5rem 0 .3rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+
+    .table__body {
+        width: 95%;
+        max-height: calc(89% - 1.6rem);
+        background-color: #fffb;
+
+        margin: .6rem auto;
+        border-radius: .6rem;
+
+        overflow: auto;
+        overflow: overlay;
+    }
+
+    .table__body::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+
+    .table__body::-webkit-scrollbar-thumb {
+        border-radius: .5rem;
+        background-color: #0004;
+        visibility: hidden;
+    }
+
+    .table__body:hover::-webkit-scrollbar-thumb {
+        visibility: visible;
+    }
+
+    table {
+        width: 100%;
+    }
+
+
+    table,
+    th,
+    td {
+        border-collapse: collapse;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: rgb(151, 222, 255);
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #0000000b;
+    }
+
+    tbody tr {
+        --delay: .1s;
+        transition: .5s ease-in-out var(--delay), background-color 0s;
+    }
+
+    tbody tr.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    /* tbody tr:hover {
+    background-color: #fff6 !important;
+} */
+
+    tbody tr td,
+    tbody tr td p,
+    tbody tr td img {
+        transition: .2s ease-in-out;
+    }
+
+    tbody tr.hide td,
+    tbody tr.hide td p {
+        padding: 0;
+        font: 0 / 0 sans-serif;
+        transition: .2s ease-in-out .5s;
+    }
+
+    tbody tr.hide td img {
+        width: 0;
+        height: 0;
+        transition: .2s ease-in-out .5s;
+    }
+
+    .status {
+        padding: .2rem 0;
+        border-radius: 2rem;
+        margin-top: 10px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .status.delivered {
+        background-color: #92cae4;
+        color: rgb(3, 84, 122);
+    }
+
+
+    @media (max-width: 1000px) {
+        td:not(:first-of-type) {
+            min-width: 12.1rem;
+        }
+    }
+
+    thead th span.icon-arrow {
+        display: inline-block;
+        width: 1.3rem;
+        height: 1.3rem;
+        border-radius: 50%;
+        border: 1.4px solid transparent;
+
+        text-align: center;
+        font-size: 1rem;
+
+        margin-left: .6rem;
+        transition: .2s ease-in-out;
+    }
+    .modal-backdrop {
+  z-index: -1;
+}
+    /* thead th:hover span.icon-arrow{
+    border: 1.4px solid #6c00bd;
+} */
+
+    /* thead th:hover {
+    color: #6c00bd;
 }
 
+thead th.active span.icon-arrow{
+    background-color: #6c00bd;
+    color: #fff;
+} */
 
+    thead th.asc span.icon-arrow {
+        transform: rotate(180deg);
+    }
+
+
+    /* thead th.active,tbody td.active {
+    color: #6c00bd;
+} */
 </style>
-<body>
-    <header style="margin: 5%; font-weight: 700; font-size: 50px;"> Validated Accounts </header>
-    
-    <div class="container">
-       
 
-        <table class="table table-bordered table-striped" style="margin-left: -15%; margin-top: -5%;">
-           
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Gender</th>
-                    <th>Age</th>
-                    <th>Birth Date</th>
-                    <th>Contact Number</th>
-                    <th>Emergency Contact</th>
-                    <th>Contact Person</th>
-                    <th>User SN</th>
-                    <th>Balance</th>
-                    <th>Graduation</th>
-                    <th>Valid ID</th>
-                    <th>QR</th>
-                    <th>Verified</th>
-                    <th>User Group</th>
-                    <th>Validate</th>
-                </tr>
-         
-            <tbody>
-                {% for user in commuter_users %}
+<body>
+    <main class="table">
+        <section class="table__header">
+            <h1>Validation</h1>
+
+
+        </section>
+
+        <section class="table__body">
+
+
+            <table id="filtertable" class="table table-bordered">
+
+                <thead>
+                    <tr>
+
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th style="min-width:190px;">Birth Date</th>
+                        <th>Contact Number</th>
+                        <th>Emergency Contact</th>
+                        <th>Contact Person</th>
+                        <th>User SN</th>
+                        <th>Balance</th>
+                        <th>Graduation</th>
+                        <th style="min-width:150px;">Valid ID</th>
+                        <th style="min-width:190px;">QR</th>
+                        <th>Verified</th>
+                        <th>User Group</th>
+                        <th>Validate</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in commuter_users %}
                     <tr>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
@@ -54,11 +274,13 @@
                         <td>{{ user.balance }}</td>
                         <td>{{ user.graduation }}</td>
                         <td>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#validIDModal{{ user.id }}">
+                            <button class="btn btn-primary" data-toggle="modal"
+                                data-target="#validIDModal{{ user.id }}">
                                 View Valid ID
                             </button>
                             <!-- Valid ID Modal -->
-                            <div class="modal fade" id="validIDModal{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="validIDModalLabel{{ user.id }}" aria-hidden="true">
+                            <div class="modal fade" id="validIDModal{{ user.id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="validIDModalLabel{{ user.id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -69,9 +291,9 @@
                                         </div>
                                         <div class="modal-body">
                                             {% if user.validID %}
-                                                <img src="{{ user.validID.url }}" alt="Valid ID" class="img-fluid">
+                                            <img src="{{ user.validID.url }}" alt="Valid ID" class="img-fluid">
                                             {% else %}
-                                                N/A
+                                            N/A
                                             {% endif %}
                                         </div>
                                     </div>
@@ -83,7 +305,8 @@
                                 View QR Code
                             </button>
                             <!-- QR Modal -->
-                            <div class="modal fade" id="qrModal{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel{{ user.id }}" aria-hidden="true">
+                            <div class="modal fade" id="qrModal{{ user.id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="qrModalLabel{{ user.id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -94,9 +317,9 @@
                                         </div>
                                         <div class="modal-body">
                                             {% if user.QR %}
-                                                <img src="{{ user.QR.url }}" alt="QR Code" class="img-fluid">
+                                            <img src="{{ user.QR.url }}" alt="QR Code" class="img-fluid">
                                             {% else %}
-                                                N/A
+                                            N/A
                                             {% endif %}
                                         </div>
                                     </div>
@@ -107,18 +330,145 @@
                         <td>{{ user.UserGroup }}</td>
                         <td>
                             {% if user.verified %}
-                                Verified
+                            Verified
                             {% else %}
-                                <form method="post" action="{% url 'update_validation' user.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-success">PROCESSING</button>
-                                </form>
+                            <form method="post" action="{% url 'update_validation' user.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">PROCESSING</button>
+                            </form>
                             {% endif %}
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                    {% endfor %}
+
+
+                </tbody>
+            </table>
+
+
+        </section>
+    </main>
+<script>
+ 
+
+        const search = document.querySelector('.input-group input'),
+    table_rows = document.querySelectorAll('tbody tr'),
+    table_headings = document.querySelectorAll('thead th');
+
+
+
+// 2. Sorting | Ordering data of HTML table
+
+table_headings.forEach((head, i) => {
+    let sort_asc = true;
+    head.onclick = () => {
+        // table_headings.forEach(head => head.classList.remove('active'));
+        // head.classList.add('active');
+
+        // document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
+        // table_rows.forEach(row => {
+        //     row.querySelectorAll('td')[i].classList.add('active');
+        // })
+
+        head.classList.toggle('asc', sort_asc);
+        sort_asc = head.classList.contains('asc') ? false : true;
+
+        sortTable(i, sort_asc);
+    }
+})
+
+
+function sortTable(column, sort_asc) {
+    [...table_rows].sort((a, b) => {
+        let first_row = a.querySelectorAll('td')[column].textContent.toLowerCase(),
+            second_row = b.querySelectorAll('td')[column].textContent.toLowerCase();
+
+        return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
+    })
+        .map(sorted_row => document.querySelector('tbody').appendChild(sorted_row));
+}
+
+// 3. Converting HTML table to PDF
+
+const pdf_btn = document.querySelector('#toPDF');
+const customers_table = document.querySelector('#customers_table');
+
+
+
+// 4. Converting HTML table to JSON
+
+const json_btn = document.querySelector('#toJSON');
+
+const toJSON = function (table) {
+    let table_data = [],
+        t_head = [],
+
+        t_headings = table.querySelectorAll('th'),
+        t_rows = table.querySelectorAll('tbody tr');
+
+    for (let t_heading of t_headings) {
+        let actual_head = t_heading.textContent.trim().split(' ');
+
+        t_head.push(actual_head.splice(0, actual_head.length - 1).join(' ').toLowerCase());
+    }
+
+    t_rows.forEach(row => {
+        const row_object = {},
+            t_cells = row.querySelectorAll('td');
+
+        t_cells.forEach((t_cell, cell_index) => {
+            const img = t_cell.querySelector('img');
+            if (img) {
+                row_object['customer image'] = decodeURIComponent(img.src);
+            }
+            row_object[t_head[cell_index]] = t_cell.textContent.trim();
+        })
+        table_data.push(row_object);
+    })
+
+    return JSON.stringify(table_data, null, 4);
+}
+
+json_btn.onclick = () => {
+    const json = toJSON(customers_table);
+    downloadFile(json, 'json')
+}
+
+// 5. Converting HTML table to CSV File
+
+const csv_btn = document.querySelector('#toCSV');
+
+const toCSV = function (table) {
+    // Code For SIMPLE TABLE
+    // const t_rows = table.querySelectorAll('tr');
+    // return [...t_rows].map(row => {
+    //     const cells = row.querySelectorAll('th, td');
+    //     return [...cells].map(cell => cell.textContent.trim()).join(',');
+    // }).join('\n');
+
+    const t_heads = table.querySelectorAll('th'),
+        tbody_rows = table.querySelectorAll('tbody tr');
+
+    
+
+    const table_data = [...tbody_rows].map(row => {
+        const cells = row.querySelectorAll('td'),
+            img = decodeURIComponent(row.querySelector('img').src),
+            data_without_img = [...cells].map(cell => cell.textContent.replace(/,/g, ".").trim()).join(',');
+
+        return data_without_img + ',' + img;
+    }).join('\n');
+
+    return headings + '\n' + table_data;
+}
+
+
+
+
+
+
+</script>
 </body>
-{% endblock %}
+{% endblock content %}
+
+</html>
