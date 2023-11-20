@@ -1,6 +1,7 @@
 {% extends "header.html" %}
 {% load static %}
 {% block content %}
+
 <head>
     <title>Admin Dashboard</title>
     <style>
@@ -94,8 +95,10 @@ body::-webkit-scrollbar {
     </style>
 </head>
 <body>
+   
 
     <section class="about py-4">
+        {% include 'messaging.html' %}
         <div class="row align-items-center container my-5 mx-auto">
             <div class="text text-light col-lg-6 col-md-6 col-12 w-50 pt-3 pb-5"> 
                

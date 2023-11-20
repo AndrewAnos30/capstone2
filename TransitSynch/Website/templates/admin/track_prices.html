@@ -378,42 +378,42 @@ th{
         </tr>
         {% if calculation_result is not None %}
         <tr>
-          <td><strong>Calculation Result:</strong></td>
+          <td><strong>Fuel Price Changes:</strong></td>
           <td>₱{{ calculation_result }}</td>
         </tr>
         {% endif %}
 
         {% if second_calculation_result is not None %}
         <tr>
-          <td><strong>Calculation Result 2:</strong></td>
+          <td><strong>Fare Base:</strong></td>
           <td>₱{{ second_calculation_result }}</td>
         </tr>
         {% endif %}
 
         {% if third_calculation_result is not None %}
         <tr >
-          <td><strong>Calculation Result 3 (Second x CurrentFare PUJ):</strong></td>
+          <td><strong>New PUJ Fare:</strong></td>
           <td>₱{{ third_calculation_result|floatformat:2 }}</td>
         </tr>
         {% endif %}
 
         {% if fourth_calculation_result is not None %}
         <tr>
-          <td><strong>Calculation Result 4 (Second x CurrentSucceeding PUJ):</strong></td>
+          <td><strong>New Succeeding KM Price(PUJ):</strong></td>
           <td>₱{{ fourth_calculation_result|floatformat:2 }}</td>
         </tr>
         {% endif %}
 
         {% if fifth_calculation_result is not None %}
         <tr >
-          <td><strong>Calculation Result 5 (Second x CurrentFare Bus):</strong></td>
+          <td><strong>New Bus Fare:</strong></td>
           <td>₱{{ fifth_calculation_result|floatformat:2 }}</td>
         </tr>
         {% endif %}
 
         {% if sixth_calculation_result is not None %}
         <tr>
-          <td><strong>Calculation Result 6 (Second x CurrentSucceeding Bus):</strong></td>
+          <td><strong>New Succeeding KM Price(Bus):</strong></td>
           <td>₱{{ sixth_calculation_result|floatformat:2 }}</td>
         </tr>
         {% endif %}
@@ -441,7 +441,7 @@ th{
     <div class="column" style="margin-left: auto; margin-right:auto;">
       <table class="table table-light"  >
         <tr>
-          <th>Diesel Price</th>
+          <th>Crude Oil Price</th>
 
         </tr>
         <tr >

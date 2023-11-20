@@ -33,6 +33,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import TransportationRecord
 import googlemaps
+import math
+
 
 # Create your views here.
 def activateEmail(request, user, to_email):
@@ -62,7 +64,7 @@ def generate_random_transpo_sn(length=25):
     return ''.join(secrets.choice(characters) for _ in range(length))
 
 @csrf_exempt
-@login_required  # Requires the user to be logged in
+@login_required  
 def scan_qr_code(request):
     if request.method == 'POST':
         scan_type = request.POST.get('scan_type')
@@ -111,7 +113,7 @@ def scan_qr_code(request):
 
 @login_required
 def ConTransaction(request):
-    gmaps = googlemaps.Client(key='Change the API key')
+    gmaps = googlemaps.Client(key='AIzaSyCQbrn9uYAhVxweNwKpYb5yBYaVURtC6oM')
     records = TransportationRecord.objects.all()
 
     for record in records:
@@ -144,7 +146,162 @@ def ConTransaction(request):
                     record.commuterStatus = "Unknown"
                 record.save()
 
+    if record.km is not None and record.TranspoType == "PUJ":
+        try:
+            current_price = CurrentPrice.objects.get(Num=1)
+            initial_price = CurrentPrice.objects.filter(Num=1).first()
+            succeeding_price = CurrentPrice.objects.filter(Num=1).order_by('Num').first()
+
+            initial_distance = 4.10
+            succeeding_distance = max(0, record.km - initial_distance)
+            rounded_succeeding_distance = math.ceil(succeeding_distance)
+
+            # Set the multiplier based on the commuterStatus
+            multiplier = 1.0 if record.commuterStatus == "Ordinary" else 0.80
+
+            record.price = (
+                current_price.CurrentFarePUJ * multiplier if record.km < 4.10
+                else (initial_price.CurrentFarePUJ + (succeeding_price.CurrentSucceedingPUJ * rounded_succeeding_distance)) * multiplier
+            )
+
+            user = CustomUser.objects.get(userSN=record.extracted_data)
+            if user.balance is not None and user.balance >= record.price:
+                user.balance -= record.price
+                user.save()
+            else:
+                # Handle insufficient balance or other cases
+                pass
+
+        except (CurrentPrice.DoesNotExist, CustomUser.DoesNotExist):
+            # Handle the case when no matching CurrentPrice or user is found
+            record.price = 0  # Set a default price
+
+        record.save()
+
+    elif record.km is not None and record.TranspoType == "Modernized PUJ":
+        try:
+            current_price = CurrentPrice.objects.get(Num=1)
+            initial_price = CurrentPrice.objects.filter(Num=1).first()
+            succeeding_price = CurrentPrice.objects.filter(Num=1).order_by('Num').first()
+
+            initial_distance = 4.10
+            succeeding_distance = max(0, record.km - initial_distance)
+            rounded_succeeding_distance = math.ceil(succeeding_distance)
+
+            # Set the multiplier based on the commuterStatus
+            multiplier = 1.20 if record.commuterStatus == "Ordinary" else 0.80
+
+            record.price = (
+                current_price.CurrentFarePUJ * multiplier if record.km < 4.10
+                else (initial_price.CurrentFarePUJ * multiplier) + (succeeding_price.CurrentSucceedingPUJ * rounded_succeeding_distance)
+            )
+
+            record.save()
+
+        except CurrentPrice.DoesNotExist:
+            # Handle the case when no matching CurrentPrice is found
+            record.price = 0  # Set a default price
+        record.save()
+# Additional logic for other cases can be added as needed
+
+    elif record.km is not None and record.TranspoType == "AirConditioned PUJ":
+        try:
+            current_price = CurrentPrice.objects.get(Num=1)
+            initial_price = CurrentPrice.objects.filter(Num=1).first()
+            succeeding_price = CurrentPrice.objects.filter(Num=1).order_by('Num').first()
+
+            initial_distance = 4.10
+            succeeding_distance = max(0, record.km - initial_distance)
+            rounded_succeeding_distance = math.ceil(succeeding_distance)
+
+            # Set the multiplier based on the commuterStatus
+            multiplier = 1.20 if record.commuterStatus == "Ordinary" else 0.80
+
+            record.price = (
+                current_price.CurrentFarePUJ * multiplier if record.km < 4.10
+                else (initial_price.CurrentFarePUJ * multiplier) + ((succeeding_price.CurrentSucceedingPUJ * multiplier) * rounded_succeeding_distance)
+            )
+
+            record.save()
+
+        except CurrentPrice.DoesNotExist:
+            # Handle the case when no matching CurrentPrice is found
+            record.price = 0  # Set a default price
+        record.save()
+    # Additional logic for other cases can be added as needed
+
+
+    elif record.km is not None and record.TranspoType == "Regular Bus":
+        try:
+            current_price = CurrentPrice.objects.get(Num=1)
+            initial_price = CurrentPrice.objects.filter(Num=1).first()
+            succeeding_price = CurrentPrice.objects.filter(Num=1).order_by('Num').first()
+
+            initial_distance = 4.10
+            succeeding_distance = max(0, record.km - initial_distance)
+            rounded_succeeding_distance = math.ceil(succeeding_distance)
+
+            record.price = (
+                current_price.CurrentFareBus if record.km < 5.10
+                else initial_price.CurrentFarePUJ + (succeeding_price.CurrentSucceedingBus * rounded_succeeding_distance)
+            )
+
+            record.save()
+
+        except CurrentPrice.DoesNotExist:
+            # Handle the case when no matching CurrentPrice is found
+            record.price = 0  # Set a default price
+        record.save()
+
+# Additional logic for other cases can be added as needed
+
+
+    elif record.km is not None and record.TranspoType == "Modernized Bus":
+        try:
+            current_price = CurrentPrice.objects.get(Num=1)
+            initial_price = CurrentPrice.objects.filter(Num=1).first()
+            succeeding_price = CurrentPrice.objects.filter(Num=1).order_by('Num').first()
+
+            initial_distance = 4.10
+            succeeding_distance = max(0, record.km - initial_distance)
+            rounded_succeeding_distance = math.ceil(succeeding_distance)
+
+            record.price = (
+                current_price.CurrentFareBus if record.km < 4.10
+                else initial_price.CurrentFarePUJ + ((succeeding_price.CurrentFareBus * 1.20) * rounded_succeeding_distance)
+            )
+
+            record.save()
+
+        except CurrentPrice.DoesNotExist:
+            # Handle the case when no matching CurrentPrice is found
+            record.price = 0  # Set a default price
+        record.save()
+# Additional logic for other cases can be added as needed
+
+    unprocessed_records = TransportationRecord.objects.filter(processed=False)
+
+    for transportation_record in unprocessed_records:
+     if transportation_record.price is not None:
+
+        # Find the matching CustomUser based on userSN
+        try:
+            user = CustomUser.objects.get(userSN=transportation_record.extracted_data)
+        except CustomUser.DoesNotExist:
+            # Handle the case where there is no matching user
+            # You may want to log this or handle it accordingly
+            continue
+
+        # Process the deduction from balance
+        user.balance -= transportation_record.price
+        user.save()
+
+        # Mark the TransportationRecord as processed
+        transportation_record.processed = True
+        transportation_record.save()
+
     return render(request, 'conductor/ConTransaction.html', {'records': records})
+
 
 def homepage(request):
     return render(request=request, template_name='home.html')
@@ -187,8 +344,14 @@ def UWallet(request):
 @login_required
 def UTransaction(request):
 
+    records = TransportationRecord.objects.all()
+    return render(request, 'commuter/UTransaction.html', {'records': records})
 
-    return render(request, 'commuter/UTransaction.html')
+@login_required
+def UTransactionCashier(request):
+
+    records = CashierTransaction.objects.all()
+    return render(request, 'commuter/UTransactionCashier.html', {'records': records})
 
 @login_required
 def cashier(request):
@@ -211,6 +374,11 @@ def cashier(request):
     return render(request, 'cashier/cashierHome.html', {'results': results, 'query': query})
 
 @login_required
+def cTransaction(request):
+    records = CashierTransaction.objects.all()
+    return render(request, 'cashier/cashierTransaction.html', {'records': records})
+
+@login_required
 def update_balance(request, user_id):
     commuter = get_object_or_404(CustomUser, id=user_id)  # Get the user being updated
 
@@ -228,20 +396,27 @@ def update_balance(request, user_id):
         # Get the UserSN of the logged-in cashier
         cashierSN = request.user.userSN  # Assuming UserSN is the field in CustomUser model
 
+
         # Create a new CashierTransaction entry
         paid_amount = request.POST.get('amount')
         if paid_amount:
+
+            change = float(new_balance) - float(paid_amount)
+
             transaction = CashierTransaction(
                 TransactionID=transaction_id,
                 CashierSN=cashierSN,
                 CommuterSN=commuterSN,
                 CashIn=new_balance,
                 paidAmount=paid_amount,
+                change=change,
                 DateIn=datetime.now()
             )
             transaction.save()
 
         commuter.save()  # Save the commuter's updated balance
+        messages.success(request, 'Balance updated successfully!')
+
 
         return HttpResponseRedirect('/cashier/')  # Redirect to the cashier page
 
@@ -312,6 +487,7 @@ def create_conductor(request):
             # Set UserGroup to "Commuter"
             user.UserGroup = "conductor"
 
+            user.DPA = True
             user.verified = True
 
                 # Generate a QR code using userSN and save it to 'QR' field
@@ -328,11 +504,11 @@ def create_conductor(request):
             img.save(buffer, format="PNG")
             user.QR.save(f'qr_{userSN}.png', ContentFile(buffer.getvalue()), save=False)
 
-
+            
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            return redirect('create_conductor')
+            return redirect('account_management')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -369,7 +545,7 @@ def create_cashier(request):
 
             # Set UserGroup to "Commuter"
             user.UserGroup = "cashier"
-
+            user.DPA = True
             user.verified = True
 
                 # Generate a QR code using userSN and save it to 'QR' field
@@ -390,7 +566,7 @@ def create_cashier(request):
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            return redirect('create_cashier')
+            return redirect('account_management')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
@@ -515,6 +691,20 @@ def track_prices(request):
     }
 
     return render(request, 'admin/track_prices.html', context)
+
+@login_required
+def transaction_AT(request):
+    
+    records = TransportationRecord.objects.all()
+    
+    return render(request, 'admin/TransactionAT.html', {'records': records})
+
+@login_required
+def transaction_AC(request):
+    
+    records = CashierTransaction.objects.all()
+    
+    return render(request, 'admin/TransactionAC.html', {'records': records})
 
 @login_required
 def save_data(request):

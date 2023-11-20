@@ -294,6 +294,30 @@ padding: 10px;
 <!-- Add this div to display the location -->
 <div id="location"></div>
 
+<button id="okButton" style="
+
+    margin-top: 10px;
+    background-color: #036485;
+    font-weight: 600;
+    padding: 0.4rem 1.4rem;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer; /* Add cursor property for better user experience */
+">
+    OK
+</button>
+
+<script>
+    // Add an event listener to the "OK" button
+    document.getElementById('okButton').addEventListener('click', function() {
+        // Redirect to the "ConTransaction" page
+        window.location.href = '{% url "ConTransaction" %}';
+    });
+</script>
+
+
 <script>
     const scanner = new Html5QrcodeScanner('reader', {
         qrbox: {
@@ -341,7 +365,7 @@ padding: 10px;
                                 // Handle the response from the server
                                 document.getElementById('result').innerHTML = `
                                     <h2>Success!</h2>
-                                    <p>Data: ${extractedData}</p>
+                              
                                     <p>Scan Type: ${scanType}</p>
                                 `;
                             }

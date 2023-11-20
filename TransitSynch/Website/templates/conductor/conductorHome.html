@@ -324,6 +324,31 @@
 
   <!-- Optional JavaScript -->
   <script type="text/javascript" src="{% static 'main/custom.js' %}"></script>
+
+  <div id="mybutton">
+    <button class="feedback" onclick="redirectToConductorScanner()">Scan</button>
+  </div>    
+  <style>
+    .feedback {
+  background-color : rgb(3, 84, 122);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border-color: rgb(3, 84, 122);
+}
+
+#mybutton {
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
+}
+  </style>  
+  <script>
+    function redirectToConductorScanner() {
+    // Change the URL below to match the URL pattern for the conductorScanner view in your Django project
+    window.location.href = '/conductorScanner';
+    }
+  </script>
 </body>
 </html>
 {% endblock content %}

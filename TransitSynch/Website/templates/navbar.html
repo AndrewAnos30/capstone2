@@ -92,6 +92,7 @@
 </style>
 
 <body>
+
 <header>
 
 
@@ -134,9 +135,6 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'conductor' %}">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'conductorScanner' %}">Scanner</a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'ConTransaction' %}">Transaction</a>
     </li>
@@ -156,6 +154,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'CashierScan' %}">Scan</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cTransaction' %}">Transaction</a>
+    </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
         </li>
@@ -182,9 +183,17 @@
             <a class="nav-link" href="{% url 'account_management' %}">Accounts</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Transaction</a>
+          <!-- Add this to your HTML where you define your navigation menu -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="transactionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Transaction
+            </a>
+            <div class="dropdown-menu" aria-labelledby="transactionDropdown">
+                <a class="dropdown-item" href="{% url 'transaction_AT' %}">Transportation</a>
+                <a class="dropdown-item" href="{% url 'transaction_AC' %}">Cashier</a>
+            </div>
           </li>
+
 
           <li class="nav-item">
             <a class="nav-link" href="{% url 'profile' user.username %}"> Profile </a>
@@ -198,12 +207,15 @@
           {% endif %}
 
 
+
+  
+
     </div>
+
   </nav>
 
-
-
 </header>
+
 <script>
   // Add active class to the current button (highlight it)
   var header = document.getElementById("navbarSupportedContent");

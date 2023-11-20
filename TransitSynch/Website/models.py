@@ -32,7 +32,7 @@ class TranspoType(models.Model):
         ('PUJ', 'PUJ'),
         ('Modernized PUJ', 'Modernized PUJ'),
         ('AirConditioned PUJ', 'AirConditioned PUJ'),
-        ('Regular PUJ', 'Regular PUJ'),
+        ('Regular Bus', 'Regular Bus'),
         ('Modernized Bus', 'Modernized Bus'),
     )
 
@@ -64,6 +64,7 @@ class TransportationRecord(models.Model):
     km = models.FloatField(null=True, blank=True)
     commuterStatus = models.CharField(max_length=25, null=True, blank=True)
     TranspoType = models.CharField(max_length=25, null=True, blank=True)
-    
+    processed = models.BooleanField(default=False)
+
     def __str__(self):
         return str(self.TranspoSN)

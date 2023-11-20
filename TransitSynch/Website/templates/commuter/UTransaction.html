@@ -9,12 +9,11 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <title>Responsive HTML Table With Pure CSS - Web Design/UI Design</title>
+
      <link rel="stylesheet" href="style.css">
  </head>
 
  <style>
-
 * {
     margin: 0;
     padding: 0;
@@ -51,10 +50,9 @@ main.table {
     background-color: #fff4;
 
     display: flex;
-    font-size: 40px;
+    font-size: 30px;
     margin-top: 10px;
-    padding: 20px;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
@@ -222,9 +220,12 @@ thead th.asc span.icon-arrow{
  <body>
      <main class="table">
          <section class="table__header">
-             <h1 >Transaction History</h1>
-        
-             <a href="{% url 'UWallet' %}" style="color: aliceblue;">  <button class="btn"><i class="fa fa-arrow-rotate-backward"> back</i> </button> </a>
+             <h1>Transaction History/
+                <a href="{% url 'UTransaction' %}">Transpo/</a>
+                <a href="{% url 'UTransactionCashier' %}">Cashier</a>
+             </h1>
+            
+            
          </section>
 
          <section class="table__body">
@@ -235,18 +236,19 @@ thead th.asc span.icon-arrow{
                  <thead>
                      <tr>
                   
-                        <th style="min-width:190px;"> Scan Date <span class="icon-arrow">&UpArrow;</span></th>
-                         <th> TranspoSN </th>
-                         <th> CommuterSN </th>
+                        <th style="min-width:250px;"> Date <span class="icon-arrow">&UpArrow;</span></th>
+                         <th> Transaction ID </th>
+                         <th> Commuter Serial Number </th>
               
                          <th style="min-width:100px;"> Status </th>
-                         <th style="min-width:150px;"> Kilometers <span class="icon-arrow">&UpArrow;</span></th>
+                         <th style="min-width:100px;"> KM <span class="icon-arrow">&UpArrow;</span></th>
                          <th style="min-width:100px;"> Price <span class="icon-arrow">&UpArrow;</span></th>
             
                          <th style="min-width:150px;"> Latitude IN </th>
                          <th style="min-width:150px;"> Longitude IN </th>
                          <th style="min-width:150px;"> Latitude OUT </th>
                          <th style="min-width:150px;"> Longitude OUT </th>
+                         
                        
                       
                      </tr>
@@ -261,8 +263,8 @@ thead th.asc span.icon-arrow{
                 
                         <td style="text-align: center; vertical-align: middle;">
                             <p class="status delivered" > {{ record.commuterStatus }} </p></td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.km }}</td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.price }}</td>
+                        <td style="text-align: center; vertical-align: middle;">{{ record.km|floatformat:2}}km</td>
+                        <td style="text-align: center; vertical-align: middle;">₱{{ record.price|floatformat:2 }}</td>
          
                         <td style="text-align: center; vertical-align: middle;">{{ record.latitudeIN }}</td>
                         <td style="text-align: center; vertical-align: middle;">{{ record.longitudeIN }}</td>

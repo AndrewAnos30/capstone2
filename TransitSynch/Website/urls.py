@@ -21,11 +21,15 @@ urlpatterns = [
     path('validation/', views.validation, name='validation'),
     path('update_validation/<int:user_id>/', views.update_validation, name='update_validation'),
     path('UTransaction/', views.UTransaction, name='UTransaction'),
+    path('UTransactionCashier/', views.UTransactionCashier, name='UTransactionCashier'),
     path('UWallet/', views.UWallet, name='UWallet'),
     path('update_balance/<int:user_id>/', views.update_balance, name='update_balance'),
     path('CashierScan/', views.CashierScan, name='CashierScan'),
+    path('cTransaction/', views.cTransaction, name='cTransaction'),
     path('ConTransaction/', views.ConTransaction, name='ConTransaction'),
     path('scan_qr_code/', views.scan_qr_code, name='scan_qr_code'),
+    path('transaction_AT/', views.transaction_AT, name='transaction_AT'),
+    path('transaction_AC/', views.transaction_AC, name='transaction_AC'),
 
 
 ]

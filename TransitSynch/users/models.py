@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
         ('PUJ', 'PUJ'),
         ('Modernized PUJ', 'Modernized PUJ'),
         ('AirConditioned PUJ', 'AirConditioned PUJ'),
-        ('Regular PUJ', 'Regular PUJ'),
+        ('Regular Bus', 'Regular Bus'),
         ('Modernized Bus', 'Modernized Bus'),
     )
 

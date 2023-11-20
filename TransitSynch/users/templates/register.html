@@ -129,6 +129,9 @@
 
         <div class="form second">
             <div class="details address">
+
+
+
                 <span class="title" style="color: #007EA7; padding-bottom: 5px;">
                     For your safety, please fill in your emergency contact person’s information.
                 </span>
@@ -163,6 +166,10 @@
                     <label class="form-check-label" for="id_DPA">By signing up, I agree with the Terms & Conditions of the platform.</label>
                     <div style="width: 100%; height: 100%; text-align: center"><span style="color: #003B4E; font-size: 24px; font-family: SF Pro Display; font-weight: 500; word-wrap: break-word">By signing up, I agree with the</span><span style="color: #007EA7; font-size: 24px; font-family: SF Pro Display; font-weight: 700; word-wrap: break-word"> Terms & Conditions </span><span style="color: #003B4E; font-size: 24px; font-family: SF Pro Display; font-weight: 500; word-wrap: break-word">of the platform.</span></div>
                      -->
+                     <div class="input-field1" id="graduationField" style="display: none;">
+                        <label for="id_graduation" style="padding-bottom: 10px;">Expected Graduation:</label><br>
+                        <input type="date" class="form-control1" id="id_graduation" name="graduation" >
+                    </div>
                     <div class="tacbox">
                         <input class = "tachbox1"id="checkbox" type="checkbox" />
                         <label for="checkbox">By signing up, <a href="#">I agree with the Terms & Conditions of the platform.</a></label>
@@ -185,29 +192,40 @@
     </form>
         
     
-        <script>
-            const form = document.querySelector("form"),
-        nextBtn = form.querySelector(".nextBtn"),
-        backBtn = form.querySelector(".backBtn"),
-        allInput = form.querySelectorAll(".first input");
-
-
-nextBtn.addEventListener("click", ()=> {
-    allInput.forEach(input => {
-        if(input.value != ""){
-            form.classList.add('secActive');
-        }else{
-            form.classList.remove('secActive');
-        }
-    })
-})
-
-backBtn.addEventListener("click", () => form.classList.remove('secActive'));
-
-
-        </script>
-        
-        
+    <script>
+        const form = document.querySelector("form"),
+            nextBtn = form.querySelector(".nextBtn"),
+            backBtn = form.querySelector(".backBtn"),
+            allInput = form.querySelectorAll(".first input");
+    
+        // Select the status dropdown
+        const statusDropdown = document.getElementById("id_status");
+    
+        // Select the graduation field div
+        const graduationField = document.getElementById("graduationField");
+    
+        // Event listener for the status dropdown change
+        statusDropdown.addEventListener("change", () => {
+            // Show/hide graduation field based on the selected status
+            if (statusDropdown.value === "Student") {
+                graduationField.style.display = "block";
+            } else {
+                graduationField.style.display = "none";
+            }
+        });
+    
+        nextBtn.addEventListener("click", () => {
+            allInput.forEach((input) => {
+                if (input.value != "") {
+                    form.classList.add("secActive");
+                } else {
+                    form.classList.remove("secActive");
+                }
+            });
+        });
+    
+        backBtn.addEventListener("click", () => form.classList.remove("secActive"));
+    </script>
     </body>
     </html>
 
@@ -232,16 +250,19 @@ body{
     background: url("{% get_media_prefix %}bg/home.jpg") center/cover no-repeat;
 
 }
-.container{
-    position: relative;
-    max-width: 900px;
-    width: 100%;
-    border-radius: 6px;
-    padding: 30px;
-    margin: 0 15px;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-}
+.container {
+        position: relative;
+        max-width: 900px;
+        width: 100%;
+        border-radius: 6px;
+        padding: 30px;
+        margin: 0 15px;
+        background-color: #fff;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        overflow-y: auto; 
+        max-height: 80vh; 
+    }
+
 .container header{
     position: relative;
     font-size: 20px;

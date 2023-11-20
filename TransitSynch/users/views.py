@@ -85,7 +85,6 @@ def registerCommuter(request):
             
 
 
-
             # Generate a unique userSN
             userSN = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(20))
 
@@ -110,7 +109,7 @@ def registerCommuter(request):
 
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            return redirect('welcome')
+            return redirect('login')
 
         else:
             for error in list(form.errors.values()):

@@ -14,19 +14,7 @@
  </head>
 
  <style>
-.feedback {
-  background-color : rgb(3, 84, 122);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  border-color: rgb(3, 84, 122);
-}
 
-#mybutton {
-  position: fixed;
-  bottom: -4px;
-  right: 10px;
-}
 * {
     margin: 0;
     padding: 0;
@@ -233,7 +221,10 @@ thead th.asc span.icon-arrow{
  <body>
      <main class="table">
          <section class="table__header">
-             <h1 >Transaction History</h1>
+            <h1>Transaction History/
+                <a href="{% url 'UTransaction' %}">Transpo/</a>
+                <a href="{% url 'UTransactionCashier' %}">Cashier</a>
+             </h1>
      
             
          </section>
@@ -246,54 +237,25 @@ thead th.asc span.icon-arrow{
                  <thead>
                      <tr>
                   
-                        <th style="min-width:190px;"> Scan Date <span class="icon-arrow">&UpArrow;</span></th>
-                         <th> TranspoSN </th>
-                         <th> CommuterSN </th>
-              
-                         <th style="min-width:100px;"> Status </th>
-                         <th style="min-width:150px;"> Kilometers <span class="icon-arrow">&UpArrow;</span></th>
-                         <th style="min-width:100px;"> Price <span class="icon-arrow">&UpArrow;</span></th>
-            
-                         <th style="min-width:150px;"> Latitude IN </th>
-                         <th style="min-width:150px;"> Longitude IN </th>
-                         <th style="min-width:150px;"> Latitude OUT </th>
-                         <th style="min-width:150px;"> Longitude OUT </th>
-                         
-                       
-                      
+                        <th style="min-width:250px;"> Date <span class="icon-arrow">&UpArrow;</span></th>
+                         <th> Transaction ID </th>
+                         <th> Commuter Serial Number </th>     
+                         <th style="min-width:100px;"> Amount </th>
+                         <th style="min-width:100px;"> Paid</th>
+                         <th style="min-width:100px;"> change </th>  
                      </tr>
                  </thead>
                  <tbody>
                     {% for record in records %}
 
                     <tr>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.scan_date }}</td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.TranspoSN }}</td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.extracted_data }}</td>
-                
-                        <td style="text-align: center; vertical-align: middle;">
-                            <p class="status delivered" > {{ record.commuterStatus }} </p></td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.km }}</td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.price }}</td>
-         
-                        <td style="text-align: center; vertical-align: middle;">{{ record.latitudeIN }}</td>
-                        <td style="text-align: center; vertical-align: middle;">{{ record.longitudeIN }}</td>
-                
-                        <td style="text-align: center; vertical-align: middle;">
-                            {% if record.latitudeOUT is not None %}
-                                {{ record.latitudeOUT }}
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center; vertical-align: middle;">
-                            {% if record.longitudeOUT is not None %}
-                                {{ record.longitudeOUT }}
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                      
+                        <td style="text-align: center; vertical-align: middle;">{{ record.DateIn }}</td>
+                        <td style="text-align: center; vertical-align: middle;">{{ record.TransactionID }}</td>
+                        <td style="text-align: center; vertical-align: middle;">{{ record.CommuterSN }}</td>
+                        <td style="text-align: center; vertical-align: middle;color: green;">+₱{{ record.CashIn|floatformat:2 }}</td>
+                        <td style="text-align: center; vertical-align: middle;">₱{{ record.paidAmount|floatformat:2 }}</td>         
+                        <td style="text-align: center; vertical-align: middle;"><strong>₱{{ record.change|floatformat:2 }}</strong></td>
+
 
                     </tr>
                     {% endfor %}
@@ -304,15 +266,7 @@ thead th.asc span.icon-arrow{
         
          </section>
      </main>
-     <div id="mybutton">
-        <button class="feedback" onclick="redirectToConductorScanner()">Scan</button>
-      </div>      
-      <script>
-        function redirectToConductorScanner() {
-        // Change the URL below to match the URL pattern for the conductorScanner view in your Django project
-        window.location.href = '/conductorScanner';
-        }
-      </script>
+
      <script>
         const search = document.querySelector('.input-group input'),
     table_rows = document.querySelectorAll('tbody tr'),
