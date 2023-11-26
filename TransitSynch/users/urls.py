@@ -14,4 +14,3 @@ urlpatterns = [
     path('reset/<uidb64>/<token>', views.passwordResetConfirm, name='password_reset_confirm'),
 ] 
 
-urlpatterns += staticfiles_urlpatterns()
