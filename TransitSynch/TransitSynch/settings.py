@@ -180,3 +180,4 @@ RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 MEDIA_URL = '/media/'
 
 
+django_heroku.settings((locals))
