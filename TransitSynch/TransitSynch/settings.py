@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-i4)yow^d4kf7@_ybumdp7yv9f497q5_!lt=ey0_uqqm6g3#_g=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -94,20 +94,10 @@ DATABASES = {
 }
 
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'TransitSync',
-#        'USER': 'postgres',
-#        'PASSWORD': 'Global3001',
-#        'HOST': 'localhost',
-#        'PORT': '5433',
-#    }
-# }
-#postgres://transitsynch_user:nGjp9JgUerOHP5BijtOcXuMtlbT1Atj5@dpg-ck60m80s0i2c73bnto40-a/transitsynch
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+import dj_database_url 
+DATABASES = {
+   'default':  dj_database_url.parse('postgres://transitsync_user:LW1f9iVJ6kw46SWefOFm75o5PcE1wfd9@dpg-clhfill8td7s73bo8cfg-a.singapore-postgres.render.com/transitsync')
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
